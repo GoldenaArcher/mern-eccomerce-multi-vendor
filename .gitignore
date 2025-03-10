@@ -1,0 +1,42 @@
+# 🔹 Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+*.lock
+
+# 🔹 Build and Output Files
+/build
+/dist
+/public
+/.parcel-cache
+/.turbo
+
+# 🔹 Logs
+logs/
+*.log
+yarn-debug.log
+pnpm-debug.log
+*.log.*
+
+# 🔹 IDE/Editor Config Files
+/.idea
+.vscode/
+*.sublime-workspace
+
+# 🔹 System Files
+.DS_Store
+Thumbs.db
+
+# 🔹 Environment Variables & Secrets
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.passport.js
+
+# 🔹 Misc
+coverage/  # Jest/Cypress test coverage
+.cache
+.parcel-cache
