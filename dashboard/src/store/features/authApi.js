@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-import axiosBaseQuery from '../../api/axiosBaseQuery'
+import axiosBaseQuery from "../../api/axiosBaseQuery";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -13,6 +13,9 @@ export const authApi = createApi({
         data,
         isAdmin: true,
       }),
+      // async onQueryStarted(_, { dispatch }) {
+      //   dispatch(authApi.util.resetApiState());
+      // },
     }),
   }),
 });

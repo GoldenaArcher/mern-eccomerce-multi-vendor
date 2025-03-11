@@ -1,12 +1,16 @@
-const returnResponse = require("../utils/responseUtil");
+const ApiError = require("../errors/ApiError");
 
 const errorMiddleware = (err, req, res, next) => {
   console.error("Unhandled Error:", err);
 
-  returnResponse(res, {
-    code: err.statusCode || 500,
+  if (!(err instanceof ApiError)) {
+    err = new ApiError(500, "Something went wrong");
+  }
+
+  res.status(err.status).json({
     success: false,
-    message: err.message || "Something went wrong",
+    message: err.message,
+    details: err.details || null,
   });
 };
 

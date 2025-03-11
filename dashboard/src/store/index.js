@@ -3,6 +3,9 @@ import logger from "redux-logger";
 
 import rootReducer from "./rootReducer";
 import { authApi } from "./features/authApi";
+import { rehydrateJwtToken } from "../utils/jwtUtils";
+
+const rehydratedAuthState = rehydrateJwtToken();
 
 const store = configureStore({
   reducer: rootReducer,
@@ -12,6 +15,9 @@ const store = configureStore({
     middlewares.push(logger);
 
     return middlewares;
+  },
+  preloadedState: {
+    auth: rehydratedAuthState,
   },
 });
 

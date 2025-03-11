@@ -13,6 +13,10 @@ class AdminAuthService {
     const admin = await Admin.create(adminData);
     return admin;
   }
+
+  async getAdmin(id) {
+    return await Admin.findById(id);
+  }
 }
 
 module.exports = new AdminAuthService();

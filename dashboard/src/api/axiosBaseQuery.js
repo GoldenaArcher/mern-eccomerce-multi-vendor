@@ -24,13 +24,12 @@ const axiosBaseQuery =
         headers,
       });
 
-      return { data: result.data };
+      return { data: result };
     } catch (axiosError) {
-      let err = axiosError;
       return {
         error: {
-          status: err.response?.status,
-          data: err.response?.data || err.message,
+          status: axiosError.status,
+          data: axiosError.response?.data || axiosError.message,
         },
       };
     }

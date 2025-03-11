@@ -1,14 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { PropagateLoader } from "react-spinners";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 import Logo from "../../assets/img/logo.png";
+
 import { useAdminLoginMutation } from "../../store/features/authApi";
 
+const overrideStyle = {
+  display: "flex",
+  margin: 0,
+  height: "24px",
+  justifyContent: "center",
+  alignItem: "center",
+};
+
 const AdminLogin = () => {
-  const [adminLogin] = useAdminLoginMutation();
+  const navigate = useNavigate();
+  const [adminLogin, { isLoading, isSuccess, isError, error, data, reset }] =
+    useAdminLoginMutation();
 
   const [state, setState] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    return () => reset();
+  }, [reset]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(error.data);
+      reset();
+    }
+  }, [error, isError, reset]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.message);
+      navigate("/");
+    }
+  }, [data, isSuccess, navigate]);
 
   const onChangeState = (e) => {
     setState((prev) => ({
@@ -17,9 +50,13 @@ const AdminLogin = () => {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    adminLogin(state);
+    try {
+      await adminLogin(state).unwrap();
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
   };
 
   return (
@@ -62,8 +99,15 @@ const AdminLogin = () => {
               />
             </div>
 
-            <button className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3">
-              Log In
+            <button
+              className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <PropagateLoader cssOverride={overrideStyle} color="#fff" />
+              ) : (
+                "Log In"
+              )}
             </button>
           </form>
         </div>

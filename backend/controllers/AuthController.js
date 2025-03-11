@@ -6,6 +6,8 @@ class AuthController {
       next(err);
     }
   }
+
+  getUser
 }
 
 module.exports = AuthController;

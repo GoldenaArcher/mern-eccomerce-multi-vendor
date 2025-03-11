@@ -3,7 +3,7 @@ import authReducer, { authSlice } from "./features/authSlice";
 
 const rootReducer = {
   [authSlice.reducerPath]: authReducer,
-  [authApi.reducerPath]: authApi,
+  [authApi.reducerPath]: authApi.reducer,
 };
 
 export default rootReducer;
