@@ -5,9 +5,9 @@ const axiosBaseQuery =
   async ({ url, method, data, params, isAdmin = false }, { getState }) => {
     try {
       const state = getState();
-      const token = state.auth?.token;
+      const accessToken = state.auth?.accessToken;
 
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
       if (data instanceof FormData) {
         headers["Content-Type"] = "multipart/form-data";
       } else {

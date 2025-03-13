@@ -1,6 +1,6 @@
 const { AuthError, NotFoundError } = require("../errors");
 const ResponseModel = require("../models/ResponseModel");
-const returnResponse = require("../utils/responseUtil");
+const { daysToMs } = require("../utils/timeUtil");
 
 class AdminAuthController {
   constructor(adminAuthService) {
@@ -19,13 +19,18 @@ class AdminAuthController {
         return next(new AuthError(401, "Invalid admin credentials"));
       }
 
-      const { admin, token } = authenticatedAdmin;
+      const { admin, accessToken, refreshToken } = authenticatedAdmin;
 
-      const { password: _, ...sanitizedUser } = admin.toObject();
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        maxAge: process.env.REFRESH_TOKEN_EXPIRY || daysToMs(7),
+      });
 
       new ResponseModel({
         message: "Login successful",
-        data: { token, user: sanitizedUser },
+        data: { accessToken, user: admin },
       }).send(res);
     } catch (err) {
       next(err);

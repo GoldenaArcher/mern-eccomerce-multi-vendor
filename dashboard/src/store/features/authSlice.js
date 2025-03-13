@@ -1,29 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authApi } from "./authApi";
 
-const initialState = {
-  token: null,
+export const authInitialState = {
+  accessToken: null,
   userInfo: {},
   isAdmin: false,
 };
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: authInitialState,
   reducers: {
     logout: () => {
       localStorage.removeItem("authToken");
-      return initialState;
+      return authInitialState;
     },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
       authApi.endpoints.adminLogin.matchFulfilled,
-      (state, { payload: { token, user } }) => {
-        state.token = token;
+      (state, { payload: { accessToken, user } }) => {
+        state.accessToken = accessToken;
         state.userInfo = user;
         state.isAdmin = user.role === "admin";
-        localStorage.setItem("authToken", token);
+        localStorage.setItem("authToken", accessToken);
       }
     );
   },

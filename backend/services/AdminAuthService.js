@@ -1,4 +1,5 @@
 const Admin = require("../models/Admin");
+const TokenService = require("./TokenService");
 
 class AdminAuthService {
   async authenticateAdmin(email, password) {
@@ -6,7 +7,14 @@ class AdminAuthService {
 
     if (!admin || !(await admin.comparePassword(password))) return null;
 
-    return { token: admin.generateAuthToken(), admin };
+    const { accessToken, refreshToken, jti } = admin.generateAuthToken();
+
+    await TokenService.storeRefreshToken(admin.id, jti);
+
+    const sanitizedAdmin = admin.toObject();
+    delete sanitizedAdmin.password;
+
+    return { accessToken, refreshToken, admin: sanitizedAdmin, jti };
   }
 
   async createAdmin(adminData) {

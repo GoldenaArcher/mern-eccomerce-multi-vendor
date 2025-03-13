@@ -5,7 +5,7 @@ import axios from "axios";
 export const BASE_URL = "http://localhost:5000/api";
 
 const getAuthToken = () =>
-  store.getState().auth.token || localStorage.getItem("authToken");
+  store.getState()?.auth?.accessToken || localStorage.getItem("authToken");
 
 const attachAuthToken = (config) => {
   const token = getAuthToken();
@@ -39,7 +39,6 @@ const handleAuthError = async (err, axiosInstance) => {
   const originalRequest = err.config;
 
   if (err.response?.status === 401 && !isTokenExpiredError(err)) {
-
     return Promise.reject({
       message: err.response?.data?.message || "Invalid credentials",
       status: err.response?.status,

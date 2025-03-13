@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser')
+
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const databaseConnect = require("./utils/db");
 
@@ -14,6 +16,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+app.use(cookieParser())
 
 app.use("/api", require("./routes/authRoutes"));
 app.use("/api", require("./routes/adminAuthRoutes"));
