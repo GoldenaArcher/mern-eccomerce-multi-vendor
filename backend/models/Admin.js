@@ -1,6 +1,5 @@
 const { model, Schema } = require("mongoose");
 const bcrypt = require("bcrypt");
-const { generateAuthToken } = require("../utils/jwtUtils");
 const TokenService = require("../services/TokenService");
 
 const adminSchema = new Schema(
@@ -32,10 +31,6 @@ const adminSchema = new Schema(
 
 adminSchema.methods.comparePassword = async function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);
-};
-
-adminSchema.methods.generateAuthToken = function () {
-  return TokenService.generateTokens({ id: this._id, role: this.role });
 };
 
 module.exports = model("Admin", adminSchema);

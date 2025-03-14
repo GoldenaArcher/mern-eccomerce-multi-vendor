@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
 const { AuthError, InternalServerError } = require("../errors");
+const TokenService = require("../services/TokenService");
 
 const authMiddleware = (req, res, next) => {
   try {
@@ -8,9 +8,7 @@ const authMiddleware = (req, res, next) => {
       return next(new AuthError(401, "Unauthorized: No token provided"));
     }
 
-    const token = authHeader.slice(7);
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = TokenService.verifyAccessToken(authHeader.slice(7));
 
     if (!decoded) {
       return next(

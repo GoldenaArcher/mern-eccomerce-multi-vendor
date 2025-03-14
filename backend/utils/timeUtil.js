@@ -4,4 +4,6 @@ const hoursToMs = (hours) => hours * 60 * 60 * 1000;
 
 const daysToMs = (days) => days * 24 * 60 * 60 * 1000;
 
-module.exports = { minutesToMs, hoursToMs, daysToMs };
+const daysToSecond = (days) => daysToMs(days) / 1000;
+
+module.exports = { minutesToMs, hoursToMs, daysToMs, daysToSecond };

@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(cookieParser())
 
 app.use("/api", require("./routes/authRoutes"));
-app.use("/api", require("./routes/adminAuthRoutes"));
+app.use("/api/admin", require("./routes/adminAuthRoutes"));
 
 app.use(errorMiddleware);
 

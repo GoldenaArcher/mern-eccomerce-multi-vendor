@@ -1,6 +1,6 @@
 const { AuthError, NotFoundError } = require("../errors");
 const ResponseModel = require("../models/ResponseModel");
-const { daysToMs } = require("../utils/timeUtil");
+const TokenService = require("../services/TokenService");
 
 class AdminAuthController {
   constructor(adminAuthService) {
@@ -19,13 +19,15 @@ class AdminAuthController {
         return next(new AuthError(401, "Invalid admin credentials"));
       }
 
-      const { admin, accessToken, refreshToken } = authenticatedAdmin;
+      const { admin, accessToken, refreshToken, expiresAt } =
+        authenticatedAdmin;
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "Strict",
-        maxAge: process.env.REFRESH_TOKEN_EXPIRY || daysToMs(7),
+        maxAge: (expiresAt - Math.floor(Date.now() / 1000)) * 1000,
+        path: "/",
       });
 
       new ResponseModel({
@@ -51,6 +53,35 @@ class AdminAuthController {
       new ResponseModel({
         message: "Admin retrieved successfully",
         data: user,
+      }).send(res);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async refreshToken(req, res, next) {
+    const refreshToken = req?.cookies?.refreshToken;
+
+    if (!refreshToken) {
+      next(new AuthError(401, "Unauthorized: No refresh token provided."));
+    }
+
+    try {
+      const newTokens = await this.adminAuthService.refreshAccessToken(
+        refreshToken
+      );
+
+      res.cookie("refreshToken", newTokens.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        maxAge: newTokens.expiresAt * 1000,
+        path: "/",
+      });
+
+      new ResponseModel({
+        message: "Token refreshed successfully",
+        data: { accessToken: newTokens.accessToken },
       }).send(res);
     } catch (err) {
       next(err);
