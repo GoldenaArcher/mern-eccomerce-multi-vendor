@@ -20,10 +20,10 @@ class AdminAuthService {
 
     if (!admin || !(await admin.comparePassword(password))) return null;
 
-    const { accessToken, refreshToken, jti, issuedAt, expiresAt } =
+    const { accessToken, refreshToken, jti, expiresAt } =
       TokenService.generateTokens(this.#getAdminForAuthToken(admin));
 
-    await TokenService.storeRefreshToken(admin.id, jtit);
+    await TokenService.storeRefreshToken(admin.id, jti);
 
     const sanitizedAdmin = this.#getSantizedAdmin(admin);
 

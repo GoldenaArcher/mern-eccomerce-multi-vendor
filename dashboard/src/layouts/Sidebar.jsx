@@ -22,7 +22,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
     <div>
       <div
         className={`flex duration-200 ${
-          !showSidebar ? "invisible" : "visible"
+          showSidebar ? "opacity-100 visible" : "opacity-0 hidden"
         } w-screen h-screen bg-[#8cbce7] top-0 left-0 z-10`}
         onClick={() => {
           setShowSidebar(false);
