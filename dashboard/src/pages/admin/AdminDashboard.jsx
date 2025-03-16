@@ -3,6 +3,23 @@ import { MdCurrencyExchange, MdProductionQuantityLimits } from "react-icons/md";
 import { FaUsers, FaCartArrowDown } from "react-icons/fa";
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
+import Table from "../../components/shared/Table";
+
+const adminDashboardColumnHeader = [
+  { name: "Order Id", accessor: "orderId" },
+  { name: "Price", accessor: "price" },
+  { name: "Payment Status", accessor: "paymentStatus" },
+  { name: "Order Status", accessor: "orderStatus" },
+  { name: "Active", accessor: "active" },
+];
+
+const dummyData = [
+  { orderId: "#1234", price: "$1234", paymentStatus: "pending", orderStatus: 'pending', active:  <Link>View</Link> },
+  { orderId: "#2345", price: "$2345", paymentStatus: "pending", orderStatus: 'pending', active:  <Link>View</Link> },
+  { orderId: "#3456", price: "$3456", paymentStatus: "pending", orderStatus: 'pending', active:  <Link>View</Link> },
+  { orderId: "#4567", price: "$4567", paymentStatus: "pending", orderStatus: 'pending', active:  <Link>View</Link> },
+  { orderId: "#5678", price: "$5678", paymentStatus: "pending", orderStatus: 'pending', active:  <Link>View</Link> },
+];
 
 const AdminDashboard = () => {
   const state = {
@@ -234,41 +251,8 @@ const AdminDashboard = () => {
           </h2>
           <Link className="font-semibold text-sm text-[#d0d2d6]">View All</Link>
         </div>
-        <div className="relative overflow-x-auto">
-          <table className="w-full text-sm text-[#d0d2d6] uppercase border-b border-slate-700 text-left">
-            <thead className="text-sm  uppercase border-b border-slate-700">
-              <tr>
-                <th scope="col" className="py-3 px-4">
-                  Order Id
-                </th>
-                <th scope="col" className="py-3 px-4">
-                  Price
-                </th>
-                <th scope="col" className="py-3 px-4">
-                  Payment Status
-                </th>
-                <th scope="col" className="py-3 px-4">
-                  Order Status
-                </th>
-                <th scope="col" className="py-3 px-4">
-                  Active
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                [1, 2, 3, 4, 5].map((val) => <tr key={val}>
-                <td scope="row" className="py-3 px-4 font-medium whitespace-nowrap">#34344</td>
-                <td scope="row" className="py-3 px-4 font-medium whitespace-nowrap">$123</td>
-                <td scope="row" className="py-3 px-4 font-medium whitespace-nowrap">Pending</td>
-                <td scope="row" className="py-3 px-4 font-medium whitespace-nowrap">Pending</td>
-                <td scope="row" className="py-3 px-4 font-medium whitespace-nowrap"><Link>View</Link></td>
-              </tr>)
-              }
-              
-            </tbody>
-          </table>
-        </div>
+
+        <Table columns={adminDashboardColumnHeader} data={dummyData} tableStyle="uppercase" />
       </div>
     </div>
   );

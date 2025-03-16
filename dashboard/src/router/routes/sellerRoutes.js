@@ -1,6 +1,6 @@
 import { lazy } from "react";
 
-const Home = lazy(() => import("../../views/pages/Home"));
+const Home = lazy(() => import("../../pages/general/Home"));
 
 export const sellerRoutes = [
   {

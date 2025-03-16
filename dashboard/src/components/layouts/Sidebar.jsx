@@ -3,9 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import { BiLogOutCircle } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 
-import Logo from "../assets/img/logo.png";
-import { getNav } from "../navigation";
-import { logout } from "../store/features/authSlice";
+import Logo from "../../assets/img/logo.png";
+import { getNav } from "./navigation";
+import { logout } from "../../store/features/authSlice";
 
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
   const { pathname } = useLocation();
