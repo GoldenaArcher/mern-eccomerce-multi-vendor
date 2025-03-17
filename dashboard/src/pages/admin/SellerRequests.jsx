@@ -7,34 +7,31 @@ import Pagination from "../../components/shared/Pagination";
 
 const sellersColumnHeader = [
   { name: "No", accessor: "no" },
-  { name: "Image", accessor: "image" },
   { name: "Name", accessor: "name" },
-  { name: "Shop Name", accessor: "shopName" },
+  { name: "Email", accessor: "email" },
   { name: "Payment Status", accessor: "paymentStatus" },
   { name: "Email", accessor: "email" },
-  { name: "Country", accessor: "country" },
-  { name: "State", accessor: "state" },
-  { name: "City", accessor: "city" },
+  { name: "Status", accessor: "status" },
   { name: "Action", accessor: "action" },
 ];
 
 // prettier-ignore
 const dummyData = [
-    { no: "1", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'><FaEye /></Link></div> ,},
-    { no: "2", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'><FaEye /></Link></div> ,},
-    { no: "3", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'><FaEye /></Link></div> ,},
-    { no: "4", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'><FaEye /></Link></div> ,},
-    { no: "5", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'><FaEye /></Link></div> ,},
+    { no: "1", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' to={'/admin/seller/details/2'}><FaEye /></Link></div> ,},
+    { no: "2", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' to={'/admin/seller/details/2'}><FaEye /></Link></div> ,},
+    { no: "3", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' to={'/admin/seller/details/2'}><FaEye /></Link></div> ,},
+    { no: "4", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' to={'/admin/seller/details/2'}><FaEye /></Link></div> ,},
+    { no: "5", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' to={'/admin/seller/details/2'}><FaEye /></Link></div> ,},
   ];
 
-const Sellers = () => {
+const SellerRequests = () => {
   const [searchValue, setSearchValue] = useState("");
   const [perPage, setPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
-      <h1 className="text-[20px] font-bold mb-3">Sellers</h1>
+      <h1 className="text-[20px] font-bold mb-3">Seller Requests</h1>
 
       <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
         <div className="flex justify-between items-center">
@@ -76,4 +73,4 @@ const Sellers = () => {
   );
 };
 
-export default Sellers;
+export default SellerRequests;

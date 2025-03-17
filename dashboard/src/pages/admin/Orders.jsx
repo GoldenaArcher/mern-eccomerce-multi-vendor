@@ -13,20 +13,20 @@ const ordersColumnHeader = [
 
 // prettier-ignore
 const dummyData = [
-  { orderId: "#1234", price: "$1234", paymentStatus: "pending", orderStatus: 'pending', action:  <Link>View</Link>, 
+  { orderId: "#1234", price: "$1234", paymentStatus: "pending", orderStatus: 'pending', action:  <Link to={`/admin/order/details/3`}>View</Link>, 
     subRows: [
       {orderId: "#1234", price: "$1234", paymentStatus: "pending", orderStatus: 'pending'},
       {orderId: "#1234", price: "$1234", paymentStatus: "pending", orderStatus: 'pending'},
       {orderId: "#1234", price: "$1234", paymentStatus: "pending", orderStatus: 'pending'},
     ]},
-  { orderId: "#2345", price: "$2345", paymentStatus: "pending", orderStatus: 'pending', action:  <Link>View</Link> },
-  { orderId: "#3456", price: "$3456", paymentStatus: "pending", orderStatus: 'pending', action:  <Link>View</Link>,
+  { orderId: "#2345", price: "$2345", paymentStatus: "pending", orderStatus: 'pending', action:  <Link to={`/admin/order/details/3`}>View</Link> },
+  { orderId: "#3456", price: "$3456", paymentStatus: "pending", orderStatus: 'pending', action:  <Link to={`/admin/order/details/3`}>View</Link>,
     subRows: [
       { orderId: "#3456", price: "$3456", paymentStatus: "pending", orderStatus: 'pending'},
     ]
    },
-  { orderId: "#4567", price: "$4567", paymentStatus: "pending", orderStatus: 'pending', action:  <Link>View</Link> },
-  { orderId: "#5678", price: "$5678", paymentStatus: "pending", orderStatus: 'pending', action:  <Link>View</Link> },
+  { orderId: "#4567", price: "$4567", paymentStatus: "pending", orderStatus: 'pending', action:  <Link to={`/admin/order/details/3`}>View</Link> },
+  { orderId: "#5678", price: "$5678", paymentStatus: "pending", orderStatus: 'pending', action:  <Link to={`/admin/order/details/3`}>View</Link> },
 ];
 
 const Orders = () => {

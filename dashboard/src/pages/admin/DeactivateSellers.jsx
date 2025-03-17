@@ -9,12 +9,10 @@ const sellersColumnHeader = [
   { name: "No", accessor: "no" },
   { name: "Image", accessor: "image" },
   { name: "Name", accessor: "name" },
-  { name: "Shop Name", accessor: "shopName" },
+  { name: "Email", accessor: "email" },
   { name: "Payment Status", accessor: "paymentStatus" },
   { name: "Email", accessor: "email" },
-  { name: "Country", accessor: "country" },
-  { name: "State", accessor: "state" },
-  { name: "City", accessor: "city" },
+  { name: "Status", accessor: "status" },
   { name: "Action", accessor: "action" },
 ];
 
@@ -27,14 +25,14 @@ const dummyData = [
     { no: "5", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'><FaEye /></Link></div> ,},
   ];
 
-const Sellers = () => {
+const DeactivateSellers = () => {
   const [searchValue, setSearchValue] = useState("");
   const [perPage, setPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
-      <h1 className="text-[20px] font-bold mb-3">Sellers</h1>
+      <h1 className="text-[20px] font-bold mb-3">Deactivate Sellers</h1>
 
       <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
         <div className="flex justify-between items-center">
@@ -76,4 +74,4 @@ const Sellers = () => {
   );
 };
 
-export default Sellers;
+export default DeactivateSellers;
