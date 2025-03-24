@@ -5,8 +5,9 @@ import { IoIosCloseCircle } from "react-icons/io";
 
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
+import Search from "../../components/shared/Search";
 
-const ordersColumnHeader = [
+const categoriesColumnHeader = [
   { name: "No", accessor: "no" },
   { name: "Image", accessor: "image" },
   { name: "Name", accessor: "name" },
@@ -43,32 +44,14 @@ const Category = () => {
       <div className="flex flex-wrap w-full">
         <div className="w-full lg:w-7/12">
           <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
-            <div className="flex justify-between items-center">
-              <select
-                name="perPage"
-                id="perPage"
-                className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
-                onChange={(e) => {
-                  setPerPage(parseInt(e.target.value));
-                }}
-                value={perPage}
-              >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-              </select>
-              <input
-                type="text"
-                placeholder="search"
-                className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
-                value={searchValue}
-                onChange={(e) => {
-                  setSearchValue(e.target.value);
-                }}
-              />
-            </div>
+            <Search
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              perPage={perPage}
+              setPerPage={setPerPage}
+            />
 
-            <Table columns={ordersColumnHeader} data={dummyData} />
+            <Table columns={categoriesColumnHeader} data={dummyData} />
 
             <Pagination
               currentPage={currentPage}

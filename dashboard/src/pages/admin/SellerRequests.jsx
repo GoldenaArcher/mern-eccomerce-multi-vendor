@@ -4,6 +4,7 @@ import { FaEye } from "react-icons/fa";
 
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
+import Search from "../../components/shared/Search";
 
 const sellersColumnHeader = [
   { name: "No", accessor: "no" },
@@ -34,30 +35,12 @@ const SellerRequests = () => {
       <h1 className="text-[20px] font-bold mb-3">Seller Requests</h1>
 
       <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
-        <div className="flex justify-between items-center">
-          <select
-            name="perPage"
-            id="perPage"
-            className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
-            onChange={(e) => {
-              setPerPage(parseInt(e.target.value));
-            }}
-            value={perPage}
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-          </select>
-          <input
-            type="text"
-            placeholder="search"
-            className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
-            value={searchValue}
-            onChange={(e) => {
-              setSearchValue(e.target.value);
-            }}
-          />
-        </div>
+        <Search
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          perPage={perPage}
+          setPerPage={setPerPage}
+        />
 
         <Table columns={sellersColumnHeader} data={dummyData} />
 

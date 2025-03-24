@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { IoIosImage } from "react-icons/io";
+import { IoIosImage, IoIosCloseCircle } from "react-icons/io";
+import _ from "lodash";
 
 const categories = [
   { id: 1, name: "Sports" },
@@ -26,6 +27,7 @@ const AddProduct = () => {
   const [showCategory, setShowCategory] = useState(false);
   const [allCategories, setAllCategories] = useState(categories);
   const [searchValue, setSearchValue] = useState("");
+  const [displayedImg, setDisplayedImg] = useState([]);
 
   const onProductChange = (e) => {
     setState((prev) => ({
@@ -51,16 +53,60 @@ const AddProduct = () => {
   };
 
   const onImageUpload = (e) => {
-    const files = e.target.files,
-      length = files.length;
+    const files = e.target.files;
 
-    if (length > 0) {
-      setState((prev) => ({
+    if (_.isEmpty(files)) return;
+
+    setState((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
+    const imgUrl = _.map(files, (file) => ({
+      url: URL.createObjectURL(file),
+    }));
+    setDisplayedImg((prev) => [...prev, ...imgUrl]);
+  };
+
+  const onImageReplace = (img, index) => {
+    if (!img) return;
+
+    setState((prev) => {
+      if (index >= prev.images.length) return prev;
+
+      const newImgs = [...prev.images];
+      newImgs[index] = img;
+      return {
         ...prev,
-        images: [...prev.images, ...files],
-      }));
-    } else {
-    }
+        images: newImgs,
+      };
+    });
+
+    setDisplayedImg((prev) => {
+      if (index >= prev.length) return prev;
+
+      const newImgs = [...prev];
+      newImgs[index] = {
+        url: URL.createObjectURL(img),
+      };
+
+      return newImgs;
+    });
+  };
+
+  const onImageRemove = (i) => {
+    setState((prev) => {
+      if (i >= prev.images.length) return prev;
+
+      return {
+        ...prev,
+        images: prev.images.filter((_, index) => i !== index),
+      };
+    });
+
+    setDisplayedImg((prev) => {
+      if (i >= prev.length) return prev;
+      return prev.filter((_, index) => i !== index);
+    });
   };
 
   return (
@@ -198,7 +244,7 @@ const AddProduct = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col mb-3 md:flex-row gap-4 w-full mb-5">
+            <div className="flex flex-col md:flex-row gap-4 w-full mb-5">
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="description">Description</label>
                 <textarea
@@ -214,6 +260,29 @@ const AddProduct = () => {
               </div>
             </div>
             <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:gap-4 gap-3 w-full mb-4">
+              {displayedImg.map((img, i) => (
+                <div className="h-[180px] relative" key={i}>
+                  <label htmlFor={i}>
+                    <img
+                      src={img.url}
+                      alt="uploaded-img"
+                      className="w-full h-full rounded-sm object-contain cursor-pointer"
+                    />
+                  </label>
+                  <input
+                    type="file"
+                    id={i}
+                    className="hidden"
+                    onChange={(e) => onImageReplace(e.target.files[0], i)}
+                  />
+                  <span
+                    onClick={() => onImageRemove(i)}
+                    className="p-2 z-10 cursor-pointer bg-slate-700 shadow-lg hover:shadow-slate-400/50 text-white absolute top-1 right-1 rounded-full"
+                  >
+                    <IoIosCloseCircle />
+                  </span>
+                </div>
+              ))}
               <label
                 htmlFor="image"
                 className="flex justify-center items-center h-[180px] cursor-pointer border border-dashed hover:border-red-500 w-full"
@@ -231,6 +300,14 @@ const AddProduct = () => {
                 multiple
                 className="hidden"
                 onChange={onImageUpload}
+              />
+            </div>
+
+            <div className="mb-3 flex">
+              <input
+                type="button"
+                value="Add Product"
+                className="bg-red-500 hover:shadow-red-500/40 hover:shadow-md text-white rounded-md px-7 py-2 mt-2"
               />
             </div>
           </form>

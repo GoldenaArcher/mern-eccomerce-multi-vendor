@@ -5,11 +5,11 @@ import Pagination from "../../components/shared/Pagination";
 import Search from "../../components/shared/Search";
 
 const ordersColumnHeader = [
-  { width: "26%", name: "Order Id", accessor: "orderId" },
-  { width: "14%", name: "Price", accessor: "price" },
-  { width: "20%", name: "Payment Status", accessor: "paymentStatus" },
-  { width: "20%", name: "Order Status", accessor: "orderStatus" },
-  { width: "20%", name: "Action", accessor: "action" },
+  { name: "Order Id", accessor: "orderId" },
+  { name: "Price", accessor: "price" },
+  { name: "Payment Status", accessor: "paymentStatus" },
+  { name: "Order Status", accessor: "orderStatus" },
+  { name: "Action", accessor: "action" },
 ];
 
 // prettier-ignore
@@ -37,6 +37,7 @@ const Orders = () => {
 
   return (
     <div className="px-2 lg:px-7 pt-5">
+      <h1 className=" font-semibold text-lg">Orders</h1>
       <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
         <Search
           searchValue={searchValue}
@@ -49,7 +50,6 @@ const Orders = () => {
           columns={ordersColumnHeader}
           tableStyle="mt-5"
           data={dummyData}
-          isExpandable
         />
         <Pagination
           currentPage={currentPage}
