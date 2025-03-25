@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IoIosImage, IoIosCloseCircle } from "react-icons/io";
 import _ from "lodash";
@@ -13,7 +13,7 @@ const categories = [
   { id: 6, name: "Pants" },
 ];
 
-const AddProduct = () => {
+const EditProduct = () => {
   const [state, setState] = useState({
     name: "",
     description: "",
@@ -110,11 +110,25 @@ const AddProduct = () => {
     });
   };
 
+  useEffect(() => {
+    setState({
+      name: "Nike Shoes",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, ipsam.",
+      discount: "10",
+      price: "100",
+      brand: "Nike",
+      stock: "10",
+      category: "Sports",
+      images: [],
+    });
+  }, []);
+
   return (
     <div className="px-2 lg:px-7 pt-5 text-[#d0d2d6]">
       <div className="w-full bg-[#6a5fdf] px-4 py-4 rounded-md">
         <div className="flex justify-between items-center pb-4">
-          <h1 className="text-xl font-semibold">Add Product</h1>
+          <h1 className="text-xl font-semibold">Edit Product</h1>
           <Link className="bg-blue-500 hover:shadow-blue-500/50 hover:shadow-lg text-white rounded-sm px-7 py-2 my-2">
             All Products
           </Link>
@@ -290,7 +304,7 @@ const AddProduct = () => {
             <div className="mb-3 flex">
               <input
                 type="button"
-                value="Add Product"
+                value="Edit Product"
                 className="bg-red-500 hover:shadow-red-500/40 hover:shadow-md text-white rounded-md px-7 py-2 mt-2"
               />
             </div>
@@ -301,4 +315,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

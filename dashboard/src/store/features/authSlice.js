@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authApi } from "./authApi";
+import { clearAuthToken, handleLoginSuccess } from "../../utils/authHandler";
 
 export const authInitialState = {
   accessToken: null,
   userInfo: {},
   isAdmin: false,
+  isSeller: false,
 };
 
 export const authSlice = createSlice({
@@ -12,20 +14,20 @@ export const authSlice = createSlice({
   initialState: authInitialState,
   reducers: {
     logout: () => {
-      localStorage.removeItem("authToken");
+      clearAuthToken();
       return authInitialState;
     },
   },
   extraReducers: (builder) => {
-    builder.addMatcher(
-      authApi.endpoints.adminLogin.matchFulfilled,
-      (state, { payload: { accessToken, user } }) => {
-        state.accessToken = accessToken;
-        state.userInfo = user;
-        state.isAdmin = user.role === "admin";
-        localStorage.setItem("authToken", accessToken);
-      }
-    );
+    builder
+      .addMatcher(
+        authApi.endpoints.adminLogin.matchFulfilled,
+        (state, { payload }) => handleLoginSuccess(state, payload)
+      )
+      .addMatcher(
+        authApi.endpoints.sellerRegister.matchFulfilled,
+        (state, { payload }) => handleLoginSuccess(state, payload)
+      );
   },
 });
 

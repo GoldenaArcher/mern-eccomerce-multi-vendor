@@ -1,6 +1,5 @@
 const { model, Schema } = require("mongoose");
 const bcrypt = require("bcrypt");
-const TokenService = require("../services/TokenService");
 
 const adminSchema = new Schema(
   {
@@ -11,6 +10,9 @@ const adminSchema = new Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
     },
     password: {
       type: String,

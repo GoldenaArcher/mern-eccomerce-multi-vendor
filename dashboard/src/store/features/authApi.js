@@ -13,11 +13,28 @@ export const authApi = createApi({
         data,
         isAdmin: true,
       }),
-      // async onQueryStarted(_, { dispatch }) {
-      //   dispatch(authApi.util.resetApiState());
-      // },
+    }),
+    sellerRegister: builder.mutation({
+      query: (data) => ({
+        url: "/register",
+        method: "POST",
+        data,
+        isSeller: true,
+      }),
+    }),
+    sellerLogin: builder.mutation({
+      query: (data) => ({
+        url: "/login",
+        method: "POST",
+        data,
+        isSeller: true,
+      }),
     }),
   }),
 });
 
-export const { useAdminLoginMutation } = authApi;
+export const {
+  useAdminLoginMutation,
+  useSellerRegisterMutation,
+  useSellerLoginMutation,
+} = authApi;

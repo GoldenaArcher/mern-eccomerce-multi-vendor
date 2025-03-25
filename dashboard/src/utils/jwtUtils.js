@@ -1,5 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { authInitialState } from "../store/features/authSlice";
+import { clearAuthToken } from "./authHandler";
 
 export const decodeJwtToken = (token) => {
   const decodedToken = jwtDecode(token);
@@ -21,7 +22,7 @@ export const rehydrateJwtToken = () => {
 
     if (!decoded || !decoded.exp) {
       console.warn("Invalid JWT detected. Removing token.");
-      localStorage.removeItem("authToken");
+      clearAuthToken();
       return authInitialState;
     }
 
@@ -34,7 +35,7 @@ export const rehydrateJwtToken = () => {
     }
   } catch (e) {
     console.error(e);
-    localStorage.removeItem("authToken");
+    clearAuthToken();
     return authInitialState;
   }
 };

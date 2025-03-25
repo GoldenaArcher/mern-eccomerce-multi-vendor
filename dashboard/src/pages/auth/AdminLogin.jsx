@@ -6,14 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/img/logo.png";
 
 import { useAdminLoginMutation } from "../../store/features/authApi";
-
-const overrideStyle = {
-  display: "flex",
-  margin: 0,
-  height: "24px",
-  justifyContent: "center",
-  alignItem: "center",
-};
+import { overrideStyle } from "../../utils/styleUtil";
+import FormInput from "../../components/shared/FormInput";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -70,34 +64,24 @@ const AdminLogin = () => {
           </div>
 
           <form autoComplete="off" onSubmit={onSubmit}>
-            <div className="flex flex-col w-full gap-1 mb-3">
-              <label htmlFor="email">Email</label>
-              <input
-                type="text"
-                name="email"
-                placeholder="Email"
-                id="email"
-                required
-                autoComplete="off"
-                className="px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md"
-                onChange={onChangeState}
-                value={state.email}
-              />
-            </div>
-            <div className="flex flex-col w-full gap-1 mb-3">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                id="password"
-                required
-                autoComplete="off"
-                className="px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md"
-                onChange={onChangeState}
-                value={state.password}
-              />
-            </div>
+            <FormInput
+              label="Email"
+              name="email"
+              type="text"
+              placeholder="Email"
+              value={state.email}
+              onChange={onChangeState}
+              wrapperClassName="mb-3"
+            />
+            <FormInput
+              label="Password"
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={state.password}
+              onChange={onChangeState}
+              wrapperClassName="mb-3"
+            />
 
             <button
               className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"

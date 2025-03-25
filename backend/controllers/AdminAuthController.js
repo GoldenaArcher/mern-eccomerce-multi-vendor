@@ -1,6 +1,5 @@
 const { AuthError, NotFoundError } = require("../errors");
 const ResponseModel = require("../models/ResponseModel");
-const TokenService = require("../services/TokenService");
 
 class AdminAuthController {
   constructor(adminAuthService) {

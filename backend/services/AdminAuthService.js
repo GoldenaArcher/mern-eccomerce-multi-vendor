@@ -11,7 +11,7 @@ class AdminAuthService {
     return sanitizedAdmin;
   }
 
-  #getAdminForAuthToken(admin) {
+  getAdminForAuthToken(admin) {
     return { id: admin.id, role: admin.role };
   }
 
@@ -21,9 +21,9 @@ class AdminAuthService {
     if (!admin || !(await admin.comparePassword(password))) return null;
 
     const { accessToken, refreshToken, jti, expiresAt } =
-      TokenService.generateTokens(this.#getAdminForAuthToken(admin));
+      TokenService.generateTokens(this.getAdminForAuthToken(admin));
 
-    await TokenService.storeRefreshToken(admin.id, jti);
+    await TokenService.storeRefreshToken(admin._id, jti);
 
     const sanitizedAdmin = this.#getSantizedAdmin(admin);
 
@@ -66,7 +66,7 @@ class AdminAuthService {
     }
 
     const newTokens = TokenService.generateTokens(
-      this.#getAdminForAuthToken(this.#getSantizedAdmin(admin)),
+      this.getAdminForAuthToken(this.#getSantizedAdmin(admin)),
       exp
     );
 

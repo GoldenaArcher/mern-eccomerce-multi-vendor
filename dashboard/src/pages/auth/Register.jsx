@@ -1,13 +1,43 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { PropagateLoader } from "react-spinners";
+import toast from "react-hot-toast";
+
+import FormInput from "../../components/shared/FormInput";
+import { useSellerRegisterMutation } from "../../store/features/authApi";
+import { overrideStyle } from "../../utils/styleUtil";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [
+    sellerRegister,
+    { isLoading, isSuccess, isError, error, data, reset },
+  ] = useSellerRegisterMutation();
+
   const [state, setState] = useState({
     name: "",
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    return () => reset();
+  }, [reset]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(error.data);
+      reset();
+    }
+  }, [error, isError, reset]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.message);
+      navigate("/");
+    }
+  }, [data, isSuccess, navigate]);
 
   const onChangeState = (e) => {
     setState((prev) => ({
@@ -16,8 +46,13 @@ const Register = () => {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await sellerRegister(state).unwrap();
+    } catch (err) {
+      console.error("Register failed:", err);
+    }
   };
 
   return (
@@ -29,49 +64,36 @@ const Register = () => {
             Please register your account
           </p>
 
-          <form autoComplete="off" onSubmit={onSubmit}>
-            <div className="flex flex-col w-full gap-1 mb-3">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                id="name"
-                required
-                autoComplete="off"
-                className="px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md"
-                onChange={onChangeState}
-                value={state.name}
-              />
-            </div>
-            <div className="flex flex-col w-full gap-1 mb-3">
-              <label htmlFor="email">Email</label>
-              <input
-                type="text"
-                name="email"
-                placeholder="Email"
-                id="email"
-                required
-                autoComplete="off"
-                className="px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md"
-                onChange={onChangeState}
-                value={state.email}
-              />
-            </div>
-            <div className="flex flex-col w-full gap-1 mb-3">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                id="password"
-                required
-                autoComplete="off"
-                className="px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md"
-                onChange={onChangeState}
-                value={state.password}
-              />
-            </div>
+          <form onSubmit={onSubmit} autoComplete="off">
+            <FormInput
+              label={"Name"}
+              name="name"
+              placeholder="Name"
+              required
+              onChange={onChangeState}
+              value={state.name}
+              wrapperClassName="mb-3"
+            />
+            <FormInput
+              label={"Email"}
+              name="email"
+              type="email"
+              placeholder="Email"
+              required
+              onChange={onChangeState}
+              value={state.email}
+              wrapperClassName="mb-3"
+            />
+            <FormInput
+              label={"Password"}
+              name="password"
+              type="password"
+              placeholder="Password"
+              required
+              onChange={onChangeState}
+              value={state.password}
+              wrapperClassName="mb-3"
+            />
 
             <div className="flex items-center w-full gap-3 mb-3">
               <input
@@ -86,7 +108,11 @@ const Register = () => {
             </div>
 
             <button className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3">
-              Sign Up
+              {isLoading ? (
+                <PropagateLoader cssOverride={overrideStyle} color="#fff" />
+              ) : (
+                "Sign Up"
+              )}
             </button>
 
             <div className="flex items-center mb-3 gap-3 justify-center">

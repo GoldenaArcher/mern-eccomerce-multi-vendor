@@ -1,9 +1,9 @@
 const AdminAuthController = require("../controllers/AdminAuthController");
-const { adminAuthMiddleware } = require("../middlewares/adminAuthMiddleware");
+const { adminAuthMiddleware } = require("../middlewares/authAggregrateMiddleware");
 const AdminAuthService = require("../services/AdminAuthService");
+const adminAuthController = new AdminAuthController(AdminAuthService);
 
 const router = require("express").Router();
-const adminAuthController = new AdminAuthController(AdminAuthService);
 
 router.post("/login", adminAuthController.login.bind(adminAuthController));
 router.get(

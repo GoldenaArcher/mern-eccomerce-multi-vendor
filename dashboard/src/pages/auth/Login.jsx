@@ -1,12 +1,40 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { PropagateLoader } from "react-spinners";
+
+import FormInput from "../../components/shared/FormInput";
+import { overrideStyle } from "../../utils/styleUtil";
+import { useSellerLoginMutation } from "../../store/features/authApi";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [sellerLogin, { isLoading, isSuccess, isError, error, data, reset }] =
+    useSellerLoginMutation();
+
   const [state, setState] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    return () => reset();
+  }, [reset]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(error.data);
+      reset();
+    }
+  }, [error, isError, reset]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.message);
+      navigate("/");
+    }
+  }, [data, isSuccess, navigate]);
 
   const onChangeState = (e) => {
     setState((prev) => ({
@@ -15,8 +43,13 @@ const Login = () => {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await sellerLogin(state).unwrap();
+    } catch (err) {
+      console.error("Register failed:", err);
+    }
   };
 
   return (
@@ -29,42 +62,34 @@ const Login = () => {
           </p>
 
           <form autoComplete="off" onSubmit={onSubmit}>
-            <div className="flex flex-col w-full gap-1 mb-3">
-              <label htmlFor="email">Email</label>
-              <input
-                type="text"
-                name="email"
-                placeholder="Email"
-                id="email"
-                required
-                autoComplete="off"
-                className="px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md"
-                onChange={onChangeState}
-                value={state.email}
-              />
-            </div>
-            <div className="flex flex-col w-full gap-1 mb-3">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                id="password"
-                required
-                autoComplete="off"
-                className="px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md"
-                onChange={onChangeState}
-                value={state.password}
-              />
-            </div>
-
+            <FormInput
+              label={"Email"}
+              name="email"
+              placeholder="Email"
+              required
+              onChange={onChangeState}
+              value={state.email}
+            />
+            <FormInput
+              label={"Password"}
+              name="password"
+              placeholder="Password"
+              required
+              onChange={onChangeState}
+              value={state.password}
+              type="password"
+            />
             <button className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3">
-              Sign In
+              {isLoading ? (
+                <PropagateLoader cssOverride={overrideStyle} color="#fff" />
+              ) : (
+                "Sign In"
+              )}
             </button>
 
             <div className="flex items-center mb-3 gap-3 justify-center">
               <p>
-                Doesn't have an account?{" "}
+                Doesn't have an account?
                 <Link className="font-bold" to="/register">
                   Sign Up
                 </Link>

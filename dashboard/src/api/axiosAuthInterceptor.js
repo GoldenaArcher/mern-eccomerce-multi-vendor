@@ -1,6 +1,7 @@
 import store from "../store";
 import { logout } from "../store/features/authSlice";
 import axios from "axios";
+import { storeAuthToken } from "../utils/authHandler";
 
 export const BASE_URL = "http://localhost:5000/api";
 
@@ -51,7 +52,7 @@ const handleAuthError = async (err, axiosInstance) => {
       const refreshResponse = await axios.post(`${BASE_URL}/refresh-token`);
       const newToken = refreshResponse.data.token;
 
-      localStorage.setItem("authToken", newToken);
+      storeAuthToken(newToken);
       store.dispatch({ type: "auth/updateToken", payload: newToken });
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;

@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const databaseConnect = require("./utils/db");
@@ -16,10 +16,11 @@ app.use(
   })
 );
 app.use(bodyParser.json());
-app.use(cookieParser())
+app.use(cookieParser());
 
 app.use("/api", require("./routes/authRoutes"));
 app.use("/api/admin", require("./routes/adminAuthRoutes"));
+app.use("/api/seller", require("./routes/sellerAuthRoutes"));
 
 app.use(errorMiddleware);
 

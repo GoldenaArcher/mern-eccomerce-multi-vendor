@@ -1,9 +1,9 @@
 class ResponseModel {
-  constructor({ code = 200, success = true, message = "", data = null }) {
-    this.success = success;
+  constructor({ code = 200, message = "", data = null }) {
     this.message = message;
     this.data = data;
     this.code = code;
+    this.success = code < 400;
   }
 
   send(res) {

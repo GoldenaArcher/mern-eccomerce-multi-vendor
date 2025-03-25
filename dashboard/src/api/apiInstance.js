@@ -12,3 +12,9 @@ export const userApi = axios.create({
 });
 
 applyAuthInterceptors(userApi);
+
+export const sellerApi = axios.create({
+  baseURL: `${BASE_URL}/seller`,
+});
+
+applyAuthInterceptors(sellerApi);
