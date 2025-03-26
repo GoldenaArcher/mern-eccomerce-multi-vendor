@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const RefreshToken = require("../models/RefreshToken");
-const { daysToM, daysToSecond } = require("../utils/timeUtil");
+const { daysToSecond } = require("../utils/timeUtil");
 
 class TokenService {
   static #generateAccessToken(userDetails) {
@@ -53,11 +53,7 @@ class TokenService {
   }
 
   static verifyAccessToken(token) {
-    try {
-      return jwt.verify(token, process.env.JWT_SECRET);
-    } catch (error) {
-      return null;
-    }
+    return jwt.verify(token, process.env.JWT_SECRET);
   }
 
   static verifyRefreshToken(token) {

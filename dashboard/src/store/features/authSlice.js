@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authApi } from "./authApi";
-import { clearAuthToken, handleLoginSuccess } from "../../utils/authHandler";
+import {
+  clearAuthToken,
+  handleGetUserInfoSuccess,
+  handleLoginSuccess,
+} from "../../utils/authHandler";
 
 export const authInitialState = {
   accessToken: null,
@@ -27,6 +31,18 @@ export const authSlice = createSlice({
       .addMatcher(
         authApi.endpoints.sellerRegister.matchFulfilled,
         (state, { payload }) => handleLoginSuccess(state, payload)
+      )
+      .addMatcher(
+        authApi.endpoints.sellerLogin.matchFulfilled,
+        (state, { payload }) => handleLoginSuccess(state, payload)
+      )
+      .addMatcher(
+        authApi.endpoints.getCurrentAdmin.matchFulfilled,
+        (state, { payload }) => handleGetUserInfoSuccess(state, payload)
+      )
+      .addMatcher(
+        authApi.endpoints.getCurrentSeller.matchFulfilled,
+        (state, { payload }) => handleGetUserInfoSuccess(state, payload)
       );
   },
 });

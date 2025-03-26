@@ -2,7 +2,7 @@ const Seller = require("../models/Seller");
 const RefreshToken = require("../models/RefreshToken");
 const TokenService = require("./TokenService");
 const SellerCustomer = require("../models/chat/SellerCustomer");
-const { InternalServerError } = require("../errors");
+const { InternalServerError, AuthError } = require("../errors");
 
 class SellerAuthService {
   #getSantizedSeller(seller) {
@@ -50,7 +50,7 @@ class SellerAuthService {
 
   async createSeller(data) {
     const seller = new Seller(data);
-    
+
     const newSeller = await this.#saveSeller(seller);
 
     try {
@@ -65,6 +65,45 @@ class SellerAuthService {
         "Registration failed: Unable to initialize seller data."
       );
     }
+  }
+
+  async refreshAccessToken(refreshToken) {
+    const decoded = TokenService.verifyRefreshToken(refreshToken);
+    if (!decoded) {
+      throw new AuthError(
+        401,
+        "Unauthorized: Refresh token is invalid or expired."
+      );
+    }
+
+    const { jti, id, exp } = decoded;
+
+    if (exp < Math.floor(Date.now() / 1000)) {
+      await RefreshToken.deleteMany({ userId: id });
+      throw new AuthError(401, "Session expired. Please log in again.");
+    }
+
+    const [seller, storedToken] = await Promise.all([
+      Seller.findById(id),
+      TokenService.getRefreshToken(id, jti),
+    ]);
+
+    if (!storedToken) {
+      throw new AuthError(401, "Unauthorized: Refresh token not found.");
+    }
+
+    if (!seller || !seller.role === "seller") {
+      throw new AuthError(401, "Unauthorized: Seller not found.");
+    }
+
+    const newTokens = TokenService.generateTokens(
+      this.getSellerForAuthToken(seller),
+      exp
+    );
+
+    await TokenService.storeRefreshToken(id, newTokens.jti);
+
+    return newTokens;
   }
 
   async getSellerById(id) {

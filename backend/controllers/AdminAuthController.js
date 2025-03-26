@@ -24,7 +24,7 @@ class AdminAuthController {
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
+        sameSite: "Lax",
         maxAge: (expiresAt - Math.floor(Date.now() / 1000)) * 1000,
         path: "/",
       });
@@ -73,7 +73,7 @@ class AdminAuthController {
       res.cookie("refreshToken", newTokens.refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
+        sameSite: "Lax",
         maxAge: newTokens.expiresAt * 1000,
         path: "/",
       });

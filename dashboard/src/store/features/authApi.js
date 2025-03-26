@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-import axiosBaseQuery from "../../api/axiosBaseQuery";
+import axiosBaseQueryWithReauth from "../../api/axiosBaseQuery";
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: axiosBaseQuery(),
+  baseQuery: axiosBaseQueryWithReauth,
   endpoints: (builder) => ({
     adminLogin: builder.mutation({
       query: (data) => ({
@@ -30,6 +30,20 @@ export const authApi = createApi({
         isSeller: true,
       }),
     }),
+    getCurrentAdmin: builder.query({
+      query: () => ({
+        url: "/user",
+        method: "GET",
+        isAdmin: true,
+      }),
+    }),
+    getCurrentSeller: builder.query({
+      query: () => ({
+        url: "/user",
+        method: "GET",
+        isSeller: true,
+      }),
+    }),
   }),
 });
 
@@ -37,4 +51,6 @@ export const {
   useAdminLoginMutation,
   useSellerRegisterMutation,
   useSellerLoginMutation,
+  useGetCurrentAdminQuery,
+  useGetCurrentSellerQuery,
 } = authApi;

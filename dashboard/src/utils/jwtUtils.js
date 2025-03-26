@@ -3,13 +3,11 @@ import { authInitialState } from "../store/features/authSlice";
 import { clearAuthToken } from "./authHandler";
 
 export const decodeJwtToken = (token) => {
-  const decodedToken = jwtDecode(token);
-  const exp = new Date(decodedToken.exp * 1000);
-  if (new Date() > exp) {
+  try {
+    return jwtDecode(token);
+  } catch {
     return null;
   }
-
-  return decodedToken;
 };
 
 export const rehydrateJwtToken = () => {
@@ -20,19 +18,18 @@ export const rehydrateJwtToken = () => {
 
     const decoded = decodeJwtToken(authToken);
 
-    if (!decoded || !decoded.exp) {
+    if (!decoded) {
       console.warn("Invalid JWT detected. Removing token.");
       clearAuthToken();
       return authInitialState;
     }
 
-    if (decoded) {
-      return {
-        token: authToken,
-        userInfo: decoded,
-        isAdmin: decoded.role === "admin",
-      };
-    }
+    return {
+      accessToken: authToken,
+      userInfo: decoded,
+      isAdmin: decoded.role === "admin",
+      isSeller: decoded.role === "seller",
+    };
   } catch (e) {
     console.error(e);
     clearAuthToken();

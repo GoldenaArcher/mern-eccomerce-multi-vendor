@@ -41,7 +41,7 @@ class SellerAuthController {
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
+        sameSite: "Lax",
         maxAge: (expiresAt - Math.floor(Date.now() / 1000)) * 1000,
         path: "/",
       });
@@ -80,7 +80,7 @@ class SellerAuthController {
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
+        sameSite: "Lax",
         maxAge: (expiresAt - Math.floor(Date.now() / 1000)) * 1000,
         path: "/",
       });
@@ -90,6 +90,55 @@ class SellerAuthController {
           accessToken,
           user: seller,
         },
+      }).send(res);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getUser(req, res, next) {
+    try {
+      const {
+        user: { id },
+      } = req;
+      const user = await this.sellerAuthService.getSellerById(id);
+
+      if (!user) {
+        return next(new AuthError(404, "Seller not found"));
+      }
+
+      new ResponseModel({
+        message: "Seller retrieved successfully",
+        data: user,
+      }).send(res);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async refreshToken(req, res, next) {
+    const refreshToken = req?.cookies?.refreshToken;
+
+    if (!refreshToken) {
+      next(new AuthError(401, "Unauthorized: No refresh token provided."));
+    }
+
+    try {
+      const newTokens = await this.sellerAuthService.refreshAccessToken(
+        refreshToken
+      );
+
+      res.cookie("refreshToken", newTokens.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Lax",
+        maxAge: newTokens.expiresAt * 1000,
+        path: "/",
+      });
+
+      new ResponseModel({
+        message: "Token refreshed successfully",
+        data: { accessToken: newTokens.accessToken },
       }).send(res);
     } catch (err) {
       next(err);

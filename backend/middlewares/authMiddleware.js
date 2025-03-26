@@ -22,8 +22,10 @@ const authMiddleware = (req, res, next) => {
   } catch (err) {
     if (err.name === "TokenExpiredError") {
       return next(new AuthError(401, "Unauthorized: Token expired"));
-    } else if (err.name === "JsonWebTokenError") {
-      return next(new AuthError(403, "Unauthorized: Invalid token"));
+    } 
+    
+    if (err.name === "JsonWebTokenError") {
+      return next(new AuthError(401, "Unauthorized: Invalid token"));
     }
     return next(new InternalServerError());
   }
