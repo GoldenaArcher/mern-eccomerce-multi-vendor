@@ -24,12 +24,6 @@ export const handleLoginSuccess = (state, payload) => {
 };
 
 export const handleGetUserInfoSuccess = (state, payload) => {
-  console.log(payload);
-
-  if (!payload) {
-    return;
-  }
-  
   const { message, ...userInfo } = payload;
   state.userInfo = userInfo;
 };

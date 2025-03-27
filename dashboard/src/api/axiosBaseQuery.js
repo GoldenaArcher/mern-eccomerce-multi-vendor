@@ -6,7 +6,6 @@ import { Mutex } from "async-mutex";
 const mutex = new Mutex();
 
 const axiosBaseQuery =
-  () =>
   async ({ url, method, data, params, isAdmin = false, isSeller = false }) => {
     try {
       const axiosInstance = getAxiosInstance({ isAdmin, isSeller });
@@ -45,12 +44,10 @@ const axiosBaseQuery =
     }
   };
 
-const rawBaseQuery = axiosBaseQuery();
-
 const axiosBaseQueryWithReauth = async (args, api, extraOptions) => {
   await mutex.waitForUnlock();
 
-  let result = await rawBaseQuery(args, api, extraOptions);
+  let result = await axiosBaseQuery(args, api, extraOptions);
 
   const isExpired =
     result.error?.status === 401 &&
@@ -85,7 +82,7 @@ const axiosBaseQueryWithReauth = async (args, api, extraOptions) => {
       await mutex.waitForUnlock();
     }
 
-    result = await rawBaseQuery(args, api, extraOptions);
+    result = await axiosBaseQuery(args, api, extraOptions);
   }
 
   return result;

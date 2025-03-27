@@ -16,6 +16,7 @@ const FormInput = ({
   autoComplete = "off",
   wrapperClassName = "",
   required = false,
+  labelClassName = "",
 }) => {
   const baseClasses =
     "px-4 py-2 focus:border-indigo-500 outline-none border border-slate-700 rounded-md";
@@ -25,7 +26,11 @@ const FormInput = ({
     <div
       className={`flex flex-col w-full gap-1 relative mb-2 ${wrapperClassName}`}
     >
-      {label && <label htmlFor={id || name}>{label}</label>}
+      {label && (
+        <label htmlFor={id || name} className={labelClassName}>
+          {label}
+        </label>
+      )}
       <input
         readOnly={readOnly}
         type={type}

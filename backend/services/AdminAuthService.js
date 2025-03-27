@@ -66,7 +66,7 @@ class AdminAuthService {
     }
 
     const newTokens = TokenService.generateTokens(
-      this.getAdminForAuthToken(this.#getSantizedAdmin(admin)),
+      this.getAdminForAuthToken(admin),
       exp
     );
 

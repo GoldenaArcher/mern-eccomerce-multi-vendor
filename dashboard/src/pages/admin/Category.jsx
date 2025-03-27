@@ -6,6 +6,7 @@ import { IoIosCloseCircle } from "react-icons/io";
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
 import Search from "../../components/shared/Search";
+import FormInput from "../../components/shared/FormInput";
 
 const categoriesColumnHeader = [
   { name: "No", accessor: "no" },
@@ -28,6 +29,22 @@ const Category = () => {
   const [perPage, setPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [show, setShow] = useState(false);
+  const [state, setState] = useState({
+    name: "",
+    image: "",
+  });
+  const [displayedImg, setDisplayedImg] = useState("");
+
+  const onImageUpload = (e) => {
+    const files = e.target.files;
+    if (files.length > 0) {
+      setDisplayedImg(URL.createObjectURL(files[0]));
+    }
+    setState((prev) => ({
+      ...prev,
+      image: files[0],
+    }));
+  };
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -79,33 +96,46 @@ const Category = () => {
               </div>
 
               <form>
-                <div className="flex flex-col w-full gap-1 mb-3 mt-3">
-                  <label htmlFor="name" className="mb-2">
-                    Category Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="category_name"
-                    placeholder="Category Name"
-                    className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md mb-2"
-                  />
-                </div>
+                <FormInput
+                  label="Category Name"
+                  type="text"
+                  name="category_name"
+                  placeholder="Category Name"
+                  value={state.name}
+                  setState={setState}
+                  onChange={(e) => {
+                    setState({
+                      ...state,
+                      name: e.target.value,
+                    });
+                  }}
+                />
                 <div className="mb-3 mt-3">
                   <label
                     className="flex justify-center items-center flex-col h-[260px] cursor-pointer border border-dashed hover:border-indigo-300 w-full boder-[#d0d2d6]"
                     htmlFor="image"
                   >
-                    <span className="block mb-3 mt-2">
-                      <FaFileImage />
-                    </span>
-                    <span>Select Image</span>
+                    {displayedImg ? (
+                      <img
+                        src={displayedImg}
+                        alt="category-img"
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <>
+                        <span className="block mb-3 mt-2">
+                          <FaFileImage />
+                        </span>
+                        <span>Select Image</span>
+                      </>
+                    )}
                   </label>
                   <input
                     type="file"
                     name="image"
                     id="image"
                     className="hidden"
+                    onChange={onImageUpload}
                   />
                 </div>
                 <div className="mb-3">

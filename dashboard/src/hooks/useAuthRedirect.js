@@ -8,16 +8,17 @@ export const useAuthRedirect = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (accessToken && (isAdmin || isSeller)) {
+    if (!accessToken) return;
+
+    const publicPaths = ["/login", "/register", "/"];
+    const isOnPublicPage = publicPaths.includes(location.pathname);
+
+    if (isOnPublicPage) {
       if (isAdmin) {
-        if (!location.pathname.startsWith("/admin")) {
-          navigate("/admin/dashboard");
-        }
+        navigate("/admin/dashboard", { replace: true });
       } else if (isSeller) {
-        if (!location.pathname.startsWith("/seller")) {
-          navigate("/seller/dashboard");
-        }
+        navigate("/seller/dashboard", { replace: true });
       }
     }
-  }, [accessToken, isAdmin, isSeller, navigate, location]);
+  }, [accessToken, isAdmin, isSeller, navigate, location.pathname]);
 };

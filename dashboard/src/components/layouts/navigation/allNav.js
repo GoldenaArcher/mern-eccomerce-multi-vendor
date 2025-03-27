@@ -18,7 +18,7 @@ export const allNav = [
   { id: 5,  title: "Payment Request",          icon: <MdPayment />,                       role: "admin",  path: '/admin/payments/request' },
   { id: 6,  title: "Deactivate Sellsers",      icon: <FaUserTimes />,                     role: "admin",  path: '/admin/sellers/deactivate' },
   { id: 7,  title: "Seller Request",           icon: <FaCodePullRequest />,               role: "admin",  path: '/admin/seller/requests' },
-  { id: 8,  title: "Live Chat",                icon: <IoIosChatbubbles />,                role: "admin",  path: '/admin/chat/seller' },
+  { id: 8,  title: "Live Chat",                icon: <IoIosChatbubbles />,                role: "admin",  path: '/admin/seller/chat' },
   { id: 9,  title: "Dashboard",                icon: <AiOutlineDashboard />,              role: "seller", path: '/seller/dashboard' },
   { id: 10, title: "Add Product",              icon: <IoMdAdd />,                         role: "seller", path: '/seller/products/add' },
   { id: 11, title: "All Product",              icon: <MdViewList />,                      role: "seller", path: '/seller/products' },

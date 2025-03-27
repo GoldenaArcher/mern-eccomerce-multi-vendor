@@ -25,7 +25,7 @@ const AdminLogin = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error(error.data);
+      toast.error(error.data.message);
       reset();
     }
   }, [error, isError, reset]);
