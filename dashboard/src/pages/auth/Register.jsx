@@ -107,7 +107,10 @@ const Register = () => {
               </label>
             </div>
 
-            <button className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3">
+            <button
+              className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <PropagateLoader cssOverride={overrideStyle} color="#fff" />
               ) : (

@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaFileImage } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
+import { PropagateLoader } from "react-spinners";
 
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
 import Search from "../../components/shared/Search";
 import FormInput from "../../components/shared/FormInput";
+import { overrideStyle } from "../../utils/styleUtil";
 
 const categoriesColumnHeader = [
   { name: "No", accessor: "no" },
@@ -34,6 +36,8 @@ const Category = () => {
     image: "",
   });
   const [displayedImg, setDisplayedImg] = useState("");
+
+  const isLoading = false;
 
   const onImageUpload = (e) => {
     const files = e.target.files;
@@ -139,11 +143,19 @@ const Category = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <input
-                    type="button"
-                    value="Add Category"
-                    className="bg-red-500 w-full hover:shadow-red-500/40 hover:shadow-md text-white rounded-md px-7 py-2 mt-2"
-                  />
+                  <button
+                    className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <PropagateLoader
+                        cssOverride={overrideStyle}
+                        color="#fff"
+                      />
+                    ) : (
+                      "Add Category"
+                    )}
+                  </button>
                 </div>
               </form>
             </div>

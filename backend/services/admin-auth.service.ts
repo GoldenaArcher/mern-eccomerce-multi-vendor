@@ -1,21 +1,23 @@
-const { AuthError } = require("../errors");
+import { IAdmin } from "@/models/Admin";
+
+const { AuthError, RefreshTokenAuthError } = require("../errors");
 const Admin = require("../models/Admin");
 const RefreshToken = require("../models/RefreshToken");
-const TokenService = require("./TokenService");
+const TokenService = require("./token.service");
 
 class AdminAuthService {
-  #getSantizedAdmin(admin) {
+  #getSantizedAdmin(admin: IAdmin) {
     const sanitizedAdmin = admin.toObject();
     delete sanitizedAdmin.password;
 
     return sanitizedAdmin;
   }
 
-  getAdminForAuthToken(admin) {
+  getAdminForAuthToken(admin: IAdmin) {
     return { id: admin.id, role: admin.role };
   }
 
-  async authenticateAdmin(email, password) {
+  async authenticateAdmin(email: string, password: string) {
     const admin = await Admin.findOne({ email }).select("+password");
 
     if (!admin || !(await admin.comparePassword(password))) return null;
@@ -36,11 +38,10 @@ class AdminAuthService {
     };
   }
 
-  async refreshAccessToken(refreshToken) {
+  async refreshAccessToken(refreshToken: string) {
     const decoded = TokenService.verifyRefreshToken(refreshToken);
     if (!decoded) {
-      throw new AuthError(
-        401,
+      throw new RefreshTokenAuthError(
         "Unauthorized: Refresh token is invalid or expired."
       );
     }
@@ -49,7 +50,7 @@ class AdminAuthService {
 
     if (exp < Math.floor(Date.now() / 1000)) {
       await RefreshToken.deleteMany({ userId: id });
-      throw new AuthError(401, "Session expired. Please log in again.");
+      throw new RefreshTokenAuthError("Session expired. Please log in again.");
     }
 
     const [admin, storedToken] = await Promise.all([
@@ -58,7 +59,7 @@ class AdminAuthService {
     ]);
 
     if (!storedToken) {
-      throw new AuthError(401, "Unauthorized: Refresh token not found.");
+      throw new RefreshTokenAuthError("Unauthorized: Refresh token not found.");
     }
 
     if (!admin || admin.role !== "admin") {
@@ -75,14 +76,14 @@ class AdminAuthService {
     return newTokens;
   }
 
-  async createAdmin(adminData) {
+  async createAdmin(adminData: Partial<IAdmin>) {
     const admin = await Admin.create(adminData);
     return admin;
   }
 
-  async getAdmin(id) {
+  async getAdmin(id: string) {
     return await Admin.findById(id);
   }
 }
 
-module.exports = new AdminAuthService();
+export default new AdminAuthService();

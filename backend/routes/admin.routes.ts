@@ -1,9 +1,12 @@
-const AdminAuthController = require("../controllers/AdminAuthController");
-const { adminAuthMiddleware } = require("../middlewares/authAggregrateMiddleware");
-const AdminAuthService = require("../services/AdminAuthService");
+import { Router } from "express";
+
+import AdminAuthController from "@/controllers/admin-auth.controller";
+import { adminAuthMiddleware } from "@/middlewares/auth-aggregate.middleware";
+import AdminAuthService from "@/services/admin-auth.service";
+
 const adminAuthController = new AdminAuthController(AdminAuthService);
 
-const router = require("express").Router();
+const router = Router();
 
 router.post("/login", adminAuthController.login.bind(adminAuthController));
 router.get(
@@ -16,4 +19,4 @@ router.post(
   adminAuthController.refreshToken.bind(adminAuthController)
 );
 
-module.exports = router;
+export default router;

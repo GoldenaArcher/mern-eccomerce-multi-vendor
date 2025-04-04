@@ -14,7 +14,8 @@
     "dashboard"
   ],
   "scripts": {
-    "start": "turbo run start"
+    "start": "turbo run start",
+    "start:dev": "turbo run start:debug --parallel"
   },
   "proxy": "http://localhost:5000"
 }

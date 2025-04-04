@@ -1,7 +1,8 @@
-const { AuthError, InternalServerError } = require("../errors");
-const TokenService = require("../services/TokenService");
+import { Request, Response, NextFunction } from "express";
+import { AuthError, InternalServerError } from "@/errors";
+import TokenService from "@/services/token.service";
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -19,11 +20,11 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded;
 
     next();
-  } catch (err) {
+  } catch (err: any) {
     if (err.name === "TokenExpiredError") {
       return next(new AuthError(401, "Unauthorized: Token expired"));
-    } 
-    
+    }
+
     if (err.name === "JsonWebTokenError") {
       return next(new AuthError(401, "Unauthorized: Invalid token"));
     }
@@ -31,4 +32,4 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

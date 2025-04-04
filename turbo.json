@@ -12,6 +12,11 @@
       "dependsOn": ["^start"],
       "persistent": true,
       "cache": false
+    },
+    "start:debug": {
+      "dependsOn": ["^start:debug"],
+      "persistent": true,
+      "cache": false
     }
   }
 }

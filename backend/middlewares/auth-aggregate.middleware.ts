@@ -1,13 +1,9 @@
-const authMiddleware = require("./authMiddleware");
-const roleMiddleware = require("./roleMiddleware");
+import authMiddleware from "@/middlewares/auth.middleware";
+import roleMiddleware from "@/middlewares/role.middleware";
 
 const adminRoleAuthMiddleware = roleMiddleware("admin");
 
 const adminAuthMiddleware = [authMiddleware, roleMiddleware("admin")];
 const sellerAuthMiddleware = [authMiddleware, roleMiddleware("seller")];
 
-module.exports = {
-  adminRoleAuthMiddleware,
-  adminAuthMiddleware,
-  sellerAuthMiddleware,
-};
+export { adminRoleAuthMiddleware, adminAuthMiddleware, sellerAuthMiddleware };

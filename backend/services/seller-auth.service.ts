@@ -1,27 +1,34 @@
-const Seller = require("../models/Seller");
-const RefreshToken = require("../models/RefreshToken");
-const TokenService = require("./TokenService");
-const SellerCustomer = require("../models/chat/SellerCustomer");
-const { InternalServerError, AuthError } = require("../errors");
+import Seller, { ISeller } from "@/models/Seller";
+import RefreshToken from "@/models/RefreshToken";
+import TokenService from "./token.service";
+import SellerCustomer from "@/models/chat/SellerCustomer";
+import {
+  InternalServerError,
+  AuthError,
+  RefreshTokenAuthError,
+} from "@/errors";
+import { JwtPayload } from "jsonwebtoken";
+
+type SanitizedSeller = Omit<ISeller, "password">;
 
 class SellerAuthService {
-  #getSantizedSeller(seller) {
+  #getSantizedSeller(seller: ISeller): SanitizedSeller {
     const sanitizedSeller = seller.toObject();
     delete sanitizedSeller.password;
 
     return sanitizedSeller;
   }
 
-  getSellerForAuthToken(seller) {
+  getSellerForAuthToken(seller: ISeller | SanitizedSeller) {
     return { id: seller.id, role: seller.role };
   }
 
-  async #saveSeller(seller) {
+  async #saveSeller(seller: ISeller) {
     const savedSeller = await seller.save();
     return this.#getSantizedSeller(savedSeller);
   }
 
-  async authenticateSeller(email, password) {
+  async authenticateSeller(email: string, password: string) {
     const seller = await Seller.findOne({ email }).select("+password");
 
     if (!seller || !(await seller.comparePassword(password))) return null;
@@ -42,19 +49,19 @@ class SellerAuthService {
     };
   }
 
-  async #initializeSellerCustomer(sellerId) {
+  async #initializeSellerCustomer(sellerId: string) {
     await SellerCustomer.create({
       sellerId,
     });
   }
 
-  async createSeller(data) {
+  async createSeller(data: Partial<ISeller>) {
     const seller = new Seller(data);
 
     const newSeller = await this.#saveSeller(seller);
 
     try {
-      await this.#initializeSellerCustomer(newSeller._id);
+      await this.#initializeSellerCustomer(newSeller._id as string);
       return newSeller;
     } catch (err) {
       console.error("Failed to initialize SellerCustomer:", err);
@@ -67,20 +74,23 @@ class SellerAuthService {
     }
   }
 
-  async refreshAccessToken(refreshToken) {
+  async refreshAccessToken(refreshToken: string) {
     const decoded = TokenService.verifyRefreshToken(refreshToken);
     if (!decoded) {
-      throw new AuthError(
-        401,
+      throw new RefreshTokenAuthError(
         "Unauthorized: Refresh token is invalid or expired."
       );
     }
 
-    const { jti, id, exp } = decoded;
+    const { jti, id, exp } = decoded as JwtPayload;
+
+    if (!id || !exp || !jti) {
+      throw new RefreshTokenAuthError("Invalid token payload.");
+    }
 
     if (exp < Math.floor(Date.now() / 1000)) {
       await RefreshToken.deleteMany({ userId: id });
-      throw new AuthError(401, "Session expired. Please log in again.");
+      throw new RefreshTokenAuthError("Session expired. Please log in again.");
     }
 
     const [seller, storedToken] = await Promise.all([
@@ -89,10 +99,10 @@ class SellerAuthService {
     ]);
 
     if (!storedToken) {
-      throw new AuthError(401, "Unauthorized: Refresh token not found.");
+      throw new RefreshTokenAuthError("Unauthorized: Refresh token not found.");
     }
 
-    if (!seller || !seller.role === "seller") {
+    if (!seller || seller.role !== "seller") {
       throw new AuthError(401, "Unauthorized: Seller not found.");
     }
 
@@ -106,13 +116,15 @@ class SellerAuthService {
     return newTokens;
   }
 
-  async getSellerById(id) {
+  async getSellerById(id: string) {
     return await Seller.findById(id);
   }
 
-  async getSellerByEmail(email) {
+  async getSellerByEmail(email: string) {
     return await Seller.findOne({ email });
   }
 }
 
-module.exports = new SellerAuthService();
+export { SellerAuthService };
+
+export default new SellerAuthService();

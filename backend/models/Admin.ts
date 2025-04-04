@@ -1,5 +1,14 @@
-const { model, Schema } = require("mongoose");
-const bcrypt = require("bcrypt");
+import { model, Schema, Document } from "mongoose";
+import bcrypt from "bcrypt";
+
+export interface IAdmin extends Document {
+  name: string;
+  email: string;
+  password: string;
+  image: string;
+  role: string;
+  comparePassword(enteredPassword: string): Promise<boolean>;
+}
 
 const adminSchema = new Schema(
   {
@@ -31,8 +40,8 @@ const adminSchema = new Schema(
   { timestamps: true }
 );
 
-adminSchema.methods.comparePassword = async function (enteredPassword) {
+adminSchema.methods.comparePassword = async function (enteredPassword: string) {
   return bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = model("Admin", adminSchema);
+export default model<IAdmin>("Admin", adminSchema);

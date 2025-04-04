@@ -7,6 +7,7 @@ pnpm-debug.log
 
 # 🔹 Build and Output Files
 /build
+**/dist
 /dist
 /public
 /.parcel-cache

@@ -1,7 +1,17 @@
-const ApiError = require("./ApiError");
+import ApiError from "./ApiError";
+
+class RefreshTokenAuthError extends ApiError {
+  constructor(message = "Invalid or expired refresh token") {
+    super(401, message);
+  }
+}
 
 class AuthError extends ApiError {
-  constructor(status = 401, message = "Unauthorized", details = null) {
+  constructor(
+    status: ValidHttpStatusCode = 401,
+    message = "Unauthorized",
+    details = null
+  ) {
     super(status, message, details);
   }
 }
@@ -24,10 +34,11 @@ class InternalServerError extends ApiError {
   }
 }
 
-module.exports = {
+export {
   ApiError,
   AuthError,
   NotFoundError,
   ValidationError,
   InternalServerError,
+  RefreshTokenAuthError,
 };

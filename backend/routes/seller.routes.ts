@@ -1,9 +1,8 @@
-const SellerAuthController = require("../controllers/SellerAuthController");
-const {
-  sellerAuthMiddleware,
-} = require("../middlewares/authAggregrateMiddleware");
-const SellerAuthService = require("../services/SellerAuthService");
-const sellerAuthController = new SellerAuthController(SellerAuthService);
+import SellerAuthController from "@/controllers/seller-auth.controller";
+import { sellerAuthMiddleware } from "@/middlewares/auth-aggregate.middleware";
+import sellerAuthService from "@/services/seller-auth.service";
+
+const sellerAuthController = new SellerAuthController(sellerAuthService);
 
 const router = require("express").Router();
 
@@ -22,4 +21,4 @@ router.post(
   sellerAuthController.refreshToken.bind(sellerAuthController)
 );
 
-module.exports = router;
+export default router;

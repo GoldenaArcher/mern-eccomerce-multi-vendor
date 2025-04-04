@@ -1,13 +1,19 @@
-const { AuthError } = require("../errors");
-const ResponseModel = require("../models/ResponseModel");
-const TokenService = require("../services/TokenService");
+import { Request, Response, NextFunction } from "express";
+
+import { AuthError } from "@/errors";
+import ResponseModel from "@/models/response.model";
+import { ISeller } from "@/models/Seller";
+import TokenService from "@/services/token.service";
+import { SellerAuthService } from "@/services/seller-auth.service";
 
 class SellerAuthController {
-  constructor(sellerAuthService) {
+  private sellerAuthService: SellerAuthService;
+
+  constructor(sellerAuthService: SellerAuthService) {
     this.sellerAuthService = sellerAuthService;
   }
 
-  async register(req, res, next) {
+  async register(req: Request, res: Response, next: NextFunction) {
     const { email, name, password } = req.body;
     if (!email?.trim() || !name?.trim() || !password?.trim()) {
       return next(
@@ -36,12 +42,12 @@ class SellerAuthController {
           this.sellerAuthService.getSellerForAuthToken(seller)
         );
 
-      await TokenService.storeRefreshToken(seller._id, jti);
+      await TokenService.storeRefreshToken(seller._id as string, jti);
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax",
+        sameSite: "lax",
         maxAge: (expiresAt - Math.floor(Date.now() / 1000)) * 1000,
         path: "/",
       });
@@ -59,7 +65,7 @@ class SellerAuthController {
     }
   }
 
-  async login(req, res, next) {
+  async login(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body;
     if (!email?.trim() || !password?.trim()) {
       return next(
@@ -80,7 +86,7 @@ class SellerAuthController {
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax",
+        sameSite: "lax",
         maxAge: (expiresAt - Math.floor(Date.now() / 1000)) * 1000,
         path: "/",
       });
@@ -96,14 +102,13 @@ class SellerAuthController {
     }
   }
 
-  async getUser(req, res, next) {
+  async getUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const {
-        user: { id },
-      } = req;
-      const user = await this.sellerAuthService.getSellerById(id);
+      const user = req.user as ISeller;
+      const userId = user.id;
+      const seller = await this.sellerAuthService.getSellerById(userId);
 
-      if (!user) {
+      if (!seller) {
         return next(new AuthError(404, "Seller not found"));
       }
 
@@ -116,7 +121,7 @@ class SellerAuthController {
     }
   }
 
-  async refreshToken(req, res, next) {
+  async refreshToken(req: Request, res: Response, next: NextFunction) {
     const refreshToken = req?.cookies?.refreshToken;
 
     if (!refreshToken) {
@@ -131,7 +136,7 @@ class SellerAuthController {
       res.cookie("refreshToken", newTokens.refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax",
+        sameSite: "lax",
         maxAge: newTokens.expiresAt * 1000,
         path: "/",
       });
@@ -146,4 +151,4 @@ class SellerAuthController {
   }
 }
 
-module.exports = SellerAuthController;
+export default SellerAuthController;
