@@ -1,10 +1,20 @@
 import { Response } from "express";
 
-interface ResponseModelParams {
+export interface ResponseModelParams {
   code?: ValidHttpStatusCode;
   message?: string;
   data?: any;
 }
+
+export interface WithRefreshToken {
+  refreshToken: string;
+  refreshTokenMaxAge: number;
+}
+
+export type ControllerResponse<T = any> = ResponseModelParams & { data?: T };
+
+export type ControllerResponseWithRefresh<T = any> = ControllerResponse<T> &
+  WithRefreshToken;
 
 class ResponseModel {
   message: string;

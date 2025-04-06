@@ -1,4 +1,4 @@
-import ApiError from "./ApiError";
+import ApiError from "@/errors/ApiError";
 
 class RefreshTokenAuthError extends ApiError {
   constructor(message = "Invalid or expired refresh token") {

@@ -1,11 +1,12 @@
+import { JwtPayload } from "jsonwebtoken";
+
 import { IAdmin } from "@/models/Admin";
+import { AuthError, RefreshTokenAuthError } from "@/errors";
+import Admin from "@/models/Admin";
+import TokenService from "./token.service";
+import RefreshToken from "../models/RefreshToken";
 
-const { AuthError, RefreshTokenAuthError } = require("../errors");
-const Admin = require("../models/Admin");
-const RefreshToken = require("../models/RefreshToken");
-const TokenService = require("./token.service");
-
-class AdminAuthService {
+export class AdminAuthService {
   #getSantizedAdmin(admin: IAdmin) {
     const sanitizedAdmin = admin.toObject();
     delete sanitizedAdmin.password;
@@ -25,7 +26,7 @@ class AdminAuthService {
     const { accessToken, refreshToken, jti, expiresAt } =
       TokenService.generateTokens(this.getAdminForAuthToken(admin));
 
-    await TokenService.storeRefreshToken(admin._id, jti);
+    await TokenService.storeRefreshToken(admin._id as string, jti);
 
     const sanitizedAdmin = this.#getSantizedAdmin(admin);
 
@@ -46,7 +47,11 @@ class AdminAuthService {
       );
     }
 
-    const { id, jti, exp } = decoded;
+    const { id, jti, exp } = decoded as JwtPayload;
+
+    if (!id || !exp || !jti) {
+      throw new RefreshTokenAuthError("Invalid token payload.");
+    }
 
     if (exp < Math.floor(Date.now() / 1000)) {
       await RefreshToken.deleteMany({ userId: id });

@@ -1,5 +1,5 @@
 import { JwtPayload } from "jsonwebtoken";
-import { UserDetails } from "./user";
+import { UserWithRole } from "@/middlewares/role.middleware";
 
 // types/env.d.ts
 declare namespace NodeJS {
@@ -17,7 +17,7 @@ declare namespace NodeJS {
 declare global {
   namespace Express {
     interface Request {
-      user?: string | JwtPayload;
+      user?: UserWithRole
     }
   }
 }
