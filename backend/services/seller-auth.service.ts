@@ -1,7 +1,7 @@
-import Seller, { ISeller } from "@/models/Seller";
-import RefreshToken from "@/models/RefreshToken";
+import Seller, { ISeller } from "@/models/seller.model";
+import RefreshToken from "@/models/refresh-token.model";
 import TokenService from "./token.service";
-import SellerCustomer from "@/models/chat/SellerCustomer";
+import SellerCustomer from "@/models/seller-customer-rel";
 import {
   InternalServerError,
   AuthError,

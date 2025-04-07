@@ -49,7 +49,7 @@ const AdminLogin = () => {
     try {
       await adminLogin(state).unwrap();
     } catch (err) {
-      console.error("Login failed:", err);
+      console.error("Login failed: ", err);
     }
   };
 

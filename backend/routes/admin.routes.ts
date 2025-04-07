@@ -8,15 +8,8 @@ const adminAuthController = new AdminAuthController(AdminAuthService);
 
 const router = Router();
 
-router.post("/login", adminAuthController.login.bind(adminAuthController));
-router.get(
-  "/user",
-  adminAuthMiddleware,
-  adminAuthController.getUser.bind(adminAuthController)
-);
-router.post(
-  "/refresh-token",
-  adminAuthController.refreshToken.bind(adminAuthController)
-);
+router.post("/login", adminAuthController.routes.login);
+router.get("/user", adminAuthMiddleware, adminAuthController.routes.getUser);
+router.post("/refresh-token", adminAuthController.routes.refreshToken);
 
 export default router;

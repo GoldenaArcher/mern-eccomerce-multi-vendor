@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 import { AuthError } from "@/errors";
 import ResponseModel from "@/models/response.model";
-import { ISeller } from "@/models/Seller";
+import { ISeller } from "@/models/seller.model";
 import TokenService from "@/services/token.service";
 import { SellerAuthService } from "@/services/seller-auth.service";
 

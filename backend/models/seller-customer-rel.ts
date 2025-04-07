@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-const sellerCustomerSchema = new Schema(
+const sellerCustomerRelSchema = new Schema(
   {
     sellerId: {
       type: Schema.Types.ObjectId,
@@ -20,4 +20,4 @@ const sellerCustomerSchema = new Schema(
   { timestamps: true }
 );
 
-export default model("SellerCustomer", sellerCustomerSchema);
+export default model("SellerCustomerRel", sellerCustomerRelSchema);

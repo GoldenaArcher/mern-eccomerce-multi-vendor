@@ -41,3 +41,5 @@ Thumbs.db
 coverage/  # Jest/Cypress test coverage
 .cache
 .parcel-cache
+
+**/uploads

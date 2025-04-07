@@ -34,6 +34,12 @@ class InternalServerError extends ApiError {
   }
 }
 
+class BadRequestError extends ApiError {
+  constructor(message = "Bad Request", details = null) {
+    super(400, message, details);
+  }
+}
+
 export {
   ApiError,
   AuthError,
@@ -41,4 +47,5 @@ export {
   ValidationError,
   InternalServerError,
   RefreshTokenAuthError,
+  BadRequestError,
 };

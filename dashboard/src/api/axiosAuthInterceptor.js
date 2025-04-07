@@ -1,7 +1,7 @@
 export const BASE_URL = "http://localhost:5000/api";
 
 const handleApiResponse = (res) => {
-  const { success, message, data } = res.data || {};
+  const { success, message, data, pagination } = res.data || {};
 
   if (!success) {
     return Promise.reject({ message: message || "An error occurred" });
@@ -9,7 +9,8 @@ const handleApiResponse = (res) => {
 
   return {
     message,
-    ...data,
+    data,
+    pagination,
   };
 };
 

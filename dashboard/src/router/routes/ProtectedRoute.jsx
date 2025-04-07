@@ -5,8 +5,9 @@ import { isEmpty, includes, find, lowerCase } from "lodash";
 import publicRoutes from "./publicRoute";
 
 const ProtectedRoute = ({ role, children, status, visibility, ability }) => {
-  const { userInfo } = useSelector((state) => state.auth);
   const location = useLocation();
+
+  const { userInfo } = useSelector((state) => state.auth);
 
   if (!role) {
     return <Navigate to="/login" state={{ from: location }} replace />;

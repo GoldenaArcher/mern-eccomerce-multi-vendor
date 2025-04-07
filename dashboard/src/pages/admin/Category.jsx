@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaFileImage } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
 import { PropagateLoader } from "react-spinners";
+import { toast } from "react-hot-toast";
 
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
 import Search from "../../components/shared/Search";
 import FormInput from "../../components/shared/FormInput";
 import { overrideStyle } from "../../utils/styleUtil";
+import {
+  useAddCategoryMutation,
+  useGetCategoriesQuery,
+} from "../../store/features/categoryApi";
+import { debounce } from "lodash";
 
 const categoriesColumnHeader = [
   { name: "No", accessor: "no" },
@@ -17,17 +23,9 @@ const categoriesColumnHeader = [
   { name: "Action", accessor: "action" },
 ];
 
-// prettier-ignore
-const dummyData = [
-  { no: "1", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start items-center gap-4"> <Link className='p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50'><FaEdit /></Link> <Link className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50'><FaTrash /></Link></div>, },
-  { no: "2", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start items-center gap-4"> <Link className='p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50'><FaEdit /></Link> <Link className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50'><FaTrash /></Link></div> },
-  { no: "3", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start items-center gap-4"> <Link className='p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50'><FaEdit /></Link> <Link className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50'><FaTrash /></Link></div>,},
-  { no: "4", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start items-center gap-4"> <Link className='p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50'><FaEdit /></Link> <Link className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50'><FaTrash /></Link></div> },
-  { no: "5", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start items-center gap-4"> <Link className='p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50'><FaEdit /></Link> <Link className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50'><FaTrash /></Link></div> },
-];
-
 const Category = () => {
   const [searchValue, setSearchValue] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [perPage, setPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [show, setShow] = useState(false);
@@ -37,7 +35,49 @@ const Category = () => {
   });
   const [displayedImg, setDisplayedImg] = useState("");
 
-  const isLoading = false;
+  const debounceSearch = useCallback(
+    debounce((value) => {
+      setDebouncedSearch(value);
+      setCurrentPage(1);
+    }, 300),
+    []
+  );
+
+  const {
+    data: categories,
+    isLoading: isGetLoading,
+    // isError: isGetError,
+    // isSuccess: isGetSuccess,
+    // error: getError,
+  } = useGetCategoriesQuery({
+    page: currentPage,
+    limit: perPage,
+    search: debouncedSearch,
+  });
+
+  const [
+    addCategory,
+    {
+      isLoading: isAddLoading,
+      isSuccess: isAddSuccess,
+      isError: isAddError,
+      error: addError,
+    },
+  ] = useAddCategoryMutation();
+
+  useEffect(() => {
+    if (isAddSuccess) {
+      toast.success("Category added!");
+      setState({ name: "", image: "" });
+      setDisplayedImg("");
+    }
+  }, [isAddSuccess]);
+
+  useEffect(() => {
+    if (isAddError) {
+      toast.error(addError?.data?.message);
+    }
+  }, [isAddError]);
 
   const onImageUpload = (e) => {
     const files = e.target.files;
@@ -49,6 +89,63 @@ const Category = () => {
       image: files[0],
     }));
   };
+
+  const onAddCategory = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", state.name);
+    formData.append("image", state.image);
+
+    try {
+      await addCategory(formData).unwrap();
+    } catch (err) {
+      console.error("Add Category failed: ", err);
+    }
+  };
+
+  const onSearchChange = (val) => {
+    setSearchValue(val);
+    debounceSearch(val);
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [perPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch]);
+
+  const tableData = useMemo(() => {
+    if (!categories?.data) return [];
+
+    return categories.data.map((cat, i) => ({
+      key: cat._id,
+      no: (currentPage - 1) * perPage + i + 1,
+      image: (
+        <img
+          src={`${process.env.REACT_APP_BACKEND_URL}${cat.image}`}
+          alt={cat.slug}
+          className="w-[45px] h-[45px]"
+        />
+      ),
+      name: cat.name,
+      action: (
+        <div className="flex justify-start items-center gap-4">
+          <Link className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
+            <FaEdit />
+          </Link>
+          <Link className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50">
+            <FaTrash />
+          </Link>
+        </div>
+      ),
+    }));
+  }, [categories]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -67,17 +164,23 @@ const Category = () => {
           <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
             <Search
               searchValue={searchValue}
-              setSearchValue={setSearchValue}
+              setSearchValue={onSearchChange}
               perPage={perPage}
               setPerPage={setPerPage}
             />
 
-            <Table columns={categoriesColumnHeader} data={dummyData} />
+            {isGetLoading ? (
+              <div className="flex justify-center py-10">
+                <PropagateLoader color="#fff" />
+              </div>
+            ) : (
+              <Table columns={categoriesColumnHeader} data={tableData} />
+            )}
 
             <Pagination
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
-              totalItems={50}
+              totalItems={categories?.pagination?.totalItems || 0}
               perPage={perPage}
               showItems={3}
             />
@@ -99,7 +202,7 @@ const Category = () => {
                 </div>
               </div>
 
-              <form>
+              <form onSubmit={onAddCategory}>
                 <FormInput
                   label="Category Name"
                   type="text"
@@ -145,9 +248,9 @@ const Category = () => {
                 <div className="mb-3">
                   <button
                     className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
-                    disabled={isLoading}
+                    disabled={isAddLoading}
                   >
-                    {isLoading ? (
+                    {isAddLoading ? (
                       <PropagateLoader
                         cssOverride={overrideStyle}
                         color="#fff"

@@ -24,7 +24,5 @@ applyProcessResInterceptors(sellerApi);
 export const getAxiosInstance = ({ isAdmin = false, isSeller = false }) => {
   if (isAdmin) return adminApi;
   if (isSeller) return sellerApi;
-  throw new Error(
-    "No valid API instance found: please specify isAdmin or isSeller"
-  );
+  return userApi;
 };

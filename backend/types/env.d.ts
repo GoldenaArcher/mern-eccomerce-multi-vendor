@@ -1,5 +1,5 @@
 import { JwtPayload } from "jsonwebtoken";
-import { UserWithRole } from "@/middlewares/role.middleware";
+import { UserWithRole } from "./auth";
 
 // types/env.d.ts
 declare namespace NodeJS {

@@ -1,10 +1,10 @@
 import { JwtPayload } from "jsonwebtoken";
 
-import { IAdmin } from "@/models/Admin";
+import { IAdmin } from "@/models/admin.model";
 import { AuthError, RefreshTokenAuthError } from "@/errors";
-import Admin from "@/models/Admin";
+import Admin from "@/models/admin.model";
 import TokenService from "./token.service";
-import RefreshToken from "../models/RefreshToken";
+import RefreshToken from "../models/refresh-token.model";
 
 export class AdminAuthService {
   #getSantizedAdmin(admin: IAdmin) {

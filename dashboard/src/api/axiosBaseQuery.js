@@ -5,47 +5,53 @@ import { Mutex } from "async-mutex";
 
 const mutex = new Mutex();
 
-const axiosBaseQuery =
-  async ({ url, method, data, params, isAdmin = false, isSeller = false }) => {
-    try {
-      const axiosInstance = getAxiosInstance({ isAdmin, isSeller });
+const axiosBaseQuery = async ({
+  url,
+  method,
+  data,
+  params,
+  isAdmin = false,
+  isSeller = false,
+}) => {
+  try {
+    const axiosInstance = getAxiosInstance({ isAdmin, isSeller });
 
-      const result = await axiosInstance({
-        url,
-        method,
-        data,
-        params,
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-          "Content-Type":
-            data instanceof FormData
-              ? "multipart/form-data"
-              : "application/json",
-        },
-      });
+    const result = await axiosInstance({
+      url,
+      method,
+      data,
+      params,
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+        "Content-Type":
+          data instanceof FormData ? "multipart/form-data" : "application/json",
+      },
+    });
 
-      return { data: result };
-    } catch (error) {
-      if (isAxiosError(error)) {
-        return {
-          error: {
-            status: error.response?.status || 500,
-            data: error.response?.data || error.message,
-          },
-        };
-      }
-
+    return { data: result };
+  } catch (error) {
+    if (isAxiosError(error)) {
       return {
         error: {
-          status: 500,
-          data: "Unknown error",
+          status: error.response?.status || 500,
+          data: error.response?.data || error.message,
         },
       };
     }
-  };
+
+    console.error(error);
+
+    return {
+      error: {
+        status: 500,
+        data: "Unknown error",
+      },
+    };
+  }
+};
 
 const axiosBaseQueryWithReauth = async (args, api, extraOptions) => {
-  await mutex.waitForUnlock();
+  await mutex.waitForUnlock(); // Wait here if another refresh is in progress
 
   let result = await axiosBaseQuery(args, api, extraOptions);
 
@@ -54,25 +60,22 @@ const axiosBaseQueryWithReauth = async (args, api, extraOptions) => {
     typeof result.error.data?.message === "string" &&
     result.error.data.message.includes("expired");
 
-  const { isAdmin = false, isSeller = false } = args;
-  const axiosInstance = getAxiosInstance({ isAdmin, isSeller });
-
   if (isExpired) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
       try {
-        const refreshResult = await axiosInstance.post("/refresh-token");
+        const refreshResult = await getAxiosInstance(args).post(
+          "/refresh-token"
+        );
 
-        if (refreshResult) {
-          storeAuthToken(refreshResult.accessToken);
+        const newAccessToken = refreshResult?.data?.accessToken;
+        if (newAccessToken) {
+          storeAuthToken(newAccessToken);
           api.dispatch({
             type: "auth/updateToken",
-            payload: refreshResult.accessToken,
+            payload: newAccessToken,
           });
-
-          await new Promise((resolve) => setTimeout(resolve, 10));
         } else {
-          // api.dispatch({ type: "auth/logout" });
           return result;
         }
       } finally {

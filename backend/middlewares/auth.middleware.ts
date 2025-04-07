@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction, Request } from "express";
+
 import { AuthError, InternalServerError } from "@/errors";
 import TokenService from "@/services/token.service";
 

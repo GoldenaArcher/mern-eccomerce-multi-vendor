@@ -14,7 +14,7 @@ export const clearAuthToken = () => {
 };
 
 export const handleLoginSuccess = (state, payload) => {
-  const { accessToken, user } = payload;
+  const { accessToken, user } = payload.data;
 
   state.accessToken = accessToken;
   state.userInfo = user;
@@ -24,6 +24,6 @@ export const handleLoginSuccess = (state, payload) => {
 };
 
 export const handleGetUserInfoSuccess = (state, payload) => {
-  const { message, ...userInfo } = payload;
+  const { message, ...userInfo } = payload.data;
   state.userInfo = userInfo;
 };
