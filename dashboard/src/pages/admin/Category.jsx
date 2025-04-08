@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaFileImage } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
@@ -14,7 +14,8 @@ import {
   useAddCategoryMutation,
   useGetCategoriesQuery,
 } from "../../store/features/categoryApi";
-import { debounce } from "lodash";
+import { getBackendUrl } from "../../utils/envUtils";
+import { usePaginationSearch } from "../../hooks/usePaginationSearch";
 
 const categoriesColumnHeader = [
   { name: "No", accessor: "no" },
@@ -24,10 +25,16 @@ const categoriesColumnHeader = [
 ];
 
 const Category = () => {
-  const [searchValue, setSearchValue] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [perPage, setPerPage] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    searchValue,
+    setSearchValue,
+    debouncedSearch,
+    perPage,
+    setPerPage,
+    currentPage,
+    setCurrentPage,
+  } = usePaginationSearch();
+
   const [show, setShow] = useState(false);
   const [state, setState] = useState({
     name: "",
@@ -35,13 +42,13 @@ const Category = () => {
   });
   const [displayedImg, setDisplayedImg] = useState("");
 
-  const debounceSearch = useCallback(
-    debounce((value) => {
-      setDebouncedSearch(value);
-      setCurrentPage(1);
-    }, 300),
-    []
-  );
+  useEffect(() => {
+    return () => {
+      if (displayedImg) {
+        URL.revokeObjectURL(displayedImg);
+      }
+    };
+  }, [displayedImg]);
 
   const {
     data: categories,
@@ -77,7 +84,7 @@ const Category = () => {
     if (isAddError) {
       toast.error(addError?.data?.message);
     }
-  }, [isAddError]);
+  }, [isAddError, addError?.data?.message]);
 
   const onImageUpload = (e) => {
     const files = e.target.files;
@@ -103,23 +110,6 @@ const Category = () => {
     }
   };
 
-  const onSearchChange = (val) => {
-    setSearchValue(val);
-    debounceSearch(val);
-  };
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [perPage]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [debouncedSearch]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [debouncedSearch]);
-
   const tableData = useMemo(() => {
     if (!categories?.data) return [];
 
@@ -128,7 +118,7 @@ const Category = () => {
       no: (currentPage - 1) * perPage + i + 1,
       image: (
         <img
-          src={`${process.env.REACT_APP_BACKEND_URL}${cat.image}`}
+          src={`${getBackendUrl()}${cat.image}`}
           alt={cat.slug}
           className="w-[45px] h-[45px]"
         />
@@ -145,7 +135,7 @@ const Category = () => {
         </div>
       ),
     }));
-  }, [categories]);
+  }, [categories, currentPage, perPage]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -164,7 +154,7 @@ const Category = () => {
           <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
             <Search
               searchValue={searchValue}
-              setSearchValue={onSearchChange}
+              setSearchValue={setSearchValue}
               perPage={perPage}
               setPerPage={setPerPage}
             />

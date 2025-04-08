@@ -2,39 +2,39 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 import axiosBaseQueryWithReauth from "../../api/axiosBaseQuery";
 
-export const categoryApi = createApi({
-  reducerPath: "categoryApi",
+export const productApi = createApi({
+  reducerPath: "productApi",
   baseQuery: axiosBaseQueryWithReauth,
-  tagTypes: ["Category"],
+  tagTypes: ["Product"],
   endpoints: (builder) => ({
-    getCategories: builder.query({
+    getProducts: builder.query({
       query: ({ page = 1, limit = 5, search = "", all = false }) => {
         if (all) {
           return {
-            url: "/categories",
+            url: "/products",
             method: "GET",
-            params: { all: true, search },
+            params: { all: true },
           };
         }
 
         return {
-          url: "/categories",
+          url: "/products",
           method: "GET",
           params: { page, limit, search },
         };
       },
-      providesTags: ["Category"],
+      providesTags: ["Product"],
     }),
-    addCategory: builder.mutation({
+    addProduct: builder.mutation({
       query: (data) => ({
-        url: "/categories",
+        url: "/products",
         method: "POST",
         data,
-        isAdmin: true,
+        isSeller: true,
       }),
-      invalidatesTags: ["Category"],
+      invalidatesTags: ["Product"],
     }),
   }),
 });
 
-export const { useAddCategoryMutation, useGetCategoriesQuery } = categoryApi;
+export const { useAddProductMutation, useGetProductsQuery } = productApi;

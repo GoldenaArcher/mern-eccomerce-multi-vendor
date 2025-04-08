@@ -18,7 +18,7 @@ router.post(
 router.get(
   "/categories",
   authMiddleware,
-  categoryController.getCategories.bind(categoryController)
+  categoryController.getAllCategories.bind(categoryController)
 );
 
 export default router;

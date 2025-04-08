@@ -114,7 +114,7 @@ class SellerAuthController {
 
       new ResponseModel({
         message: "Seller retrieved successfully",
-        data: user,
+        data: seller,
       }).send(res);
     } catch (err) {
       next(err);

@@ -20,7 +20,7 @@ class SellerAuthService {
   }
 
   getSellerForAuthToken(seller: ISeller | SanitizedSeller) {
-    return { id: seller.id, role: seller.role };
+    return { id: seller.id, role: seller.role, status: seller.status };
   }
 
   async #saveSeller(seller: ISeller) {

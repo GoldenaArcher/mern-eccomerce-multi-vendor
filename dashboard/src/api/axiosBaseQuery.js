@@ -64,9 +64,13 @@ const axiosBaseQueryWithReauth = async (args, api, extraOptions) => {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
       try {
-        const refreshResult = await getAxiosInstance(args).post(
-          "/refresh-token"
-        );
+        const state = api.getState();
+        const isAdmin = state.auth?.isAdmin;
+        const isSeller = state.auth?.isSeller;
+
+        const refreshAxios = getAxiosInstance({ isAdmin, isSeller }); 
+
+        const refreshResult = await refreshAxios.post("/refresh-token");
 
         const newAccessToken = refreshResult?.data?.accessToken;
         if (newAccessToken) {

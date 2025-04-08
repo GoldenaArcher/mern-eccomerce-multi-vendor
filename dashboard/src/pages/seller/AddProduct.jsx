@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { IoIosImage, IoIosCloseCircle } from "react-icons/io";
 import _ from "lodash";
-import FormInput from "../../components/shared/FormInput";
+import { PropagateLoader, PuffLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
-const categories = [
-  { id: 1, name: "Sports" },
-  { id: 2, name: "T-shirts" },
-  { id: 3, name: "Mobile" },
-  { id: 4, name: "Computer" },
-  { id: 5, name: "Watch" },
-  { id: 6, name: "Pants" },
-];
+import FormInput from "../../components/shared/FormInput";
+import { useGetCategoriesQuery } from "../../store/features/categoryApi";
+import { useAddProductMutation } from "../../store/features/productApi";
+import { overrideStyle } from "../../utils/styleUtil";
+import { usePaginationSearch } from "../../hooks/usePaginationSearch";
 
 const AddProduct = () => {
   const [state, setState] = useState({
@@ -25,32 +23,78 @@ const AddProduct = () => {
     images: [],
   });
 
+  const { searchValue, setSearchValue, debouncedSearch, cancelDebounce } =
+    usePaginationSearch();
+
   const [showCategory, setShowCategory] = useState(false);
-  const [allCategories, setAllCategories] = useState(categories);
-  const [searchValue, setSearchValue] = useState("");
   const [displayedImg, setDisplayedImg] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
+
+  const categoryQueryArgs = useMemo(
+    () => ({
+      search: debouncedSearch,
+      all: true,
+    }),
+    [debouncedSearch]
+  );
+
+  const {
+    data: allCategories,
+    isLoading: isGetCategoriesLoading,
+    // isError: isGetError,
+    // isSuccess: isGetSuccess,
+    // error: getError,
+  } = useGetCategoriesQuery(categoryQueryArgs);
+
+  const [
+    addProduct,
+    {
+      isLoading: isAddLoading,
+      isSuccess: isAddSuccess,
+      isError: isAddError,
+      error: addError,
+    },
+  ] = useAddProductMutation();
+
+  useEffect(() => {
+    if (isAddSuccess) {
+      toast.success("Product added!");
+      setState({
+        name: "",
+        description: "",
+        discount: "",
+        price: "",
+        brand: "",
+        stock: "",
+        category: "",
+        images: [],
+      });
+      setDisplayedImg([]);
+      setCategoryName("");
+    }
+  }, [isAddSuccess]);
+
+  useEffect(() => {
+    if (isAddError) {
+      toast.error(addError?.data?.message);
+    }
+  }, [isAddError, addError]);
+
+  useEffect(() => {
+    return () => {
+      if (_.isEmpty(displayedImg)) return;
+
+      _.forEach(displayedImg, (img) => {
+        URL.revokeObjectURL(img.url);
+      });
+    };
+  }, [displayedImg]);
 
   const onProductChange = (e) => {
     setState((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
-  };
-
-  const onCategorySearch = (e) => {
-    const value = e.target.value;
-    setSearchValue(value);
-
-    if (value) {
-      setAllCategories(() => {
-        return categories.filter(
-          (category) =>
-            category.name.toLowerCase().indexOf(value.toLowerCase()) > -1
-        );
-      });
-    } else {
-      setAllCategories(categories);
-    }
   };
 
   const onImageUpload = (e) => {
@@ -85,6 +129,8 @@ const AddProduct = () => {
     setDisplayedImg((prev) => {
       if (index >= prev.length) return prev;
 
+      URL.revokeObjectURL(prev[index].url);
+
       const newImgs = [...prev];
       newImgs[index] = {
         url: URL.createObjectURL(img),
@@ -110,6 +156,22 @@ const AddProduct = () => {
     });
   };
 
+  const onAddProduct = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    _.forEach(state, (value, key) => {
+      if (key === "images") {
+        _.forEach(value, (img, i) => {
+          formData.append("images", img);
+        });
+      } else {
+        formData.append(key, value);
+      }
+    });
+
+    addProduct(formData);
+  };
+
   return (
     <div className="px-2 lg:px-7 pt-5 text-[#d0d2d6]">
       <div className="w-full bg-[#6a5fdf] px-4 py-4 rounded-md">
@@ -121,7 +183,7 @@ const AddProduct = () => {
         </div>
 
         <div className="">
-          <form>
+          <form onSubmit={onAddProduct}>
             <div className="flex flex-col mb-3 md:flex-row gap-4 w-full">
               <FormInput
                 label="Product Name"
@@ -150,14 +212,14 @@ const AddProduct = () => {
                 id="category"
                 placeholder="-- Select Category --"
                 onChange={onProductChange}
-                value={state.category}
+                value={categoryName}
                 readOnly
                 onClick={() => {
                   setShowCategory((prev) => !prev);
                 }}
               >
                 <div
-                  className={`absolute top-[100%] bg-[#475569] w-full transition-all ${
+                  className={`absolute top-[100%] bg-[#475569] w-full transition-all z-10 ${
                     showCategory ? "scale-100" : "scale-0"
                   }`}
                 >
@@ -166,13 +228,18 @@ const AddProduct = () => {
                       type="text"
                       placeholder="Search"
                       className="w-full px-3 py-1 focus:border-indigo-500 outline-none bg-transparent border border-slate-700 rounded-md overflow-hidden"
-                      onChange={onCategorySearch}
+                      onChange={(e) => setSearchValue(e.target.value)}
                       value={searchValue}
                     />
                   </div>
                   <div className="pt-14"></div>
                   <div className="flex justify-start items-start flex-col h-[200px] overflow-x-scroll">
-                    {allCategories.map((category) => {
+                    {isGetCategoriesLoading && (
+                      <div className="flex justify-center items-center h-[200px] w-full">
+                        <PuffLoader color="#3498db" size={60} />
+                      </div>
+                    )}
+                    {allCategories?.data?.map((category) => {
                       return (
                         <div
                           key={category.id}
@@ -180,10 +247,11 @@ const AddProduct = () => {
                             setShowCategory((prev) => !prev);
                             setState((prev) => ({
                               ...prev,
-                              category: category.name,
+                              category: category.id,
                             }));
                             setSearchValue("");
-                            setAllCategories(categories);
+                            cancelDebounce();
+                            setCategoryName(category.name);
                           }}
                           className={`w-full cursor-pointer px-4 py-2 hover:bg-indigo-300 hover:text-[#475569] hover:shadow-lg ${
                             state.category === category.name
@@ -288,11 +356,17 @@ const AddProduct = () => {
             </div>
 
             <div className="mb-3 flex">
-              <input
-                type="button"
-                value="Add Product"
-                className="bg-red-500 hover:shadow-red-500/40 hover:shadow-md text-white rounded-md px-7 py-2 mt-2"
-              />
+              <button
+                type="submit"
+                className="bg-red-500 hover:shadow-red-500/40 hover:shadow-md text-white rounded-md px-7 py-2 mt-2 hover:cursor-pointer min-w-[200px] w-[200px]"
+                disabled={isAddLoading}
+              >
+                {isAddLoading ? (
+                  <PropagateLoader cssOverride={overrideStyle} color="#fff" />
+                ) : (
+                  "Add Product"
+                )}
+              </button>
             </div>
           </form>
         </div>

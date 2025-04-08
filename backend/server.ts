@@ -12,6 +12,7 @@ import authRoutes from "@/routes/auth.routes";
 import adminRoutes from "@/routes/admin.routes";
 import sellerRoutes from "@/routes/seller.routes";
 import categoryRoutes from "@/routes/category.routes";
+import productRoutes from "@/routes/product.routes";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use("/api", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
 
 app.use(errorMiddleware);
 

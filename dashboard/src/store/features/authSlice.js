@@ -21,6 +21,9 @@ export const authSlice = createSlice({
       clearAuthToken();
       return authInitialState;
     },
+    updateToken: (state, { payload }) => {
+      state.accessToken = payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -47,5 +50,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, updateToken } = authSlice.actions;
 export default authSlice.reducer;

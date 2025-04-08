@@ -1,0 +1,84 @@
+import slugify from "slugify";
+import ProductModel from "@/models/product.model";
+import { sanitizeDocument } from "@/utils/mongoose.util";
+import { UploadedFileWithPath } from "@/types/upload";
+
+export class ProductService {
+  async createProduct({
+    name,
+    description,
+    discount,
+    price,
+    stock,
+    category,
+    brand,
+    images,
+    sellerId,
+  }: {
+    name: string;
+    description: string;
+    discount: number;
+    price: number;
+    stock: number;
+    category: string;
+    brand: string;
+    images: UploadedFileWithPath[];
+    sellerId: string;
+  }) {
+    const slug = slugify(name, { lower: true });
+
+    const imagePaths = images.map((image) => {
+      return `${image.publicPath}/${image.filename}`;
+    });
+    const product = await ProductModel.create({
+      name,
+      description,
+      brand,
+      price,
+      discount,
+      stock,
+      images: imagePaths,
+      slug,
+      category,
+      seller: sellerId,
+    });
+
+    return sanitizeDocument(product);
+  }
+
+  async getAllProducts(
+    options: {
+      page?: number;
+      limit?: number;
+      filter?: Record<string, any>;
+    } = {}
+  ) {
+    const { page, limit, filter = {} } = options;
+
+    if (!page || !limit) {
+      const products = await ProductModel.find(filter).sort({
+        createdAt: -1,
+      });
+      return { products: products.map((product) => sanitizeDocument(product)) };
+    }
+
+    const totalItems = await ProductModel.countDocuments(filter);
+    const totalPages = Math.ceil(totalItems / limit);
+    const products = await ProductModel.find(filter)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+      
+    return {
+      products: products.map((product) => sanitizeDocument(product)),
+      pagination: {
+        page,
+        limit,
+        totalItems,
+        totalPages,
+      },
+    };
+  }
+}
+
+export default new ProductService();

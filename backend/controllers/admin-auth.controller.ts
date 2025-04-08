@@ -40,6 +40,11 @@ class AdminAuthController {
     ControllerResponseWithRefresh<{ accessToken: string; user: any }>
   > {
     const { email, password } = req.body;
+
+    if (!email?.trim() || !password?.trim()) {
+      throw new AuthError(400, "All fields (email, password) are required.");
+    }
+
     const authenticatedAdmin = await this.adminAuthService.authenticateAdmin(
       email,
       password

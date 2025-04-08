@@ -1,9 +1,14 @@
 import slugify from "slugify";
-import CategoryModel, { ICategory } from "@/models/category.model";
+import CategoryModel from "@/models/category.model";
+import { sanitizeDocument } from "@/utils/mongoose.util";
+import { UploadedFileWithPath } from "@/types/upload";
 
 export class CategoryService {
-  async createCategory(name: string, imagePath: string): Promise<ICategory> {
+  async createCategory(name: string, image: Express.Multer.File) {
     const slug = slugify(name, { lower: true });
+    const imagePath = `${(image as UploadedFileWithPath).publicPath}/${
+      image.filename
+    }`;
 
     const category = await CategoryModel.create({
       name,
@@ -11,22 +16,25 @@ export class CategoryService {
       image: imagePath,
     });
 
-    return category;
+    return sanitizeDocument(category);
   }
 
   async getAllCategories(
-    page: number,
-    limit: number,
-    filter: Record<string, any> = {}
-  ): Promise<{
-    categories: ICategory[];
-    pagination: {
-      totalItems: number;
-      currentPage: number;
-      perPage: number;
-      totalPages: number;
-    };
-  }> {
+    options: {
+      page?: number;
+      limit?: number;
+      filter?: Record<string, any>;
+    } = {}
+  ) {
+    const { page, limit, filter = {} } = options;
+
+    if (!page || !limit) {
+      const categories = await CategoryModel.find(filter).sort({
+        createdAt: -1,
+      });
+      return { categories: categories.map((cat) => sanitizeDocument(cat)) };
+    }
+
     const totalItems = await CategoryModel.countDocuments(filter);
 
     const categories = await CategoryModel.find(filter)
@@ -35,7 +43,7 @@ export class CategoryService {
       .limit(limit);
 
     return {
-      categories,
+      categories: categories.map((cat) => sanitizeDocument(cat)),
       pagination: {
         totalItems,
         currentPage: page,
