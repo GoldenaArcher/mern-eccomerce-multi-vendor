@@ -5,7 +5,7 @@ export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: axiosBaseQueryWithReauth,
   endpoints: (builder) => ({
-    updateSellerProfile: builder.mutation({
+    updateSellerAvatar: builder.mutation({
       query: (data) => ({
         url: "/user/avatar",
         method: "PATCH",
@@ -16,4 +16,4 @@ export const userApi = createApi({
   }),
 });
 
-export const { useUpdateSellerProfileMutation } = userApi;
+export const { useUpdateSellerAvatarMutation } = userApi;
