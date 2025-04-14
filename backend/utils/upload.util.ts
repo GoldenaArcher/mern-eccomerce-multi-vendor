@@ -72,7 +72,8 @@ export const deleteUploadedFiles = (
 export const deleteImagePaths = async (publicPaths: string[] = []) => {
   for (const publicPath of publicPaths) {
     try {
-      const absPath = path.resolve(__dirname, `../..${publicPath}`);
+      const uploadsDir = path.join(__dirname, "../uploads");
+      const absPath = path.join(uploadsDir, path.basename(publicPath));
       await unlink(absPath);
     } catch (err: unknown) {
       if (err instanceof Error) {

@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { PropagateLoader } from "react-spinners";
 
 import FormInput from "../../components/shared/FormInput";
-import { overrideStyle } from "../../utils/styleUtil";
 import { useSellerLoginMutation } from "../../store/features/authApi";
+import { ButtonLoader } from "../../components/shared/loaders";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -83,11 +82,7 @@ const Login = () => {
               className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
               disabled={isLoading}
             >
-              {isLoading ? (
-                <PropagateLoader cssOverride={overrideStyle} color="#fff" />
-              ) : (
-                "Sign In"
-              )}
+              {isLoading ? <ButtonLoader /> : "Sign In"}
             </button>
 
             <div className="flex items-center mb-3 gap-3 justify-center">

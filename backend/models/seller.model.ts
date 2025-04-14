@@ -1,4 +1,4 @@
-import { model, Schema, Document } from "mongoose";
+import { model, Schema, Document, Types } from "mongoose";
 import bcrypt from "bcrypt";
 
 export interface ISeller extends Document {
@@ -10,7 +10,7 @@ export interface ISeller extends Document {
   payment: string;
   method: string;
   image: string;
-  ShopInfo: Record<string, any>;
+  shop: Types.ObjectId;
   comparePassword(enteredPassword: string): Promise<boolean>;
 }
 
@@ -52,9 +52,11 @@ const sellerSchema = new Schema(
       type: String,
       default: "",
     },
-    ShopInfo: {
-      type: Object,
-      default: {},
+    shop: {
+      type: Schema.Types.ObjectId,
+      ref: "Shop",
+      unique: true, // ensures one-to-one
+      sparse: true, // allow null for sellers without shop
     },
   },
   { timestamps: true }

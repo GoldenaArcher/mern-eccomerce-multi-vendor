@@ -1,8 +1,12 @@
 import React from "react";
 import { IoIosImage, IoIosCloseCircle } from "react-icons/io";
 import FormInput from "../../../components/shared/FormInput";
-import { PropagateLoader, PuffLoader } from "react-spinners";
+import { PuffLoader } from "react-spinners";
 import { overrideStyle as defaultOverrideStyle } from "../../../utils/styleUtil";
+import {
+  ButtonLoader,
+  CenteredLoader,
+} from "../../../components/shared/loaders";
 
 const ProductForm = ({
   state,
@@ -86,9 +90,10 @@ const ProductForm = ({
             <div className="pt-14"></div>
             <div className="flex justify-start items-start flex-col h-[200px] overflow-x-scroll">
               {isGetCategoriesLoading ? (
-                <div className="flex justify-center items-center h-[200px] w-full">
-                  <PuffLoader color="#3498db" size={60} />
-                </div>
+                <CenteredLoader
+                  className="flex justify-center items-center h-[200px] w-full"
+                  loader={<PuffLoader color="#3498db" size={60} />}
+                />
               ) : (
                 allCategories?.data?.map((category) => (
                   <div
@@ -181,6 +186,7 @@ const ProductForm = ({
               type="file"
               id={i}
               className="hidden"
+              accept="image/*"
               onChange={(e) => onImageReplace(e.target.files[0], i)}
             />
             <span
@@ -206,6 +212,7 @@ const ProductForm = ({
           type="file"
           id="image"
           multiple
+          accept="image/*"
           className="hidden"
           onChange={onImageUpload}
         />
@@ -218,11 +225,7 @@ const ProductForm = ({
           className="bg-red-500 hover:shadow-red-500/40 hover:shadow-md text-white rounded-md px-7 py-2 mt-2 hover:cursor-pointer min-w-[200px] w-[200px]"
           disabled={isSubmitting}
         >
-          {isSubmitting ? (
-            <PropagateLoader cssOverride={overrideStyle} color="#fff" />
-          ) : (
-            submitText
-          )}
+          {isSubmitting ? <ButtonLoader /> : submitText}
         </button>
       </div>
     </form>

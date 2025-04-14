@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
-import { PropagateLoader } from "react-spinners";
 import toast from "react-hot-toast";
 
 import FormInput from "../../components/shared/FormInput";
 import { useSellerRegisterMutation } from "../../store/features/authApi";
-import { overrideStyle } from "../../utils/styleUtil";
+import { ButtonLoader } from "../../components/shared/loaders";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -111,11 +110,7 @@ const Register = () => {
               className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
               disabled={isLoading}
             >
-              {isLoading ? (
-                <PropagateLoader cssOverride={overrideStyle} color="#fff" />
-              ) : (
-                "Sign Up"
-              )}
+              {isLoading ? <ButtonLoader /> : "Sign Up"}
             </button>
 
             <div className="flex items-center mb-3 gap-3 justify-center">
