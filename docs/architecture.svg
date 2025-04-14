@@ -33,7 +33,7 @@
 
   <!-- Frontend -->
   <rect x="250" y="20" width="200" height="60" class="box"/>
-  <image href="./icons/react.svg" x="265" y="30" width="30" height="30"/>
+  <image href="https://raw.githubusercontent.com/GoldenaArcher/mern-eccomerce-multi-vendor/main/docs/icons/react.svg" x="265" y="30" width="30" height="30"/>
   <text x="305" y="50" class="label">Frontend</text>
 
   <!-- Backend -->
