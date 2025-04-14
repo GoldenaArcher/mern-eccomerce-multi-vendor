@@ -5,9 +5,9 @@ import Search from "../../components/shared/Search";
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
 import { useGetProductsQuery } from "../../store/features/productApi";
-import { PropagateLoader } from "react-spinners";
 import { getBackendUrl } from "../../utils/envUtils";
 import { usePaginationSearch } from "../../hooks/usePaginationSearch";
+import { CenteredLoader } from "../../components/shared/loaders";
 
 const productsColumnHeader = [
   { name: "No", accessor: "no" },
@@ -31,10 +31,7 @@ const Products = () => {
     setCurrentPage,
   } = usePaginationSearch();
 
-  const {
-    data: products,
-    isLoading: isGetLoading,
-  } = useGetProductsQuery({
+  const { data: products, isLoading: isGetLoading } = useGetProductsQuery({
     page: currentPage,
     limit: perPage,
     search: debouncedSearch,
@@ -99,9 +96,7 @@ const Products = () => {
         />
 
         {isGetLoading ? (
-          <div className="flex justify-center py-10">
-            <PropagateLoader color="#fff" />
-          </div>
+          <CenteredLoader />
         ) : (
           <Table columns={productsColumnHeader} data={tableData} />
         )}

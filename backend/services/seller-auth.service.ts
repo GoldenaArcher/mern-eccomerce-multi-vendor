@@ -8,6 +8,7 @@ import {
   RefreshTokenAuthError,
 } from "@/errors";
 import { JwtPayload } from "jsonwebtoken";
+import { UploadedFileWithPath } from "@/types/upload";
 
 type SanitizedSeller = Omit<ISeller, "password">;
 
@@ -114,6 +115,12 @@ class SellerAuthService {
     await TokenService.storeRefreshToken(id, newTokens.jti);
 
     return newTokens;
+  }
+
+  async updateSellerProfile(id: string, image: Express.Multer.File) {
+    const seller = await Seller.findById(id);
+    seller!.image = (image as UploadedFileWithPath).publicPath;
+    return await this.#saveSeller(seller!);
   }
 
   async getSellerById(id: string) {

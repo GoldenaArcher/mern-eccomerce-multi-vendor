@@ -1,5 +1,4 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-
 import axiosBaseQueryWithReauth from "../../api/axiosBaseQuery";
 
 export const authApi = createApi({

@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 
-import { AuthError } from "@/errors";
+import { AuthError, BadRequestError } from "@/errors";
 import ResponseModel from "@/models/response.model";
 import { ISeller } from "@/models/seller.model";
 import TokenService from "@/services/token.service";
 import { SellerAuthService } from "@/services/seller-auth.service";
+import { ExtendedRequest } from "@/types/auth";
+import { deleteImagePaths } from "@/utils/upload.util";
 
 class SellerAuthController {
   private sellerAuthService: SellerAuthService;
@@ -145,6 +147,43 @@ class SellerAuthController {
         message: "Token refreshed successfully",
         data: { accessToken: newTokens.accessToken },
       }).send(res);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async updateUserProfile(req: Request, res: Response, next: NextFunction) {
+    const image = req.file;
+
+    try {
+      const {
+        user: { id: sellerId },
+      } = req as ExtendedRequest;
+
+      if (!image) {
+        return next(new BadRequestError("Avatar is required."));
+      }
+
+      const existingSeller = await this.sellerAuthService.getSellerById(
+        sellerId
+      );
+
+      const updatedSeller = await this.sellerAuthService.updateSellerProfile(
+        sellerId,
+        image
+      );
+
+      if (
+        existingSeller!.image &&
+        existingSeller!.image !== updatedSeller.image
+      ) {
+        await deleteImagePaths([existingSeller!.image]);
+      }
+
+      ResponseModel.ok(
+        "User profile updated successfully.",
+        updatedSeller
+      ).send(res);
     } catch (err) {
       next(err);
     }

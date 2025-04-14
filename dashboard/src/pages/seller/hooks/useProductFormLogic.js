@@ -65,10 +65,17 @@ export default function useProductFormLogic(initialState = defaultProduct) {
       images: prev.images.filter((_, index) => i !== index),
     }));
 
-    setDisplayedImg((prev) => prev.filter((_, index) => i !== index));
+    setDisplayedImg((prev) => {
+      const toRevoke = prev[i];
+      if (toRevoke) {
+        URL.revokeObjectURL(toRevoke.url);
+      }
+      return prev.filter((_, index) => i !== index);
+    });
   };
 
   const resetForm = () => {
+    _.forEach(displayedImg, (img) => URL.revokeObjectURL(img.url));
     setState(defaultProduct);
     setCategoryName("");
     setSearchValue("");
@@ -78,8 +85,7 @@ export default function useProductFormLogic(initialState = defaultProduct) {
   // Revoke object URLs on unmount
   useEffect(() => {
     return () => {
-      if (_.isEmpty(displayedImg)) return;
-      _.forEach(displayedImg, (img) => URL.revokeObjectURL(img.url));
+      resetForm();
     };
   }, [displayedImg]);
 

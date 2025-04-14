@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { PropagateLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "../../assets/img/logo.png";
 
 import { useAdminLoginMutation } from "../../store/features/authApi";
-import { overrideStyle } from "../../utils/styleUtil";
 import FormInput from "../../components/shared/FormInput";
+import { ButtonLoader } from "../../components/shared/loaders";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -87,11 +86,7 @@ const AdminLogin = () => {
               className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
               disabled={isLoading}
             >
-              {isLoading ? (
-                <PropagateLoader cssOverride={overrideStyle} color="#fff" />
-              ) : (
-                "Log In"
-              )}
+              {isLoading ? <ButtonLoader /> : "Log In"}
             </button>
           </form>
         </div>

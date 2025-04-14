@@ -6,9 +6,7 @@ import { UploadedFileWithPath } from "@/types/upload";
 export class CategoryService {
   async createCategory(name: string, image: Express.Multer.File) {
     const slug = slugify(name, { lower: true });
-    const imagePath = `${(image as UploadedFileWithPath).publicPath}/${
-      image.filename
-    }`;
+    const imagePath = `${(image as UploadedFileWithPath).publicPath}`;
 
     const category = await CategoryModel.create({
       name,

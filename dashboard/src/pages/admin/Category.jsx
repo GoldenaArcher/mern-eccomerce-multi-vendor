@@ -2,20 +2,19 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaFileImage } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
-import { PropagateLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
 import Search from "../../components/shared/Search";
 import FormInput from "../../components/shared/FormInput";
-import { overrideStyle } from "../../utils/styleUtil";
 import {
   useAddCategoryMutation,
   useGetCategoriesQuery,
 } from "../../store/features/categoryApi";
 import { getBackendUrl } from "../../utils/envUtils";
 import { usePaginationSearch } from "../../hooks/usePaginationSearch";
+import { ButtonLoader, CenteredLoader } from "../../components/shared/loaders";
 
 const categoriesColumnHeader = [
   { name: "No", accessor: "no" },
@@ -160,9 +159,7 @@ const Category = () => {
             />
 
             {isGetLoading ? (
-              <div className="flex justify-center py-10">
-                <PropagateLoader color="#fff" />
-              </div>
+              <CenteredLoader />
             ) : (
               <Table columns={categoriesColumnHeader} data={tableData} />
             )}
@@ -240,14 +237,7 @@ const Category = () => {
                     className="bg-slate-800 w-full hover:shadow-blue-300/ hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
                     disabled={isAddLoading}
                   >
-                    {isAddLoading ? (
-                      <PropagateLoader
-                        cssOverride={overrideStyle}
-                        color="#fff"
-                      />
-                    ) : (
-                      "Add Category"
-                    )}
+                    {isAddLoading ? <ButtonLoader /> : "Add Category"}
                   </button>
                 </div>
               </form>
