@@ -7,6 +7,13 @@ export const productApi = createApi({
   baseQuery: axiosBaseQueryWithReauth,
   tagTypes: ["Product"],
   endpoints: (builder) => ({
+    getProductById: builder.query({
+      query: (id) => ({
+        url: `/products/${id}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, id) => [{ type: "Product", id }],
+    }),
     getProducts: builder.query({
       query: ({ page = 1, limit = 5, search = "", all = false }) => {
         if (all) {
@@ -34,7 +41,21 @@ export const productApi = createApi({
       }),
       invalidatesTags: ["Product"],
     }),
+    updateProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/products/${id}`,
+        method: "PUT",
+        data,
+        isSeller: true,
+      }),
+      invalidatesTags: ["Product"],
+    }),
   }),
 });
 
-export const { useAddProductMutation, useGetProductsQuery } = productApi;
+export const {
+  useAddProductMutation,
+  useGetProductsQuery,
+  useGetProductByIdQuery,
+  useUpdateProductMutation,
+} = productApi;

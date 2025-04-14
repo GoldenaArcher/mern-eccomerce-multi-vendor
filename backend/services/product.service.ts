@@ -2,6 +2,7 @@ import slugify from "slugify";
 import ProductModel from "@/models/product.model";
 import { sanitizeDocument } from "@/utils/mongoose.util";
 import { UploadedFileWithPath } from "@/types/upload";
+import { BadRequestError, NotFoundError } from "@/errors";
 
 export class ProductService {
   async createProduct({
@@ -27,9 +28,8 @@ export class ProductService {
   }) {
     const slug = slugify(name, { lower: true });
 
-    const imagePaths = images.map((image) => {
-      return `${image.publicPath}/${image.filename}`;
-    });
+    const imagePaths = images.map((image) => image.publicPath);
+
     const product = await ProductModel.create({
       name,
       description,
@@ -68,7 +68,7 @@ export class ProductService {
       .skip((page - 1) * limit)
       .limit(limit)
       .sort({ createdAt: -1 });
-      
+
     return {
       products: products.map((product) => sanitizeDocument(product)),
       pagination: {
@@ -78,6 +78,43 @@ export class ProductService {
         totalPages,
       },
     };
+  }
+
+  async getProductById(productId: string) {
+    const product = await ProductModel.findById(productId);
+
+    if (!product) {
+      throw new NotFoundError("Product not found");
+    }
+
+    return sanitizeDocument(product);
+  }
+
+  async getProductByIdAndSellerId(productId: string, sellerId: string) {
+    const product = await ProductModel.findOne({
+      _id: productId,
+      seller: sellerId,
+    });
+    if (!product) {
+      throw new NotFoundError("Product not found");
+    }
+    return sanitizeDocument(product);
+  }
+
+  async updateProduct(productId: string, updateData: Record<string, any>) {
+    // validated by verifyOwnershipOrThrow in controller, no need to check again
+    const product = await ProductModel.findById(productId);
+
+    Object.assign(product!, updateData);
+    
+    await product!.save();
+    return sanitizeDocument(product!);
+  }
+
+  async verifyOwnershipOrThrow(productId: string, sellerId: string) {
+    const product = await this.getProductByIdAndSellerId(productId, sellerId);
+    if (!product) throw new BadRequestError("Product not found.");
+    return product;
   }
 }
 

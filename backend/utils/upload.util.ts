@@ -1,4 +1,5 @@
 import fs from "fs";
+import { unlink } from "fs/promises";
 import path from "path";
 import { Request } from "express";
 
@@ -35,7 +36,7 @@ export const getUploadPaths = (req: Request, filename: string) => {
 
   return {
     absolutePath: path.resolve(__dirname, `../${relativePath}`),
-    publicPath: `/${relativePath.replace(/\\/g, "/")}`,
+    publicPath: `/${relativePath.replace(/\\/g, "/")}/${filename}`,
   };
 };
 
@@ -64,6 +65,21 @@ export const deleteUploadedFiles = (
       fs.existsSync(file.path) && fs.unlinkSync(file.path);
     } catch (err) {
       console.warn(`Failed to delete uploaded file: ${file.path}`, err);
+    }
+  }
+};
+
+export const deleteImagePaths = async (publicPaths: string[] = []) => {
+  for (const publicPath of publicPaths) {
+    try {
+      const absPath = path.resolve(__dirname, `../..${publicPath}`);
+      await unlink(absPath);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.warn(`Failed to delete image: ${publicPath}`, err.message);
+      } else {
+        console.warn(`Failed to delete image: ${publicPath}`, err);
+      }
     }
   }
 };

@@ -34,9 +34,6 @@ const Products = () => {
   const {
     data: products,
     isLoading: isGetLoading,
-    // isError: isGetError,
-    // isSuccess: isGetSuccess,
-    // error: getError,
   } = useGetProductsQuery({
     page: currentPage,
     limit: perPage,
@@ -67,12 +64,15 @@ const Products = () => {
         action: (
           <div className="flex justify-start items-center gap-4">
             <Link
-              to={`/seller/products/${product?.id}`}
+              to={`/seller/products/edit/${product?.id}`}
               className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50"
             >
               <FaEdit />
             </Link>
-            <Link className="p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+            <Link
+              className="p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
+              to={`/seller/products/${product?.id}`}
+            >
               <FaEye />
             </Link>
             <Link

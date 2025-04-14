@@ -1,10 +1,15 @@
 import { NextFunction, Request, Response } from "express";
+import _ from "lodash";
+
 import { ProductService } from "@/services/product.service";
-import { BadRequestError } from "@/errors";
 import ResponseModel from "@/models/response.model";
 import { UploadedFileWithPath } from "@/types/upload";
-import { deleteUploadedFiles } from "@/utils/upload.util";
+import { deleteImagePaths, deleteUploadedFiles } from "@/utils/upload.util";
 import { ExtendedRequest } from "@/types/auth";
+import {
+  getValidatedProductPayload,
+  validateProductInput,
+} from "@/validators/product.validator";
 
 class ProductController {
   private productService: ProductService;
@@ -22,49 +27,10 @@ class ProductController {
         user: { id: sellerId },
       } = req as ExtendedRequest;
 
-      const { name, description, price, stock, category, brand } = body;
+      const { name, description, price, stock, category, brand, discount } =
+        body;
 
-      const discount = Number(body.discount?.trim()) || 0;
-
-      if (
-        !images ||
-        !images.length ||
-        !name.trim() ||
-        !description.trim() ||
-        !price.trim() ||
-        !stock.trim() ||
-        !category.trim() ||
-        !brand.trim()
-      ) {
-        deleteUploadedFiles(images);
-        return next(
-          new BadRequestError(
-            "Product name, description, discount, price, stock, category, brand and images are required."
-          )
-        );
-      }
-
-      if (isNaN(discount) || isNaN(Number(price)) || isNaN(Number(stock))) {
-        deleteUploadedFiles(images);
-        return next(
-          new BadRequestError("Discount, price and stock must be a number.")
-        );
-      }
-
-      if (Number(discount) < 0 || Number(discount) > 100) {
-        deleteUploadedFiles(images);
-        return next(new BadRequestError("Discount must be between 0 and 100."));
-      }
-
-      if (Number(price) < 0) {
-        deleteUploadedFiles(images);
-        return next(new BadRequestError("Price must be greater than 0."));
-      }
-
-      if (Number(stock) < 0) {
-        deleteUploadedFiles(images);
-        return next(new BadRequestError("Stock must be greater than 0."));
-      }
+      validateProductInput(body, images);
 
       const product = await this.productService.createProduct({
         name,
@@ -79,6 +45,48 @@ class ProductController {
       });
 
       ResponseModel.created("Product created successfully.", product).send(res);
+    } catch (err) {
+      deleteUploadedFiles(images);
+      return next(err);
+    }
+  }
+
+  async updateProduct(req: Request, res: Response, next: NextFunction) {
+    const images = req.files as UploadedFileWithPath[];
+    try {
+      const {
+        body,
+        params: { productId },
+        user: { id: sellerId },
+      } = req as ExtendedRequest;
+
+      const existingProduct = await this.productService.verifyOwnershipOrThrow(
+        productId,
+        sellerId
+      );
+
+      const bodyPayload = getValidatedProductPayload(body);
+      const mergedImages = [
+        ...(existingProduct.images || []),
+        ...(images || []).map((f) => f.publicPath),
+      ];
+
+      validateProductInput(
+        { ...existingProduct, ...bodyPayload },
+        mergedImages
+      );
+
+      const product = await this.productService.updateProduct(productId, {
+        ...bodyPayload,
+        images: mergedImages,
+        sellerId,
+      });
+
+      const removedImages = _.difference(existingProduct.images, mergedImages);
+
+      await deleteImagePaths(removedImages); // 忽略失败
+
+      ResponseModel.ok("Product updated successfully.", product).send(res);
     } catch (err) {
       deleteUploadedFiles(images);
       return next(err);
@@ -113,6 +121,16 @@ class ProductController {
         result.products,
         result.pagination
       ).send(res);
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  async getProductById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { productId } = req.params;
+      const product = await this.productService.getProductById(productId);
+      ResponseModel.ok("Product fetched successfully.", product).send(res);
     } catch (err) {
       return next(err);
     }

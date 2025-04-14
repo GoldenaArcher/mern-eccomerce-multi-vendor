@@ -21,5 +21,16 @@ router.get(
   authMiddleware,
   productController.getAllProducts.bind(productController)
 )
+router.get(
+  "/products/:productId",
+  authMiddleware,
+  productController.getProductById.bind(productController)
+)
+router.put(
+  "/seller/products/:productId",
+  sellerAuthMiddleware,
+  upload.array("images", 5),
+  productController.updateProduct.bind(productController)
+)
 
 export default router;
