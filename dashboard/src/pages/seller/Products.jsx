@@ -8,6 +8,7 @@ import { useGetProductsQuery } from "../../store/features/productApi";
 import { getBackendUrl } from "../../utils/envUtils";
 import { usePaginationSearch } from "../../hooks/usePaginationSearch";
 import { CenteredLoader } from "../../components/shared/loaders";
+import ActionIcon from "../../components/shared/ActionIcon";
 
 const productsColumnHeader = [
   { name: "No", accessor: "no" },
@@ -60,23 +61,14 @@ const Products = () => {
         stock: product?.stock,
         action: (
           <div className="flex justify-start items-center gap-4">
-            <Link
-              to={`/seller/products/edit/${product?.id}`}
-              className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50"
-            >
-              <FaEdit />
+            <Link to={`/seller/products/edit/${product?.id}`}>
+              <ActionIcon type="edit" />
             </Link>
-            <Link
-              className="p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
-              to={`/seller/products/${product?.id}`}
-            >
-              <FaEye />
+            <Link to={`/seller/products/${product?.id}`}>
+              <ActionIcon type="view" />
             </Link>
-            <Link
-              to={`/seller/products/${product?._id}`}
-              className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50"
-            >
-              <FaTrash />
+            <Link to={`/seller/products/${product?._id}`}>
+              <ActionIcon type="delete" />
             </Link>
           </div>
         ),

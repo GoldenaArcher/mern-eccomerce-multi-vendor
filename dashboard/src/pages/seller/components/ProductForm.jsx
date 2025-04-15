@@ -2,7 +2,6 @@ import React from "react";
 import { IoIosImage, IoIosCloseCircle } from "react-icons/io";
 import FormInput from "../../../components/shared/FormInput";
 import { PuffLoader } from "react-spinners";
-import { overrideStyle as defaultOverrideStyle } from "../../../utils/styleUtil";
 import {
   ButtonLoader,
   CenteredLoader,
@@ -27,7 +26,6 @@ const ProductForm = ({
   cancelDebounce,
   submitText = "Submit",
   isSubmitting = false,
-  overrideStyle = defaultOverrideStyle,
 }) => {
   const onProductChange = (e) => {
     setState((prev) => ({

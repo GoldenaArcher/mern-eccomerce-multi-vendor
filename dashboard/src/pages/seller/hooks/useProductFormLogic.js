@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import _ from "lodash";
 
 import { usePaginationSearch } from "../../../hooks/usePaginationSearch";
@@ -74,18 +74,17 @@ export default function useProductFormLogic(initialState = defaultProduct) {
     });
   };
 
-  const resetForm = () => {
-    _.forEach(displayedImg, (img) => URL.revokeObjectURL(img.url));
+  const resetForm = useCallback(() => {
     setState(defaultProduct);
     setCategoryName("");
     setSearchValue("");
     setDisplayedImg([]);
-  };
+  }, [setSearchValue]);
 
   // Revoke object URLs on unmount
   useEffect(() => {
     return () => {
-      resetForm();
+      displayedImg.forEach((img) => URL.revokeObjectURL(img?.url));
     };
   }, [displayedImg]);
 
@@ -111,7 +110,7 @@ export default function useProductFormLogic(initialState = defaultProduct) {
       }));
       setDisplayedImg(preloaded);
     }
-  }, [state.images]);
+  }, [state.images, displayedImg]);
 
   return {
     state,

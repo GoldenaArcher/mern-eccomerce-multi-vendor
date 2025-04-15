@@ -138,4 +138,16 @@ cd llm && ./run-llm.sh
 
 ## ✨ Author
 
-Built by [@GoldenaArcher](https://github.com/GoldenaArcher) for CS MAS (AI Focus) program. Focused on combining full-stack engineering with local LLM orchestration for e-commerce applications.
+Created by [@GoldenaArcher](https://github.com/GoldenaArcher) to explore scalable full-stack architectures and local LLM integration as preparation for advanced AI-oriented academic research.
+
+### 📋 Engineering Contributions
+
+Originally based on a MERN UI course scaffold, this project was extensively restructured to reflect production-level engineering practices. Key improvements include:
+
+- Migrated backend to TypeScript for stronger type safety
+- Replaced Redux Thunk with RTK Query to simplify API state logic
+- Implemented secure refresh-token flows and enhanced RBAC enforcement
+- Modularized architecture via Turborepo to support multi-role, multi-service development
+- Planned and scaffolded integration with DeepSeek LLM (via Ollama) for AI-assisted operations
+
+The result is a maintainable and extensible platform designed to support future features such as real-time chat, advanced admin dashboards, and AI-powered assistant tools.

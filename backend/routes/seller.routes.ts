@@ -38,5 +38,10 @@ router.get(
   sellerAuthMiddleware,
   shopController.getShopForCurrentSeller.bind(shopController)
 );
+router.post(
+  "/shop",
+  sellerAuthMiddleware,
+  shopController.createShopForCurrentSeller.bind(shopController)
+);
 
 export default router;

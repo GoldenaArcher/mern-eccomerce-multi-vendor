@@ -1,16 +1,15 @@
 import React from "react";
-import { FaEdit } from "react-icons/fa";
+import ActionIcon from "../../../components/shared/ActionIcon";
 
 const ProfileInfoCard = ({ data = [], editable = false, onEdit }) => {
   return (
     <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-slate-700 rounded-md relative">
       {editable && (
-        <div
-          className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50 absolute right-2 top-2 cursor-pointer"
+        <ActionIcon
+          type="edit"
+          className="absolute right-2 top-2"
           onClick={onEdit}
-        >
-          <FaEdit />
-        </div>
+        />
       )}
 
       {data.map(({ label, value, className = "" }) => (

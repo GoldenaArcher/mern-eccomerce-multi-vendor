@@ -2,6 +2,7 @@ import { isAxiosError } from "axios";
 import { getAuthToken, storeAuthToken } from "../utils/authHandler";
 import { getAxiosInstance } from "./apiInstance";
 import { Mutex } from "async-mutex";
+import { navigate } from "../utils/navigation";
 
 const mutex = new Mutex();
 
@@ -68,7 +69,7 @@ const axiosBaseQueryWithReauth = async (args, api, extraOptions) => {
         const isAdmin = state.auth?.isAdmin;
         const isSeller = state.auth?.isSeller;
 
-        const refreshAxios = getAxiosInstance({ isAdmin, isSeller }); 
+        const refreshAxios = getAxiosInstance({ isAdmin, isSeller });
 
         const refreshResult = await refreshAxios.post("/refresh-token");
 
@@ -82,6 +83,12 @@ const axiosBaseQueryWithReauth = async (args, api, extraOptions) => {
         } else {
           return result;
         }
+      } catch (e) {
+        console.error(e);
+        api.dispatch({
+          type: "auth/logout",
+        });
+        navigate("/login");
       } finally {
         release();
       }
