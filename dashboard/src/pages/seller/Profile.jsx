@@ -4,8 +4,6 @@ import _ from "lodash";
 import toast from "react-hot-toast";
 
 import FormInput from "../../components/shared/FormInput";
-import { useGetShopForCurrentSellerQuery } from "../../store/features/shopApi";
-import OverlayLoader from "../../components/shared/loaders/OverlayLoader";
 import ProfileInfoCard from "./components/ProfileInfoCard";
 import { ProfileAvatar, ProfileShop } from "./components/profile";
 import StatusBadge from "../../components/shared/StatusBadge";
