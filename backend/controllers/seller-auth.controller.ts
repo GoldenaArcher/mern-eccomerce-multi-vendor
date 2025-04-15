@@ -1,18 +1,21 @@
 import { Request, Response, NextFunction } from "express";
 
-import { AuthError, BadRequestError } from "@/errors";
+import { AuthError } from "@/errors";
 import ResponseModel from "@/models/response.model";
-import { ISeller } from "@/models/seller.model";
 import TokenService from "@/services/token.service";
 import { SellerAuthService } from "@/services/seller-auth.service";
-import { ExtendedRequest } from "@/types/auth";
-import { deleteImagePaths } from "@/utils/upload.util";
+import { SellerService } from "@/services/seller.service";
 
 class SellerAuthController {
   private sellerAuthService: SellerAuthService;
+  private sellerService: SellerService;
 
-  constructor(sellerAuthService: SellerAuthService) {
+  constructor(
+    sellerAuthService: SellerAuthService,
+    sellerService: SellerService
+  ) {
     this.sellerAuthService = sellerAuthService;
+    this.sellerService = sellerService;
   }
 
   async register(req: Request, res: Response, next: NextFunction) {
@@ -24,9 +27,7 @@ class SellerAuthController {
     }
 
     try {
-      const existingSeller = await this.sellerAuthService.getSellerByEmail(
-        email
-      );
+      const existingSeller = await this.sellerService.getSellerByEmail(email);
 
       if (existingSeller) {
         return next(new AuthError(400, "Seller already exists."));
@@ -104,25 +105,6 @@ class SellerAuthController {
     }
   }
 
-  async getUser(req: Request, res: Response, next: NextFunction) {
-    try {
-      const user = req.user as ISeller;
-      const userId = user.id;
-      const seller = await this.sellerAuthService.getSellerById(userId);
-
-      if (!seller) {
-        return next(new AuthError(404, "Seller not found"));
-      }
-
-      new ResponseModel({
-        message: "Seller retrieved successfully",
-        data: seller,
-      }).send(res);
-    } catch (err) {
-      next(err);
-    }
-  }
-
   async refreshToken(req: Request, res: Response, next: NextFunction) {
     const refreshToken = req?.cookies?.refreshToken;
 
@@ -147,43 +129,6 @@ class SellerAuthController {
         message: "Token refreshed successfully",
         data: { accessToken: newTokens.accessToken },
       }).send(res);
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  async updateUserProfile(req: Request, res: Response, next: NextFunction) {
-    const image = req.file;
-
-    try {
-      const {
-        user: { id: sellerId },
-      } = req as ExtendedRequest;
-
-      if (!image) {
-        return next(new BadRequestError("Avatar is required."));
-      }
-
-      const existingSeller = await this.sellerAuthService.getSellerById(
-        sellerId
-      );
-
-      const updatedSeller = await this.sellerAuthService.updateSellerProfile(
-        sellerId,
-        image
-      );
-
-      if (
-        existingSeller!.image &&
-        existingSeller!.image !== updatedSeller.image
-      ) {
-        await deleteImagePaths([existingSeller!.image]);
-      }
-
-      ResponseModel.ok(
-        "User profile updated successfully.",
-        updatedSeller
-      ).send(res);
     } catch (err) {
       next(err);
     }
