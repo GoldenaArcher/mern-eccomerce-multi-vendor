@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
 import Search from "../../components/shared/Search";
+import { useGetSellersQuery } from "../../store/features/sellerApi";
+import { usePaginationSearch } from "../../hooks/usePaginationSearch";
 
 const sellersColumnHeader = [
   { name: "No", accessor: "no" },
@@ -29,9 +31,21 @@ const dummyData = [
   ];
 
 const Sellers = () => {
-  const [searchValue, setSearchValue] = useState("");
-  const [perPage, setPerPage] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    searchValue,
+    setSearchValue,
+    debouncedSearch,
+    perPage,
+    setPerPage,
+    currentPage,
+    setCurrentPage,
+  } = usePaginationSearch();
+
+  useGetSellersQuery({
+    page: currentPage,
+    limit: perPage,
+    search: debouncedSearch,
+  });
 
   return (
     <div className="px-2 lg:px-7 pt-5">

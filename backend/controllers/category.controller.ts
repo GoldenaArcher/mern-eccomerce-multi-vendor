@@ -50,7 +50,10 @@ class CategoryController {
         const result = await this.categoryService.getAllCategories({
           filter,
         });
-        ResponseModel.ok("Fetched all categories", result.categories).send(res);
+        ResponseModel.ok(
+          "Categories retrieved successfully.",
+          result.categories
+        ).send(res);
         return;
       }
 
@@ -61,7 +64,7 @@ class CategoryController {
       });
 
       ResponseModel.ok(
-        "Category fetches successfully.",
+        "Category retrieved successfully.",
         result.categories,
         result.pagination
       ).send(res);

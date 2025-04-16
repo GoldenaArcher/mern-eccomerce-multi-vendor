@@ -1,34 +1,58 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { FaEye } from "react-icons/fa";
 
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
 import Search from "../../components/shared/Search";
+import { usePaginationSearch } from "../../hooks/usePaginationSearch";
+import { useGetSellersQuery } from "../../store/features/sellerApi";
+import { CenteredLoader } from "../../components/shared/loaders";
+import ActionIcon from "../../components/shared/ActionIcon";
+import StatusBadge from "../../components/shared/StatusBadge";
 
 const sellersColumnHeader = [
   { name: "No", accessor: "no" },
   { name: "Name", accessor: "name" },
-  { name: "Email", accessor: "email" },
   { name: "Payment Status", accessor: "paymentStatus" },
   { name: "Email", accessor: "email" },
   { name: "Status", accessor: "status" },
   { name: "Action", accessor: "action" },
 ];
 
-// prettier-ignore
-const dummyData = [
-    { no: "1", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' to={'/admin/seller/details/2'}><FaEye /></Link></div> ,},
-    { no: "2", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' to={'/admin/seller/details/2'}><FaEye /></Link></div> ,},
-    { no: "3", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' to={'/admin/seller/details/2'}><FaEye /></Link></div> ,},
-    { no: "4", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' to={'/admin/seller/details/2'}><FaEye /></Link></div> ,},
-    { no: "5", image: <img src="http://localhost:3000/dummy" alt="category-img" className="w-[45px] h-[45px]" />, name: "shirts", action: <div className="flex justify-start"><Link className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' to={'/admin/seller/details/2'}><FaEye /></Link></div> ,},
-  ];
-
 const SellerRequests = () => {
-  const [searchValue, setSearchValue] = useState("");
-  const [perPage, setPerPage] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    searchValue,
+    setSearchValue,
+    debouncedSearch,
+    perPage,
+    setPerPage,
+    currentPage,
+    setCurrentPage,
+  } = usePaginationSearch();
+
+  const { data: sellers, isLoading: isGetLoading } = useGetSellersQuery({
+    page: currentPage,
+    limit: perPage,
+    search: debouncedSearch,
+  });
+
+  const tableData = useMemo(() => {
+    if (!sellers?.data) return [];
+
+    return sellers.data.map((seller, i) => ({
+      key: seller.id,
+      no: (currentPage - 1) * perPage + i + 1,
+      name: seller.name,
+      email: seller.email,
+      paymentStatus: <StatusBadge status={seller.paymentStatus} />,
+      status: <StatusBadge status={seller.status} />,
+      action: (
+        <Link to={`/admin/seller/details/${seller.id}`}>
+          <ActionIcon type="view" />
+        </Link>
+      ),
+    }));
+  }, [sellers, currentPage, perPage]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -42,7 +66,11 @@ const SellerRequests = () => {
           setPerPage={setPerPage}
         />
 
-        <Table columns={sellersColumnHeader} data={dummyData} />
+        {isGetLoading ? (
+          <CenteredLoader />
+        ) : (
+          <Table columns={sellersColumnHeader} data={tableData} />
+        )}
 
         <Pagination
           currentPage={currentPage}

@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import _ from "lodash";
-import toast from "react-hot-toast";
 
 import FormInput from "../../components/shared/FormInput";
 import ProfileInfoCard from "./components/ProfileInfoCard";
@@ -29,7 +28,7 @@ const Profile = () => {
                   { label: "Status", value: _.upperFirst(userInfo.status) },
                   {
                     label: "Payment Account",
-                    value: <StatusBadge status={userInfo.status} />,
+                    value: <StatusBadge status={userInfo.paymentStatus} />,
                   },
                 ]}
               />

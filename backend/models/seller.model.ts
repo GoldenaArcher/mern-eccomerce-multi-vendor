@@ -7,7 +7,7 @@ export interface ISeller extends Document {
   password: string;
   role: string;
   status: string;
-  payment: string;
+  paymentStatus: string;
   method: string;
   image: string;
   shop: Types.ObjectId;
@@ -40,7 +40,7 @@ const sellerSchema = new Schema(
       type: String,
       default: "pending",
     },
-    payment: {
+    paymentStatus: {
       type: String,
       default: "inactive",
     },

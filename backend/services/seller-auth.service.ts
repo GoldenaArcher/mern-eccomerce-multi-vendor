@@ -8,25 +8,13 @@ import {
   RefreshTokenAuthError,
 } from "@/errors";
 import { JwtPayload } from "jsonwebtoken";
-import { UploadedFileWithPath } from "@/types/upload";
+import sellerService from "./seller.service";
 
 type SanitizedSeller = Omit<ISeller, "password">;
 
 class SellerAuthService {
-  #getSantizedSeller(seller: ISeller): SanitizedSeller {
-    const sanitizedSeller = seller.toObject();
-    delete sanitizedSeller.password;
-
-    return sanitizedSeller;
-  }
-
   getSellerForAuthToken(seller: ISeller | SanitizedSeller) {
     return { id: seller.id, role: seller.role, status: seller.status };
-  }
-
-  async #saveSeller(seller: ISeller) {
-    const savedSeller = await seller.save();
-    return this.#getSantizedSeller(savedSeller);
   }
 
   async authenticateSeller(email: string, password: string) {
@@ -39,7 +27,7 @@ class SellerAuthService {
 
     await TokenService.storeRefreshToken(seller.id, jti);
 
-    const sanitizedSeller = this.#getSantizedSeller(seller);
+    const sanitizedSeller = sellerService.getSantizedSeller(seller);
 
     return {
       accessToken,
@@ -59,7 +47,7 @@ class SellerAuthService {
   async createSeller(data: Partial<ISeller>) {
     const seller = new Seller(data);
 
-    const newSeller = await this.#saveSeller(seller);
+    const newSeller = await sellerService.saveSeller(seller);
 
     try {
       await this.#initializeSellerCustomer(newSeller._id as string);
@@ -115,20 +103,6 @@ class SellerAuthService {
     await TokenService.storeRefreshToken(id, newTokens.jti);
 
     return newTokens;
-  }
-
-  async updateSellerProfile(id: string, image: Express.Multer.File) {
-    const seller = await Seller.findById(id);
-    seller!.image = (image as UploadedFileWithPath).publicPath;
-    return await this.#saveSeller(seller!);
-  }
-
-  async getSellerById(id: string) {
-    return await Seller.findById(id);
-  }
-
-  async getSellerByEmail(email: string) {
-    return await Seller.findOne({ email });
   }
 }
 

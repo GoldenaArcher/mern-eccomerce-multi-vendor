@@ -42,8 +42,8 @@ class ResponseModel {
     return new ResponseModel({ code: 200, message, data, pagination });
   }
 
-  static created(message: string, data: any) {
-    return new ResponseModel({ code: 201, message, data });
+  static created(message: string, data: any, pagination?: any) {
+    return new ResponseModel({ code: 201, message, data, pagination });
   }
 
   send(res: Response) {
