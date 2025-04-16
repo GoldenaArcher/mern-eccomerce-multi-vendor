@@ -8,6 +8,7 @@ import { categoryApi } from "./features/categoryApi";
 import { productApi } from "./features/productApi";
 import { shopApi } from "./features/shopApi";
 import { userApi } from "./features/userApi";
+import { sellerApi } from "./features/sellerApi";
 
 const rehydratedAuthState = rehydrateJwtToken();
 
@@ -19,7 +20,8 @@ const store = configureStore({
       categoryApi.middleware,
       productApi.middleware,
       shopApi.middleware,
-      userApi.middleware
+      userApi.middleware,
+      sellerApi.middleware
     );
 
     middlewares.push(logger);

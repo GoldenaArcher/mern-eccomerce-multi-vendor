@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import Search from "../../components/shared/Search";
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
@@ -67,7 +66,7 @@ const Products = () => {
             <Link to={`/seller/products/${product?.id}`}>
               <ActionIcon type="view" />
             </Link>
-            <Link to={`/seller/products/${product?._id}`}>
+            <Link to={`/seller/products/${product?.id}`}>
               <ActionIcon type="delete" />
             </Link>
           </div>

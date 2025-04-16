@@ -31,14 +31,14 @@ export const authApi = createApi({
     }),
     getCurrentAdmin: builder.query({
       query: () => ({
-        url: "/user",
+        url: "/me",
         method: "GET",
         isAdmin: true,
       }),
     }),
     getCurrentSeller: builder.query({
       query: () => ({
-        url: "/user",
+        url: "/me",
         method: "GET",
         isSeller: true,
       }),

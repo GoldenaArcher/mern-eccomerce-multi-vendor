@@ -33,7 +33,7 @@ export class CategoryService {
       return { categories: categories.map((cat) => sanitizeDocument(cat)) };
     }
 
-    const totalItems = await CategoryModel.countDocuments(filter);
+    const totalCategories = await CategoryModel.countDocuments(filter);
 
     const categories = await CategoryModel.find(filter)
       .sort({ createdAt: -1 })
@@ -43,10 +43,10 @@ export class CategoryService {
     return {
       categories: categories.map((cat) => sanitizeDocument(cat)),
       pagination: {
-        totalItems,
+        totalItems: totalCategories,
         currentPage: page,
         perPage: limit,
-        totalPages: Math.ceil(totalItems / limit),
+        totalPages: Math.ceil(totalCategories / limit),
       },
     };
   }

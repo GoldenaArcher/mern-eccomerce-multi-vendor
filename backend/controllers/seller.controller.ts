@@ -14,7 +14,37 @@ class SellerController {
     this.sellerService = sellerService;
   }
 
-  async getSellers(req: Request, res: Response, next: NextFunction) {}
+  async getAllSellers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const search = req.query.search as string;
+      const isAll = req.query.all === "true";
+      const filter = search ? { name: { $regex: search, $options: "i" } } : {};
+
+      if (isAll) {
+        const sellers = await this.sellerService.getAllSellers({
+          filter,
+        });
+        ResponseModel.ok("Sellers retrieved successfully.", sellers).send(res);
+        return;
+      }
+
+      const result = await this.sellerService.getAllSellers({
+        page,
+        limit,
+        filter,
+      });
+
+      ResponseModel.ok(
+        "Sellers retrieved successfully.",
+        result.sellers,
+        result.pagination
+      ).send(res);
+    } catch (err) {
+      next(err);
+    }
+  }
 
   async getCurrentUser(req: Request, res: Response, next: NextFunction) {
     try {

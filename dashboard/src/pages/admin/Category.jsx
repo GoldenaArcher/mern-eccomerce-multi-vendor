@@ -113,7 +113,7 @@ const Category = () => {
     if (!categories?.data) return [];
 
     return categories.data.map((cat, i) => ({
-      key: cat._id,
+      key: cat.id,
       no: (currentPage - 1) * perPage + i + 1,
       image: (
         <img
