@@ -1,9 +1,15 @@
 import React from "react";
-import ActionIcon from "../../../components/shared/ActionIcon";
+import ActionIcon from "./ActionIcon";
+import { cn } from "../../utils/cn";
 
-const ProfileInfoCard = ({ data = [], editable = false, onEdit }) => {
+const InfoCard = ({ data = [], editable = false, onEdit, isDark = true }) => {
   return (
-    <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-slate-700 rounded-md relative">
+    <div
+      className={cn(
+        "flex justify-between text-sm flex-col gap-2 p-4 rounded-md relative",
+        isDark ? "bg-slate-700 text-slate-100" : "bg-[#9e97e9] text-black"
+      )}
+    >
       {editable && (
         <ActionIcon
           type="edit"
@@ -24,4 +30,4 @@ const ProfileInfoCard = ({ data = [], editable = false, onEdit }) => {
   );
 };
 
-export default ProfileInfoCard;
+export default InfoCard;
