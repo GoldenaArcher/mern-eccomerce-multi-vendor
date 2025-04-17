@@ -1,3 +1,4 @@
+import { NotFoundError } from "@/errors";
 import SellerModel, { ISeller } from "@/models/seller.model";
 import { UploadedFileWithPath } from "@/types/upload";
 import { ObjectId } from "mongoose";
@@ -18,7 +19,10 @@ class SellerService {
     return this.getSantizedSeller(savedSeller);
   }
 
-  async getSellerById(id: string) {
+  async getSellerById(id: string, includeShop = false) {
+    if (includeShop) {
+      return await SellerModel.findById(id).populate("shop");
+    }
     return await SellerModel.findById(id);
   }
 
@@ -66,6 +70,16 @@ class SellerService {
         totalPages: Math.ceil(totalSellers / limit),
       },
     };
+  }
+
+  async updateSellerById(id: string, data: Partial<ISeller>) {
+    const seller = await SellerModel.findById(id);
+    if (!seller) {
+      throw new NotFoundError("Seller not found");
+    }
+
+    Object.assign(seller, data);
+    return await this.saveSeller(seller);
   }
 }
 

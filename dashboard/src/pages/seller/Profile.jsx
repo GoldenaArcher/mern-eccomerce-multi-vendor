@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import _ from "lodash";
 
 import FormInput from "../../components/shared/FormInput";
-import ProfileInfoCard from "./components/ProfileInfoCard";
+import InfoCard from "../../components/shared/InfoCard";
 import { ProfileAvatar, ProfileShop } from "./components/profile";
 import StatusBadge from "../../components/shared/StatusBadge";
 
@@ -18,16 +18,19 @@ const Profile = () => {
             <ProfileAvatar />
 
             <div className="px-0 md:px-5 py-2">
-              <ProfileInfoCard
+              <InfoCard
                 editable={true}
                 onEdit={() => {}}
                 data={[
                   { label: "Name", value: userInfo.name },
                   { label: "Email", value: userInfo.email },
                   { label: "Role", value: _.upperFirst(userInfo.role) },
-                  { label: "Status", value: _.upperFirst(userInfo.status) },
                   {
-                    label: "Payment Account",
+                    label: "Status",
+                    value: <StatusBadge status={userInfo.status} />,
+                  },
+                  {
+                    label: "Payment Status",
                     value: <StatusBadge status={userInfo.paymentStatus} />,
                   },
                 ]}

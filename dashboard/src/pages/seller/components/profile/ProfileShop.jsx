@@ -8,7 +8,7 @@ import {
 } from "../../../../store/features/shopApi";
 import OverlayLoader from "../../../../components/shared/loaders/OverlayLoader";
 import FormInput from "../../../../components/shared/FormInput";
-import ProfileInfoCard from "../ProfileInfoCard";
+import InfoCard from "../../../../components/shared/InfoCard";
 
 const defaultShopInfo = {
   name: "",
@@ -113,7 +113,7 @@ const ProfileShop = () => {
           />
         </form>
       ) : (
-        <ProfileInfoCard
+        <InfoCard
           editable={true}
           onEdit={() => {}}
           data={[

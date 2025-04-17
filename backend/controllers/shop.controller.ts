@@ -11,6 +11,20 @@ class ShopController {
     this.shopService = shopService;
   }
 
+  async getShopBySellerId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const shopId = req.params.shopId;
+      const shop = await this.shopService.getShopBySellerId(shopId);
+      if (!shop) {
+        next(new NotFoundError("Shop not found"));
+        return;
+      }
+      ResponseModel.ok("Shop fetched successfully", shop).send(res);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async getShopForCurrentSeller(
     req: Request,
     res: Response,
@@ -21,7 +35,7 @@ class ShopController {
         user: { id: sellerId },
       } = req as ExtendedRequest;
 
-      const shop = await this.shopService.getShopForCurrentSeller(sellerId);
+      const shop = await this.shopService.getShopBySellerId(sellerId);
 
       if (!shop) {
         next(new NotFoundError("Shop not found"));
@@ -44,10 +58,7 @@ class ShopController {
       const {
         user: { id: sellerId },
       } = req as ExtendedRequest;
-      const shop = await this.shopService.createShopForCurrentSeller(
-        sellerId,
-        req.body
-      );
+      const shop = await this.shopService.createShop(sellerId, req.body);
       ResponseModel.created("Shop created successfully", shop).send(res);
     } catch (err) {
       next(err);

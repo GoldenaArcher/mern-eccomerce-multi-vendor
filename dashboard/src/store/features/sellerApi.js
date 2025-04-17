@@ -14,7 +14,29 @@ export const sellerApi = createApi({
         params: { page, limit, search },
       }),
     }),
+    getSellerById: builder.query({
+      query: ({ id, shop = false }) => ({
+        url: `/${id}`,
+        method: "GET",
+        isSeller: true,
+        params: { shop },
+      }),
+      providesTags: ["Seller"],
+    }),
+    updateSellerById: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/${id}`,
+        method: "PATCH",
+        isSeller: true,
+        data,
+      }),
+      invalidatesTags: ["Seller"],
+    }),
   }),
 });
 
-export const { useGetSellersQuery } = sellerApi;
+export const {
+  useGetSellersQuery,
+  useGetSellerByIdQuery,
+  useUpdateSellerByIdMutation,
+} = sellerApi;

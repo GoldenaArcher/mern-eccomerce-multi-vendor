@@ -7,7 +7,7 @@ export const userApi = createApi({
   endpoints: (builder) => ({
     updateSellerAvatar: builder.mutation({
       query: (data) => ({
-        url: "/user/avatar",
+        url: "/me/avatar",
         method: "PATCH",
         data,
         isSeller: true,

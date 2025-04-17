@@ -1,7 +1,10 @@
 import { Router } from "express";
 
 import SellerAuthController from "@/controllers/seller-auth.controller";
-import { sellerAuthMiddleware } from "@/middlewares/auth-aggregate.middleware";
+import {
+  sellerAuthMiddleware,
+  sellerOrAdminAuthMiddleware,
+} from "@/middlewares/auth-aggregate.middleware";
 import sellerAuthService from "@/services/seller-auth.service";
 import ShopController from "@/controllers/shop.controller";
 import shopService from "@/services/shop.service";
@@ -29,11 +32,22 @@ router.get(
   sellerController.getCurrentUser.bind(sellerAuthController)
 );
 router.patch(
-  "/user/avatar",
+  "/me/avatar",
   sellerAuthMiddleware,
   upload.single("image"),
   sellerController.updateUserProfile.bind(sellerAuthController)
 );
+router.get(
+  "/:sellerId",
+  sellerOrAdminAuthMiddleware,
+  sellerController.getSellerById.bind(sellerAuthController)
+)
+router.patch(
+  "/:sellerId",
+  sellerOrAdminAuthMiddleware,
+  sellerController.updateSellerById.bind(sellerAuthController)
+);
+
 router.post(
   "/refresh-token",
   sellerAuthController.refreshToken.bind(sellerAuthController)

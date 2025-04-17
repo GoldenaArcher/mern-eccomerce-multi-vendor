@@ -46,6 +46,24 @@ class SellerController {
     }
   }
 
+  async getSellerById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const sellerId = req.params.sellerId;
+      const includeShop = req.query.shop === "true";
+
+      const seller = await this.sellerService.getSellerById(
+        sellerId,
+        includeShop
+      );
+      if (!seller) {
+        return next(new AuthError(404, "Seller not found"));
+      }
+      ResponseModel.ok("Seller retrieved successfully.", seller).send(res);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async getCurrentUser(req: Request, res: Response, next: NextFunction) {
     try {
       const user = req.user as ISeller;
@@ -95,6 +113,24 @@ class SellerController {
         "User profile updated successfully.",
         updatedSeller
       ).send(res);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async updateSellerById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const sellerId = req.params.sellerId;
+      const updatedSellerData = req.body;
+
+      console.log(updatedSellerData);
+
+      const updatedSeller = await this.sellerService.updateSellerById(
+        sellerId,
+        updatedSellerData
+      );
+
+      ResponseModel.ok("Seller updated successfully.", updatedSeller).send(res);
     } catch (err) {
       next(err);
     }
