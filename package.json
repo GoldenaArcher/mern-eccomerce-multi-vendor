@@ -11,7 +11,8 @@
   "private": "true",
   "workspaces": [
     "backend",
-    "dashboard"
+    "dashboard",
+    "frontend"
   ],
   "scripts": {
     "start": "turbo run start",
