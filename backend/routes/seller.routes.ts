@@ -37,21 +37,6 @@ router.patch(
   upload.single("image"),
   sellerController.updateUserProfile.bind(sellerAuthController)
 );
-router.get(
-  "/:sellerId",
-  sellerOrAdminAuthMiddleware,
-  sellerController.getSellerById.bind(sellerAuthController)
-)
-router.patch(
-  "/:sellerId",
-  sellerOrAdminAuthMiddleware,
-  sellerController.updateSellerById.bind(sellerAuthController)
-);
-
-router.post(
-  "/refresh-token",
-  sellerAuthController.refreshToken.bind(sellerAuthController)
-);
 
 router.get(
   "/shop",
@@ -62,6 +47,22 @@ router.post(
   "/shop",
   sellerAuthMiddleware,
   shopController.createShopForCurrentSeller.bind(shopController)
+);
+
+router.get(
+  "/:sellerId",
+  sellerOrAdminAuthMiddleware,
+  sellerController.getSellerById.bind(sellerAuthController)
+);
+router.patch(
+  "/:sellerId",
+  sellerOrAdminAuthMiddleware,
+  sellerController.updateSellerById.bind(sellerAuthController)
+);
+
+router.post(
+  "/refresh-token",
+  sellerAuthController.refreshToken.bind(sellerAuthController)
 );
 
 export default router;
