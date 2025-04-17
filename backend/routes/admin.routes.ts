@@ -20,5 +20,10 @@ router.get(
   adminAuthMiddleware,
   sellerController.getAllSellers.bind(sellerController)
 );
+router.patch(
+  "/sellers/:sellerId/status",
+  adminAuthMiddleware,
+  sellerController.updateSellerById.bind(sellerController)
+)
 
 export default router;

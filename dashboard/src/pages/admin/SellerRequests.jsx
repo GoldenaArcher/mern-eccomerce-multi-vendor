@@ -34,6 +34,7 @@ const SellerRequests = () => {
     page: currentPage,
     limit: perPage,
     search: debouncedSearch,
+    status: "pending",
   });
 
   const tableData = useMemo(() => {
@@ -75,7 +76,7 @@ const SellerRequests = () => {
         <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
-          totalItems={50}
+          totalItems={sellers?.pagination?.totalItems || 0}
           perPage={perPage}
           showItems={3}
         />

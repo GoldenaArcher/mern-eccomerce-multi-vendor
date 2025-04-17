@@ -7,11 +7,11 @@ export const sellerApi = createApi({
   tagTypes: ["Seller"],
   endpoints: (builder) => ({
     getSellers: builder.query({
-      query: ({ page = 1, limit = 5, search = "" }) => ({
+      query: ({ page = 1, limit = 5, search = "", status = "" }) => ({
         url: "/sellers",
         method: "GET",
         isAdmin: true,
-        params: { page, limit, search },
+        params: { page, limit, search, status },
       }),
     }),
     getSellerById: builder.query({
@@ -22,6 +22,15 @@ export const sellerApi = createApi({
         params: { shop },
       }),
       providesTags: ["Seller"],
+    }),
+    updateSellerStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/sellers/${id}/status`,
+        method: "PATCH",
+        isAdmin: true,
+        data: { status },
+      }),
+      invalidatesTags: ["Seller"],
     }),
     updateSellerById: builder.mutation({
       query: ({ id, data }) => ({
@@ -39,4 +48,5 @@ export const {
   useGetSellersQuery,
   useGetSellerByIdQuery,
   useUpdateSellerByIdMutation,
+  useUpdateSellerStatusMutation,
 } = sellerApi;

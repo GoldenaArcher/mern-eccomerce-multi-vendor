@@ -19,8 +19,17 @@ class SellerController {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const search = req.query.search as string;
+      const status = req.query.status as string;
       const isAll = req.query.all === "true";
-      const filter = search ? { name: { $regex: search, $options: "i" } } : {};
+      const filter: Record<string, any> = {};
+
+      if (search) {
+        filter.name = { $regex: search, $options: "i" };
+      }
+
+      if (status) {
+        filter.status = status;
+      }
 
       if (isAll) {
         const sellers = await this.sellerService.getAllSellers({

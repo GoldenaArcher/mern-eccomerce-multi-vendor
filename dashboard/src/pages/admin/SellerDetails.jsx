@@ -8,6 +8,7 @@ import StatusBadge from "../../components/shared/StatusBadge";
 import {
   useGetSellerByIdQuery,
   useUpdateSellerByIdMutation,
+  useUpdateSellerStatusMutation,
 } from "../../store/features/sellerApi";
 import OverlayLoader from "../../components/shared/loaders/OverlayLoader";
 import { getBackendUrl } from "../../utils/envUtils";
@@ -27,14 +28,14 @@ const SellerDetails = () => {
   }, [sellerInfo]);
 
   const [
-    updateSellerById,
+    updateSellerStatus,
     {
       isLoading: isUpdateSellerLoading,
       isSuccess: isUpdateSellerSuccess,
       isError: isUpdateSellerError,
       error: updateSellerError,
     },
-  ] = useUpdateSellerByIdMutation();
+  ] = useUpdateSellerStatusMutation();
 
   const onUpdateSellerStatus = async (e) => {
     e.preventDefault();
@@ -42,7 +43,7 @@ const SellerDetails = () => {
       toast.error("Please select a status");
       return;
     }
-    await updateSellerById({ id: sellerId, data: { status } });
+    await updateSellerStatus({ id: sellerId, status });
   };
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const SellerDetails = () => {
   return (
     <div className="px-2 lg:px-7 pt-5">
       <h1 className="text-[20px] font-bold mb-3">Seller Details</h1>
-      {isGetSellerLoading ? (
+      {isGetSellerLoading || isUpdateSellerLoading ? (
         <OverlayLoader />
       ) : (
         <div className="bg-[#6a5fdf] w-full p-4 rounded-md">
@@ -146,7 +147,7 @@ const SellerDetails = () => {
                 className="bg-red-500 shadow-lg hover:bg-red-500/40 px-4 py-2 cursor-pointer rounded-md text-sm w-[170px]"
                 type="submit"
               >
-                Add
+                Update
               </button>
             </div>
           </form>
