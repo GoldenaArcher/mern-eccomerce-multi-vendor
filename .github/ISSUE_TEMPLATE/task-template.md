@@ -6,7 +6,7 @@ labels: ["ui", "frontend", "features"]
 assignees:
 ---
 
-🎯 Description
+### 🎯 Description
 
 <!-- Briefly describe what this ticket is about. What's the goal, what are we building? -->
 
@@ -20,18 +20,18 @@ assignees:
 | Responsive support   | ⬜ Yes / ⬛ No          | Include mobile behavior             |
 | Accessibility (a11y) | ⬜ Yes / ⬛ No          | ARIA, keyboard nav, etc             |
 
-🛠️ Tasks
+### 🛠️ Tasks
 
 - [ ] ...
 - [ ] ...
 - [ ] ...
 
-🕓 Deferred Tasks
+### 🕓 Deferred Tasks
 
 - [ ] ...
 - [ ] ...
 
-✅ Acceptance Criteria
+### ✅ Acceptance Criteria
 
 - [ ] ...
 - [ ] ...
