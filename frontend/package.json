@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
     "clsx": "^2.1.1",
+    "lodash": "^4.17.21",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hot-toast": "^2.5.2",
@@ -52,6 +53,8 @@
     ]
   },
   "devDependencies": {
+    "eslint": "8",
+    "eslint-plugin-tailwindcss": "^3.18.0",
     "tailwindcss": "3"
   }
 }
