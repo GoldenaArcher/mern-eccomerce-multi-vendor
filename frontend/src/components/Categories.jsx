@@ -3,6 +3,7 @@ import { createResponsiveConfig } from "../utils/responsive";
 import Carousel from "react-multi-carousel";
 import { Link } from "react-router-dom";
 import "react-multi-carousel/lib/styles.css";
+import SectionHeader from "./shared/SectionHeader";
 
 const dummyCategories = [
   "All Categories",
@@ -29,6 +30,7 @@ console.log(responsiveConfig);
 const Categories = () => {
   return (
     <div className="w-[87%] mx-auto relative">
+      <SectionHeader title="Categories" />
       <Carousel
         autoPlay
         infinite

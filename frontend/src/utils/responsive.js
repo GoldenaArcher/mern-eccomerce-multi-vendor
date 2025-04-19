@@ -1,6 +1,4 @@
 export const createResponsiveConfig = (overrides = {}) => {
-  console.log(overrides);
-  
   return {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
