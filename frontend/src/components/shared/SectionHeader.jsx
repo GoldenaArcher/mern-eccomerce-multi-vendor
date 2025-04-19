@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "../../utils/cn";
 
-const SectionHeader = ({ title, className = "" }) => {
+const SectionHeader = ({ title, className = "", hideDivider = false }) => {
   return (
     <div className={"w-full"}>
       <div
@@ -11,7 +11,9 @@ const SectionHeader = ({ title, className = "" }) => {
         )}
       >
         <h2>{title}</h2>
-        <div className="w-[100px] h-[2px] bg-[#059473] mt-4"></div>
+        {!hideDivider && (
+          <div className="w-[100px] h-[2px] bg-[#059473] mt-4"></div>
+        )}
       </div>
     </div>
   );

@@ -25,8 +25,6 @@ const responsiveConfig = createResponsiveConfig({
   mobile: 2,
 });
 
-console.log(responsiveConfig);
-
 const Categories = () => {
   return (
     <div className="w-[87%] mx-auto relative">
