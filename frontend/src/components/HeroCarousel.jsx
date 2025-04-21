@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "react-multi-carousel/lib/styles.css";
 import { createResponsiveConfig } from "../utils/responsive";
 
-const Banner = () => {
+const HeroCarousel = () => {
   return (
     <div className="w-full md-lg:mt-6">
       <div className="w-[85%] lg:w-[90%] mx-auto">
@@ -35,4 +35,4 @@ const Banner = () => {
   );
 };
 
-export default Banner;
+export default HeroCarousel;

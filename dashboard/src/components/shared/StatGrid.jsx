@@ -31,7 +31,7 @@ const StatCard = ({
         style={{ color: textColor }}
       >
         <h2 className="text-3xl font-bold">{title}</h2>
-        <span className="text-md font-medium">{subtitle}</span>
+        <span className="text-base font-medium">{subtitle}</span>
       </div>
       <div
         className="w-[40px] h-[47px] rounded-full flex justify-center items-center text-xl"

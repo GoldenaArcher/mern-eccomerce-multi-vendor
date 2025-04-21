@@ -1,5 +1,5 @@
 import React from "react";
-import Banner from "../components/Banner";
+import HeroCarousel from "../components/HeroCarousel";
 import Categories from "../components/Categories";
 import FeatureProduct from "../components/products/FeatureProduct";
 import ProductStack from "../components/products/ProductStack";
@@ -7,7 +7,7 @@ import ProductStack from "../components/products/ProductStack";
 const Home = () => {
   return (
     <div className="w-full">
-      <Banner />
+      <HeroCarousel />
       <Categories />
       <div className="py-[45px]">
         <FeatureProduct />
