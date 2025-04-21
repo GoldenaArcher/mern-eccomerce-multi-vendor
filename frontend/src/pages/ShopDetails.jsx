@@ -167,7 +167,7 @@ const Shops = () => {
             <div className="w-9/12 md-lg:w-8/12 md:w-full">
               <div className="pl-8 md:pl-0">
                 <div className="py-4 px-3 bg-white mb-10 rounded-md flex justify-between items-start border">
-                  <h2 className="cntext-lg font-medium text-slate-600">
+                  <h2 className="text-lg font-medium text-slate-600">
                     14 Products
                   </h2>
                   <div className="flex justify-center items-center gap-3">

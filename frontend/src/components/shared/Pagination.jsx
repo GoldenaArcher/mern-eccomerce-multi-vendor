@@ -33,7 +33,7 @@ const Pagination = ({
             currentPage === i
               ? "bg-green-500 shadow-lg shadow-green-300/50 text-white"
               : "bg-slate-600 hover:bg-green-500 shadow-lg hover:shadow-green-600/50 hover:text-white text-[#d0d2d6]"
-          } w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer select-none`}
+          } size-[33px] rounded-full flex justify-center items-center cursor-pointer select-none`}
           onClick={() => setCurrentPage(i)}
         >
           {i}
@@ -51,7 +51,7 @@ const Pagination = ({
       )}
     >
       {currentPage > 1 && (
-        <li className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-black hover:cursor-pointer select-none">
+        <li className="size-[33px] rounded-full flex justify-center items-center bg-slate-300 text-black hover:cursor-pointer select-none">
           <MdOutlineKeyboardDoubleArrowLeft
             onClick={() => setCurrentPage((prev) => prev - 1)}
           />
@@ -61,7 +61,7 @@ const Pagination = ({
       {createBtn()}
 
       {currentPage < totalPage && (
-        <li className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-black hover:cursor-pointer select-none">
+        <li className="size-[33px] rounded-full flex justify-center items-center bg-slate-300 text-black hover:cursor-pointer select-none">
           <MdOutlineKeyboardDoubleArrowRight
             onClick={() => setCurrentPage((prev) => prev + 1)}
           />

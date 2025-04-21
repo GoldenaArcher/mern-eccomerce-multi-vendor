@@ -213,7 +213,7 @@ const Category = () => {
                       <img
                         src={displayedImg}
                         alt="category-img"
-                        className="w-full h-full object-contain"
+                        className="size-full object-contain"
                       />
                     ) : (
                       <>

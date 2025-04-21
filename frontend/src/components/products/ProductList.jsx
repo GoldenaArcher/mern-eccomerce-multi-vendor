@@ -6,13 +6,13 @@ import { FaShoppingCart } from "react-icons/fa";
 const ProductListItem = () => {
   return (
     <div className="flex w-full bg-white rounded-md p-4 gap-6 md-lg:flex-col md-lg:items-start shadow hover:shadow-md transition-all duration-300 cursor-pointer">
-      <div className="w-[160px] h-[160px] shrink-0 overflow-hidden rounded-md">
+      <div className="size-[160px] shrink-0 overflow-hidden rounded-md">
         <img
           src={
             "http://localhost:5000/uploads/toy_flash_sale_banner_compressed.jpg"
           }
           alt={"product name"}
-          className="w-full h-full object-cover"
+          className="size-full object-cover"
         />
       </div>
 
