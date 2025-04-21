@@ -64,8 +64,8 @@ const ProductStack = ({ title, chunkNum = 3 }) => {
                   className="size-[110px]"
                 />
                 <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600">
-                  <h2>Product Name</h2>
-                  <span>$123</span>
+                  <h2 className="font-semibold">Product Name</h2>
+                  <span className="font-bold">$123</span>
                 </div>
               </Link>
             ))}

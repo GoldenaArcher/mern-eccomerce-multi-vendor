@@ -1,8 +1,14 @@
 import React from "react";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
+import { cn } from "../../utils/cn";
 
-const Rating = ({ ratings = 0, total = 5 }) => {
+const Ratings = ({
+  ratings = 0,
+  total = 5,
+  className = "",
+  onClick = null,
+}) => {
   const stars = [];
 
   for (let i = 1; i <= total; i++) {
@@ -15,7 +21,11 @@ const Rating = ({ ratings = 0, total = 5 }) => {
     }
   }
 
-  return <div className="flex gap-[1px]">{stars}</div>;
+  return (
+    <div className={cn("flex gap-px", className, onClick && "cursor-pointer")}>
+      {stars}
+    </div>
+  );
 };
 
-export default Rating;
+export default Ratings;

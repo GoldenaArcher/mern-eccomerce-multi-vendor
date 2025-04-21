@@ -21,7 +21,7 @@ import { Link, useLocation } from "react-router-dom";
 import UsFlag from "../../assets/img/us.svg";
 import Logo from "../../assets/img/logo.png";
 import { navigation } from "./navigation";
-import { usePaginationSearch } from "../../hooks/vusePaginationSearch";
+import { usePaginationSearch } from "../../hooks/usePaginationSearch";
 
 const dummyCategories = [
   "All Categories",
