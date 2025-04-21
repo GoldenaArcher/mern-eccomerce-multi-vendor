@@ -177,7 +177,7 @@ const ProductForm = ({
               <img
                 src={img.url}
                 alt="uploaded-img"
-                className="w-full h-full rounded-sm object-contain cursor-pointer"
+                className="size-full rounded-sm object-contain cursor-pointer"
               />
             </label>
             <input

@@ -58,7 +58,7 @@ const AdminLogin = () => {
         <div className="bg-[#6f68d1] p-4 rounded-md">
           <div className="h-[70px] flex justify-center items-center">
             <div className="w-[180px] h-[50px]">
-              <img className="w-full h-full" src={Logo} alt="easy-shop" />
+              <img className="size-full" src={Logo} alt="easy-shop" />
             </div>
           </div>
 
