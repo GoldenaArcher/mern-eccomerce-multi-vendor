@@ -241,22 +241,24 @@ const Header = () => {
                 {getNavigation({ forDesktopHeader: true })}
                 <div className="flex md-lg:hidden justify-center items-center gap-5">
                   <div className="flex justify-center gap-5">
-                    <div className="relative flex justify-center items-center cursor-pointer size-[35px] rounded-full bg-[#e2e2e2]">
-                      <span className="text-xl text-green-500">
+                    <div className="relative flex justify-center items-center cursor-pointer size-[35px] rounded-full bg-[#e2e2e2] hover:bg-[#d4d4d4] transition-all duration-300 ease-in-out">
+                      <span className="text-xl text-green-500 hover:scale-150 transition-all duration-300 ease-in-out">
                         <FaHeart />
                       </span>
                       <div className="size-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center top-[-3px] right-[-5px]">
                         {wishlist.length}
                       </div>
                     </div>
-                    <div className="relative flex justify-center items-center cursor-pointer size-[35px] rounded-full bg-[#e2e2e2]">
-                      <span className="text-xl text-green-500">
-                        <FaShoppingCart />
-                      </span>
-                      <div className="size-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center top-[-3px] right-[-5px]">
-                        {wishlist.length}
+                    <Link to="/cart">
+                      <div className="relative flex justify-center items-center cursor-pointer size-[35px] rounded-full bg-[#e2e2e2] hover:bg-[#d4d4d4] transition-all duration-300 ease-in-out">
+                        <span className="text-xl text-green-500 hover:scale-150 transition-all duration-300 ease-in-out">
+                          <FaShoppingCart />
+                        </span>
+                        <div className="size-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center top-[-3px] right-[-5px]">
+                          {wishlist.length}
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 </div>
               </div>

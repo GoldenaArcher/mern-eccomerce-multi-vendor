@@ -173,7 +173,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
                     <div className="flex justify-between items-center mb-2">
-                      <Link className="text-md font-normal">Admin</Link>
+                      <Link className="text-base font-normal">Admin</Link>
                       <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
                         2 days ago
                       </time>
@@ -193,7 +193,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
                     <div className="flex justify-between items-center mb-2">
-                      <Link className="text-md font-normal">Admin</Link>
+                      <Link className="text-base font-normal">Admin</Link>
                       <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
                         2 days ago
                       </time>
@@ -213,7 +213,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm">
                     <div className="flex justify-between items-center mb-2">
-                      <Link className="text-md font-normal">Admin</Link>
+                      <Link className="text-base font-normal">Admin</Link>
                       <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
                         2 days ago
                       </time>
