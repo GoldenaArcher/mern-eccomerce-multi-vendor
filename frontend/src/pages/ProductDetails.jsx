@@ -16,6 +16,7 @@ import {
 } from "react-icons/fa";
 import { cn } from "../utils/cn";
 import ProductReviews from "../components/products/ProductReviews";
+import ProductCard from "../components/products/ProductCard";
 
 let discount = 10;
 let stock = 10;
@@ -193,11 +194,14 @@ const ProductDetails = () => {
           <div className="flex flex-wrap">
             <div className="w-[72%] md-lg:w-full">
               <div className="pr-4 md-lg:pr-0">
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     className={cn(
-                      "py-1  px-5 hover:bg-[#059473]/40 hover:text-emerald-800 rounded-md outline-none",
-                      activeTab === "reviews" && "bg-[#059473] text-white"
+                      "py-1  px-5 hover:bg-[#059473]/40 hover:text-slate-700 rounded-md outline-none",
+                      {
+                        "bg-[#059473] text-white": activeTab === "reviews",
+                        "bg-slate-200 text-slate-700": activeTab !== "reviews",
+                      }
                     )}
                     onClick={() => setActiveTab("reviews")}
                   >
@@ -205,8 +209,12 @@ const ProductDetails = () => {
                   </button>
                   <button
                     className={cn(
-                      "py-1 hover:text-emerald-800 px-5 hover:bg-[#059473]/40 rounded-md outline-none",
-                      activeTab === "descriptions" && "bg-[#059473] text-white"
+                      "py-1 hover:text-slate-700 px-5 hover:bg-[#059473]/40 rounded-md outline-none",
+                      {
+                        "bg-[#059473] text-white": activeTab === "descriptions",
+                        "bg-slate-200 text-slate-700":
+                          activeTab !== "descriptions",
+                      }
                     )}
                     onClick={() => setActiveTab("descriptions")}
                   >
@@ -234,6 +242,18 @@ const ProductDetails = () => {
                     </>
                   )}
                 </div>
+              </div>
+            </div>
+            <div className="w-[28%] md-lg:w-full">
+              <div className="flex flex-col justify-center items-center">
+                <h2 className="text-base font-semibold text-slate-700 bg-slate-200 w-full text-center py-1 rounded-md mb-4">
+                  Related Products
+                </h2>
+                {[1, 2, 3, 4, 5, 6].map((_, i) => (
+                  <div className="w-[90%] mb-3">
+                    <ProductCard />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
