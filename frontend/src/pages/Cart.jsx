@@ -1,6 +1,7 @@
 import React from "react";
 import PageBanner from "../components/shared/PageBanner";
 import { Link, useNavigate } from "react-router-dom";
+import QuantitySelector from "../components/shared/QuantitySelector";
 
 const CartItem = () => (
   <div className="w-full flex flex-wrap mb-1">
@@ -26,11 +27,7 @@ const CartItem = () => (
       </div>
 
       <div className="flex gap-2 flex-col">
-        <div className="flex bg-slate-200 h-[30px] justify-center items-center text-xl rounded-md">
-          <div className="px-3 cursor-pointer">-</div>
-          <div className="px-3">2</div>
-          <div className="px-3 cursor-pointer">+</div>
-        </div>
+        <QuantitySelector />
         <button className="px-5 py-1 pt-[3px] bg-red-500 text-white rounded-md">
           Delete
         </button>
@@ -51,7 +48,7 @@ const Cart = () => {
   const onCheckoutClick = () => {
     navigate("/checkout", {
       state: {
-        products: [1,2,3,4,5],
+        products: [1, 2, 3, 4, 5],
         productCost: 500,
         shippingFee: 20,
         totalCost: 520,
