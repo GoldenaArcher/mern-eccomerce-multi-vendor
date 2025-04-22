@@ -3,6 +3,11 @@ import PageBanner from "../components/shared/PageBanner";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import _ from "lodash";
+import { Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+// import Swiper and modules styles
+import "swiper/css";
+import "swiper/css/pagination";
 
 import { createResponsiveConfig } from "../utils/responsive";
 import Ratings from "../components/shared/Ratings";
@@ -17,6 +22,7 @@ import {
 import { cn } from "../utils/cn";
 import ProductReviews from "../components/features/products/ProductReviews";
 import ProductCard from "../components/features/products/ProductCard";
+import { Link } from "react-router-dom";
 
 let discount = 10;
 let stock = 10;
@@ -251,11 +257,53 @@ const ProductDetails = () => {
                 </h2>
                 {[1, 2, 3, 4, 5, 6].map((_, i) => (
                   <div className="w-[90%] mb-3">
-                    <ProductCard />
+                    <ProductCard key={i} />
                   </div>
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="w-[85%] sm:w-[90%] md:w-[90%] lg:w-[85%] h-full mx-auto">
+          <h2 className="text-2xl py-8 text-slate-700">Related Products</h2>
+          <div className="">
+            <Swiper
+              slidesPerView='auto'
+              loop
+              spaceBetween={25}
+              breakpoints={{
+                1280: {
+                  slidesPerView: 3,
+                },
+                565: {
+                  slidesPerView: 2,
+                },
+                320: {
+                  slidesPerView: 1,
+                }
+              }}
+              pagination={{
+                clickable: true,
+                el: ".custom_bullet",
+              }}
+              modules={[Pagination]}
+              className="my-swiper"
+            >
+              {[1, 2, 3, 4, 5, 6].map((_, i) => (
+                <SwiperSlide key={i}>
+                  <Link className="block">
+                    <ProductCard animateMode="opacity" showIcons={false} />
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
+          <div className="w-full flex justify-center items-center py-8">
+            <div className="custom_bullet justify-center gap-3 text-center"></div>
           </div>
         </div>
       </section>
