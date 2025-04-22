@@ -14,6 +14,10 @@
     "dashboard",
     "frontend"
   ],
+  "resolutions": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
   "scripts": {
     "start": "turbo run start",
     "start:dev": "turbo run start:debug --parallel"
