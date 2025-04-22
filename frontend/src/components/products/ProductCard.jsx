@@ -1,6 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import { FaEye, FaRegHeart, FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 import Ratings from "../shared/Ratings";
 
@@ -21,7 +22,9 @@ const ProductCard = () => {
             <FaRegHeart />
           </li>
           <li className="size-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
-            <FaEye />
+            <Link to={"/products/a"}>
+              <FaEye />
+            </Link>
           </li>
           <li className="size-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
             <FaShoppingCart />
