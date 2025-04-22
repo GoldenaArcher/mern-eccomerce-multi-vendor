@@ -2,7 +2,7 @@ import React from "react";
 import Carousel from "react-multi-carousel";
 import { Link } from "react-router-dom";
 import "react-multi-carousel/lib/styles.css";
-import { createResponsiveConfig } from "../utils/responsive";
+import { createResponsiveConfig } from "../../../utils/responsive";
 
 const HeroCarousel = () => {
   return (

@@ -15,8 +15,8 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { cn } from "../utils/cn";
-import ProductReviews from "../components/products/ProductReviews";
-import ProductCard from "../components/products/ProductCard";
+import ProductReviews from "../components/features/products/ProductReviews";
+import ProductCard from "../components/features/products/ProductCard";
 
 let discount = 10;
 let stock = 10;

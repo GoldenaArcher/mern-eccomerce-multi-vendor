@@ -3,7 +3,7 @@ import _ from "lodash";
 import { FaEye, FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-import Ratings from "../shared/Ratings";
+import Ratings from "../../shared/Ratings";
 
 const ProductCard = () => {
   return (

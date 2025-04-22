@@ -1,6 +1,6 @@
 import React from "react";
 import ProductCard from "./ProductCard";
-import { cn } from "../../utils/cn";
+import { cn } from "../../../utils/cn";
 
 const ProductGrid = ({ className }) => {
   return (

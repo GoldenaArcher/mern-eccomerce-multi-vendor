@@ -1,6 +1,6 @@
 import React from "react";
 
-import SectionHeader from "../shared/SectionHeader";
+import SectionHeader from "../../shared/SectionHeader";
 import ProductGrid from "./ProductGrid";
 
 const FeatureProduct = () => {
