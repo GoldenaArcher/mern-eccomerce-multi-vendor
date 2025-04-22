@@ -1,6 +1,6 @@
 import React from "react";
 import _ from "lodash";
-import Ratings from "../shared/Ratings";
+import Ratings from "../../shared/Ratings";
 import { FaShoppingCart } from "react-icons/fa";
 
 const ProductListItem = () => {
