@@ -1,6 +1,6 @@
 import React from "react";
 import PageBanner from "../components/shared/PageBanner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CartItem = () => (
   <div className="w-full flex flex-wrap mb-1">
@@ -40,11 +40,25 @@ const CartItem = () => (
 );
 
 const Cart = () => {
+  const navigate = useNavigate();
+
   const availableProducts = [1, 2, 3];
   const outOfStockProducts = [4, 5];
 
   const isEmpty =
     availableProducts.length === 0 && outOfStockProducts.length === 0;
+
+  const onCheckoutClick = () => {
+    navigate("/checkout", {
+      state: {
+        products: [1,2,3,4,5],
+        productCost: 500,
+        shippingFee: 20,
+        totalCost: 520,
+        couponCode: "",
+      },
+    });
+  };
 
   return (
     <div>
@@ -52,7 +66,7 @@ const Cart = () => {
         title={"Cart Page"}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Cart" }]}
       />
-      <section className="bg-[#eeeeee]">
+      <section className="bg-[#eeeeee] rounded-md">
         <div className="w-[85%] sm:w-[90%] md:w-[90%] lg:w-[85%] h-full mx-auto py-16">
           {isEmpty && (
             <div>
@@ -69,12 +83,12 @@ const Cart = () => {
               <div className="w-[67%] md-lg:w-full">
                 <div className="pr-3 md=lg:pr-0">
                   <div className="flex flex-col gap-3">
-                    <div className="bg-white p-4">
+                    <div className="bg-white p-4 rounded-md">
                       <h2 className="text-base text-[#059473] font-semibold">
                         Stock Products {availableProducts.length}
                       </h2>
                     </div>
-                    <div className="flex bg-white p-4 flex-col gap-2">
+                    <div className="flex bg-white p-4 flex-col gap-2 rounded-md">
                       <div className="flex justify-start items-center">
                         <h2 className="text-slate-600 text-base font-bold">
                           Easy Shop
@@ -84,7 +98,7 @@ const Cart = () => {
                       <CartItem />
                     </div>
 
-                    <div className="flex bg-white p-4 flex-col gap-2">
+                    <div className="flex bg-white p-4 flex-col gap-2 rounded-md">
                       <div className="flex justify-start items-center">
                         <h2 className="text-slate-600 text-base font-bold">
                           Easy Shop
@@ -96,12 +110,12 @@ const Cart = () => {
 
                     {outOfStockProducts.length > 0 && (
                       <>
-                        <div className="bg-white p-4">
+                        <div className="bg-white p-4 rounded-md">
                           <h2 className="text-base text-red-600 font-semibold">
                             Out of Stock {outOfStockProducts.length}
                           </h2>
                         </div>
-                        <div className="flex bg-white p-4 flex-col gap-2">
+                        <div className="flex bg-white p-4 flex-col gap-2 rounded-md">
                           <div className="flex justify-start items-center">
                             <h2 className="text-slate-600 text-base font-bold">
                               Easy Shop
@@ -118,7 +132,7 @@ const Cart = () => {
               <div className="w-[33%] md-lg:w-full">
                 <div className="pl-3 md-lg:pl-0 md-lg:mt-5">
                   {availableProducts.length > 0 && (
-                    <div className="bg-white p-3 pb-4 text-slate-600 flex flex-col gap-3">
+                    <div className="bg-white p-3 pb-4 text-slate-600 flex flex-col gap-3 rounded-md">
                       <h2 className="text-xl font-bold">Order Summary</h2>
                       <div className="flex justify-between items-center">
                         <span>2 Items</span>
@@ -144,7 +158,11 @@ const Cart = () => {
                         <span>Total</span>
                         <span className="text-lg text-[#059473]">$345</span>
                       </div>
-                      <button className="px-5 py-2 rounded-md  bg-[#059473] hover:shadow-[0_4px_10px_rgba(5,148,115,0.5)] text-white uppercase">
+
+                      <button
+                        className="px-5 py-2 rounded-md bg-[#059473] text-white uppercase transition-all duration-300 hover:shadow-[0_4px_10px_rgba(5,148,115,0.5)] w-full"
+                        onClick={onCheckoutClick}
+                      >
                         Process to Checkout
                       </button>
                     </div>
