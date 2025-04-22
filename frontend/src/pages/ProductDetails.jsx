@@ -15,6 +15,7 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { cn } from "../utils/cn";
+import ProductReviews from "../components/products/ProductReviews";
 
 let discount = 10;
 let stock = 10;
@@ -23,6 +24,7 @@ const ProductDetails = () => {
   const [selectedImg, setSelectedImg] = useState(
     "http://localhost:5000/uploads/toy_flash_sale_banner_compressed.jpg"
   );
+  const [activeTab, setActiveTab] = useState("reviews");
 
   return (
     <div>
@@ -180,6 +182,58 @@ const ProductDetails = () => {
                 <button className="px-8 py-3 h-[50px] hover:shadow-lg hover:shadow-blue-500/50 bg-blue-500  text-white rounded-md cursor-pointer">
                   Chat Seller
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-5">
+        <div className="w-[85%] sm:w-[90%] md:w-[90%] lg:w-[85%] h-full mx-auto pb-16">
+          <div className="flex flex-wrap">
+            <div className="w-[72%] md-lg:w-full">
+              <div className="pr-4 md-lg:pr-0">
+                <div className="grid grid-cols-2">
+                  <button
+                    className={cn(
+                      "py-1  px-5 hover:bg-[#059473]/40 hover:text-emerald-800 rounded-md outline-none",
+                      activeTab === "reviews" && "bg-[#059473] text-white"
+                    )}
+                    onClick={() => setActiveTab("reviews")}
+                  >
+                    Reviews
+                  </button>
+                  <button
+                    className={cn(
+                      "py-1 hover:text-emerald-800 px-5 hover:bg-[#059473]/40 rounded-md outline-none",
+                      activeTab === "descriptions" && "bg-[#059473] text-white"
+                    )}
+                    onClick={() => setActiveTab("descriptions")}
+                  >
+                    Descriptions
+                  </button>
+                </div>
+
+                <div className="">
+                  {activeTab === "reviews" && <ProductReviews />}
+                  {activeTab === "descriptions" && (
+                    <>
+                      <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Ipsum harum a eum, debitis incidunt quisquam dolore vero
+                        corporis illum quas beatae ut reiciendis ullam error
+                        iusto saepe distinctio voluptate commodi.
+                      </p>
+                      <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Nemo est commodi repellendus sunt enim rem ad voluptatem
+                        perferendis accusantium sapiente, odit, quas animi
+                        exercitationem voluptatibus natus velit nihil id
+                        dolorum.
+                      </p>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>
