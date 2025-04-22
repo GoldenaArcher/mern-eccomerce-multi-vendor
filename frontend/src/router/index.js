@@ -6,6 +6,7 @@ import ShopListPage from "../pages/ShopListPage";
 import ShopsDetails from "../pages/ShopDetails";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
+import ProductDetails from "../pages/ProductDetails";
 
 const index = () => {
   return (
@@ -14,9 +15,10 @@ const index = () => {
         <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/shops" element={<ShopListPage />} />
-          <Route path="/shops/:shop-id" element={<ShopsDetails />} />
+          <Route path="/shops/:shopId" element={<ShopsDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/products/:productId" element={<ProductDetails />} />
         </Route>
       </Routes>
     </BrowserRouter>
