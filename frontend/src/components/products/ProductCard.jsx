@@ -7,7 +7,7 @@ import Ratings from "../shared/Ratings";
 
 const ProductCard = () => {
   return (
-    <div className="border group transition-all duration-500 hover:shadow-md hover:mt-[-3px]">
+    <div className="border group transition-all duration-500 hover:-translate-y-1 hover:shadow-md">
       <div className="relative overflow-hidden">
         <div className="flex justify-center items-center absolute text-white size-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2">
           8%
