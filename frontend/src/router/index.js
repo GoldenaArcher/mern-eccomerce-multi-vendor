@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import ShopListPage from "../pages/ShopListPage";
 import ShopsDetails from "../pages/ShopDetails";
 import Cart from "../pages/Cart";
+import Checkout from "../pages/Checkout";
 
 const index = () => {
   return (
@@ -15,6 +16,7 @@ const index = () => {
           <Route path="/shops" element={<ShopListPage />} />
           <Route path="/shops/:shop-id" element={<ShopsDetails />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Route>
       </Routes>
     </BrowserRouter>
