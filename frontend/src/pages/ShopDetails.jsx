@@ -140,6 +140,7 @@ const Shops = () => {
                         onClick={() => {
                           setSelectedRating(num);
                         }}
+                        size="lg"
                       />
                     </li>
                   ))}

@@ -255,7 +255,7 @@ const ProductDetails = () => {
                 <h2 className="text-base font-semibold text-slate-700 bg-slate-200 w-full text-center py-1 rounded-md mb-4">
                   Related Products
                 </h2>
-                {[1, 2, 3, 4, 5, 6].map((_, i) => (
+                {[1, 2, 3].map((_, i) => (
                   <div className="w-[90%] mb-3">
                     <ProductCard key={i} />
                   </div>
