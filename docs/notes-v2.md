@@ -6,7 +6,51 @@ i.e., if the first route is `/something/:someId`, then all the `/something/subPa
 
 ## 重复cv的hooks/utils/components
 
-## react
+## design of breadcrumbs
+
+## tailwind css
+
+color/opacity can kind of be played around, i.e., `bg-[#2422228a]`  
+
+Also, if cannot use `bg-black + opacity-25 hover:opacity-50`, then can try to reverse engineering, use `opacaty-100 hover:opacity-50` instead 
+
+`mt-[]` will cause sibling elements to move up, use `translate` instead
+
+shadow is not very easy to handle when it comes to `hover` and animation
+
+## react version conflict
+
+```bash
+❯ yarn list react
+
+yarn list v1.22.22
+warning Filtering by arguments is deprecated. Please use the pattern option instead.
+├─ frontend@0.1.0
+│  └─ react@19.1.0
+└─ react@19.0.0
+✨  Done in 0.54s.
+```
+
+solution:
+
+update package.json for root package.json
+
+```json
+{
+  "resolutions": {
+    "react": "^19.1.0"
+  }
+}
+```
+
+```bash
+❯ yarn install --force
+❯ yarn list react
+yarn list v1.22.22
+warning Filtering by arguments is deprecated. Please use the pattern option instead.
+└─ react@19.1.0
+✨  Done in 0.57s.
+```
 
 ## eslint
 
