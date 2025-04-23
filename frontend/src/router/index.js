@@ -7,6 +7,8 @@ import ShopsDetails from "../pages/ShopDetails";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
 import ProductDetails from "../pages/ProductDetails";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 const index = () => {
   return (
@@ -14,6 +16,8 @@ const index = () => {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/shops" element={<ShopListPage />} />
           <Route path="/shops/:shopId" element={<ShopsDetails />} />
           <Route path="/cart" element={<Cart />} />
