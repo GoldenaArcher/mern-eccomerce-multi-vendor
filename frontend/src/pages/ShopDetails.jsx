@@ -5,9 +5,9 @@ import { FaThList } from "react-icons/fa";
 
 import { cn } from "../utils/cn";
 import Ratings from "../components/shared/Ratings";
-import ProductStack from "../components/products/ProductStack";
-import ProductGrid from "../components/products/ProductGrid";
-import ProductList from "../components/products/ProductList";
+import ProductStack from "../components/features/products/ProductStack";
+import ProductGrid from "../components/features/products/ProductGrid";
+import ProductList from "../components/features/products/ProductList";
 import { usePaginationSearch } from "../hooks/usePaginationSearch";
 import Pagination from "../components/shared/Pagination";
 import PageBanner from "../components/shared/PageBanner";
@@ -140,6 +140,7 @@ const Shops = () => {
                         onClick={() => {
                           setSelectedRating(num);
                         }}
+                        size="lg"
                       />
                     </li>
                   ))}

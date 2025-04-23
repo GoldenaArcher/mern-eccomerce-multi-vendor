@@ -5,7 +5,7 @@ module.exports = {
     "tailwindcss/no-custom-classname": [
       "warn",
       {
-        whitelist: ['header-top'],
+        whitelist: ["header-top", "my-swiper", "custom_bullet"],
       },
     ],
     "tailwindcss/classnames-order": "off",

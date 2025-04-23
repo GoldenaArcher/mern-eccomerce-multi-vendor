@@ -1,9 +1,9 @@
 import React from "react";
-import { createResponsiveConfig } from "../utils/responsive";
+import { createResponsiveConfig } from "../../../utils/responsive";
 import Carousel from "react-multi-carousel";
 import { Link } from "react-router-dom";
 import "react-multi-carousel/lib/styles.css";
-import SectionHeader from "./shared/SectionHeader";
+import SectionHeader from "../../shared/SectionHeader";
 
 const dummyCategories = [
   "All Categories",

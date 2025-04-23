@@ -3,10 +3,10 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-
-import { createResponsiveConfig } from "../../utils/responsive";
-import SectionHeader from "../shared/SectionHeader";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+
+import { createResponsiveConfig } from "../../../utils/responsive";
+import SectionHeader from "../../shared/SectionHeader";
 
 // dummy data
 const products = [1, 2, 3, 4, 5, 6];

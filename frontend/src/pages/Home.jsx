@@ -1,8 +1,8 @@
 import React from "react";
-import HeroCarousel from "../components/HeroCarousel";
-import Categories from "../components/Categories";
-import FeatureProduct from "../components/products/FeatureProduct";
-import ProductStack from "../components/products/ProductStack";
+import HeroCarousel from "../components/features/home/HeroCarousel";
+import Categories from "../components/features/home/Categories";
+import FeatureProduct from "../components/features/products/FeatureProduct";
+import ProductStack from "../components/features/products/ProductStack";
 
 const Home = () => {
   return (
