@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "@mern/utils";
 
 const STATUS_STYLES = {
   active: "bg-green-600 text-white",

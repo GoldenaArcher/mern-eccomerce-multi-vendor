@@ -11,7 +11,7 @@ pnpm-debug.log
 /dist
 /public
 /.parcel-cache
-/.turbo
+**/.turbo
 
 # 🔹 Logs
 logs/

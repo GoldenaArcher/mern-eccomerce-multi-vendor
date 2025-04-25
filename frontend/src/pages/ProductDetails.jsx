@@ -19,7 +19,7 @@ import {
   FaTwitter,
   FaYoutube,
 } from "react-icons/fa";
-import { cn } from "../utils/cn";
+import { cn } from "@mern/utils";
 import ProductReviews from "../components/features/products/ProductReviews";
 import ProductCard from "../components/features/products/ProductCard";
 import { Link } from "react-router-dom";

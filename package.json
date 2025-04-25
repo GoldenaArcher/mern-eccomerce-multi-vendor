@@ -5,14 +5,16 @@
   "author": "GoldenaArcher <25376645+GoldenaArcher@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
-    "turbo": "^2.4.4"
+    "turbo": "^2.4.4",
+    "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",
   "private": "true",
   "workspaces": [
     "backend",
     "dashboard",
-    "frontend"
+    "frontend",
+    "packages/*"
   ],
   "resolutions": {
     "react": "19.1.0",
@@ -20,7 +22,8 @@
   },
   "scripts": {
     "start": "turbo run start",
-    "start:dev": "turbo run start:debug --parallel"
+    "start:dev": "turbo run start:debug --parallel",
+    "start:utils": "turbo run start:debug --filter=@mern/utils --concurrency=2"
   },
   "proxy": "http://localhost:5000"
 }

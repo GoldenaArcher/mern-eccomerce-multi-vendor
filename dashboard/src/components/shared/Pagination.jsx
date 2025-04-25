@@ -3,7 +3,7 @@ import {
   MdOutlineKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
 } from "react-icons/md";
-import { cn } from "../../utils/cn";
+import { cn } from "@mern/utils";
 
 const Pagination = ({
   currentPage,

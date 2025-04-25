@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
-
-import { cn } from "../../utils/cn";
+import { cn } from "@mern/utils";
 
 const PageBanner = ({
   title,

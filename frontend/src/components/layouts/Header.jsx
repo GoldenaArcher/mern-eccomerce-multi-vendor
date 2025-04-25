@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { cn } from "../../utils/cn";
 import { MdEmail } from "react-icons/md";
 import { IoIosArrowDown, IoIosCall } from "react-icons/io";
 import { RiArrowDownSFill } from "react-icons/ri";
@@ -17,6 +16,7 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
+import { cn } from "@mern/utils";
 
 import UsFlag from "../../assets/img/us.svg";
 import Logo from "../../assets/img/logo.png";

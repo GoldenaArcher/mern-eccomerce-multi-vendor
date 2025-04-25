@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { BsFillGridFill } from "react-icons/bs";
 import { Range } from "react-range";
 import { FaThList } from "react-icons/fa";
+import { cn } from "@mern/utils";
 
-import { cn } from "../utils/cn";
 import Ratings from "../components/shared/Ratings";
 import ProductStack from "../components/features/products/ProductStack";
 import ProductGrid from "../components/features/products/ProductGrid";

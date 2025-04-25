@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "@mern/utils";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 const QuantitySelector = ({ className }) => {
