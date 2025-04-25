@@ -4,9 +4,9 @@ import { FaEdit, FaTrash, FaFileImage } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
 import { toast } from "react-hot-toast";
 import { usePaginationSearch } from "@mern/hooks";
+import {Pagination} from "@mern/ui"
 
 import Table from "../../components/shared/Table";
-import Pagination from "../../components/shared/Pagination";
 import Search from "../../components/shared/Search";
 import FormInput from "../../components/shared/FormInput";
 import {

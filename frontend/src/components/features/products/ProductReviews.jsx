@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import _ from "lodash";
 import ReactRating from "react-rating";
+import { Pagination } from "@mern/ui";
 
 import Ratings from "../../shared/Ratings";
-import Pagination from "../../shared/Pagination";
 import { usePagination } from "@mern/hooks";
 import { Link } from "react-router-dom";
 import { CiStar } from "react-icons/ci";
