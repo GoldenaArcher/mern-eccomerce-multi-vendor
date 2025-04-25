@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { usePaginationSearch } from "@mern/hooks";
 
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
 import Search from "../../components/shared/Search";
-import { usePaginationSearch } from "../../hooks/usePaginationSearch";
 import { useGetSellersQuery } from "../../store/features/sellerApi";
 import { CenteredLoader } from "../../components/shared/loaders";
 import ActionIcon from "../../components/shared/ActionIcon";

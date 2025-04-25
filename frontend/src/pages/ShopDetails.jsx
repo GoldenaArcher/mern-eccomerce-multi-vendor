@@ -8,7 +8,7 @@ import Ratings from "../components/shared/Ratings";
 import ProductStack from "../components/features/products/ProductStack";
 import ProductGrid from "../components/features/products/ProductGrid";
 import ProductList from "../components/features/products/ProductList";
-import { usePaginationSearch } from "../hooks/usePaginationSearch";
+import { usePagination } from "@mern/hooks";
 import Pagination from "../components/shared/Pagination";
 import PageBanner from "../components/shared/PageBanner";
 
@@ -32,7 +32,7 @@ const Shops = () => {
   const [state, setState] = useState({ values: [10, 2000] });
   const [selectedRating, setSelectedRating] = useState(0);
   const [viewMode, setViewMode] = useState("grid");
-  const { currentPage, setCurrentPage, perPage } = usePaginationSearch();
+  const { currentPage, setCurrentPage, perPage } = usePagination();
 
   return (
     <div>

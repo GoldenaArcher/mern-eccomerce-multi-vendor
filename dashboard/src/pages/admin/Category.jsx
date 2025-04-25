@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaFileImage } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
 import { toast } from "react-hot-toast";
+import { usePaginationSearch } from "@mern/hooks";
 
 import Table from "../../components/shared/Table";
 import Pagination from "../../components/shared/Pagination";
@@ -13,7 +14,6 @@ import {
   useGetCategoriesQuery,
 } from "../../store/features/categoryApi";
 import { getBackendUrl } from "../../utils/envUtils";
-import { usePaginationSearch } from "../../hooks/usePaginationSearch";
 import { ButtonLoader, CenteredLoader } from "../../components/shared/loaders";
 
 const categoriesColumnHeader = [

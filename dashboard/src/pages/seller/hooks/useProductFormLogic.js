@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import _ from "lodash";
+import { useDebouncedSearch } from "@mern/hooks";
 
-import { usePaginationSearch } from "../../../hooks/usePaginationSearch";
 import { useGetCategoriesQuery } from "../../../store/features/categoryApi";
 import { getBackendUrl } from "../../../utils/envUtils";
 
@@ -23,7 +23,7 @@ export default function useProductFormLogic(initialState = defaultProduct) {
   const [displayedImg, setDisplayedImg] = useState([]);
 
   const { searchValue, setSearchValue, debouncedSearch, cancelDebounce } =
-    usePaginationSearch();
+    useDebouncedSearch();
 
   const categoryQueryArgs = useMemo(
     () => ({ search: debouncedSearch, all: true }),

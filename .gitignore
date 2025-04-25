@@ -12,6 +12,7 @@ pnpm-debug.log
 /public
 /.parcel-cache
 **/.turbo
+**/tsconfig.tsbuildinfo
 
 # 🔹 Logs
 logs/

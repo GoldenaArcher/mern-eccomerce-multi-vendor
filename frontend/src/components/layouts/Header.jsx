@@ -17,11 +17,11 @@ import {
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@mern/utils";
+import { useDebouncedSearch } from "@mern/hooks";
 
 import UsFlag from "../../assets/img/us.svg";
 import Logo from "../../assets/img/logo.png";
 import { navigation } from "./navigation";
-import { usePaginationSearch } from "../../hooks/usePaginationSearch";
 
 const dummyCategories = [
   "All Categories",
@@ -43,8 +43,7 @@ const Header = () => {
   const [showCategories, setShowCategories] = useState(false);
   const wishlist = [1, 2, 3];
   const [selectedCategories, setSelectedCategories] = useState("");
-  const { searchValue, setSearchValue, debouncedSearch } =
-    usePaginationSearch();
+  const { searchValue, setSearchValue, debouncedSearch } = useDebouncedSearch();
 
   const getSupportInfo = (isMobile) => (
     <ul
