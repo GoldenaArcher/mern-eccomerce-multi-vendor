@@ -1,6 +1,6 @@
 import React from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
-import { cn } from "../../utils/cn";
+import { cn } from "@mern/utils";
 
 const ICON_MAP = {
   edit: FaEdit,

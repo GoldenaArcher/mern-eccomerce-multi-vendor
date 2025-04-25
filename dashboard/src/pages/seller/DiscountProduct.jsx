@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { Pagination } from "@mern/ui";
+
 import Search from "../../components/shared/Search";
 import Table from "../../components/shared/Table";
-import Pagination from "../../components/shared/Pagination";
 
 const productsDiscountsColumnHeader = [
   { name: "No", accessor: "no" },

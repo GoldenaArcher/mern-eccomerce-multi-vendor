@@ -1,9 +1,17 @@
-import React from "react";
 import {
   MdOutlineKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
 } from "react-icons/md";
-import { cn } from "../../utils/cn";
+import { cn } from "@mern/utils";
+
+export interface PaginationProps {
+  currentPage: number;
+  setCurrentPage: (page: number | ((prev: number) => number)) => void;
+  totalItems: number;
+  perPage: number;
+  showItems: number;
+  className?: string;
+}
 
 const Pagination = ({
   currentPage,
@@ -12,7 +20,7 @@ const Pagination = ({
   perPage,
   showItems,
   className,
-}) => {
+}: PaginationProps) => {
   const totalPage = Math.ceil(totalItems / perPage);
 
   let startPage = Math.max(1, currentPage - Math.floor(showItems / 2));
@@ -31,8 +39,8 @@ const Pagination = ({
           key={i}
           className={`${
             currentPage === i
-              ? "bg-indigo-300 shadow-lg shadow-indigo-300/50 text-white"
-              : "bg-slate-600 hover:bg-indigo-400 shadow-lg hover:shadow-indigo-500/50 hover:text-white text-[#d0d2d6]"
+              ? "bg-green-500 shadow-lg shadow-green-300/50 text-white"
+              : "bg-slate-600 hover:bg-green-500 shadow-lg hover:shadow-green-600/50 hover:text-white text-[#d0d2d6]"
           } size-[33px] rounded-full flex justify-center items-center cursor-pointer select-none`}
           onClick={() => setCurrentPage(i)}
         >

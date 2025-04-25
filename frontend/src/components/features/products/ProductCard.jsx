@@ -4,7 +4,7 @@ import { FaEye, FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 import Ratings from "../../shared/Ratings";
-import { cn } from "../../../utils/cn";
+import { cn } from "@mern/utils";
 
 const ProductCard = ({ animateMode = "translate", showIcons = true }) => {
   return (

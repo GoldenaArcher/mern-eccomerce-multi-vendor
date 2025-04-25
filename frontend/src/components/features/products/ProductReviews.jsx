@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import _ from "lodash";
 import ReactRating from "react-rating";
+import { Pagination } from "@mern/ui";
 
 import Ratings from "../../shared/Ratings";
-import Pagination from "../../shared/Pagination";
-import { usePaginationSearch } from "../../../hooks/usePaginationSearch";
+import { usePagination } from "@mern/hooks";
 import { Link } from "react-router-dom";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 
 const ProductReviews = () => {
-  const { currentPage, setCurrentPage, perPage } = usePaginationSearch();
+  const { currentPage, setCurrentPage, perPage } = usePagination();
   const [userReview, setUserReview] = useState({
     rating: 0,
     review: "",

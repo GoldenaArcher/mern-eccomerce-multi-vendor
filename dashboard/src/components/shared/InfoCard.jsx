@@ -1,6 +1,6 @@
 import React from "react";
 import ActionIcon from "./ActionIcon";
-import { cn } from "../../utils/cn";
+import { cn } from "@mern/utils";
 
 const InfoCard = ({ data = [], editable = false, onEdit, isDark = true }) => {
   return (
