@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { ButtonLoader } from "@mern/ui";
 
 import FormInput from "../../components/shared/FormInput";
 import { useSellerLoginMutation } from "../../store/features/authApi";
-import { ButtonLoader } from "@mern/ui";
 
 const Login = () => {
   const navigate = useNavigate();

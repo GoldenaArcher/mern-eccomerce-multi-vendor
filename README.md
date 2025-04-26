@@ -64,7 +64,6 @@ Licensed under [CC0 1.0 Universal (Public Domain Dedication)](https://creativeco
 ## 🗂 Project Structure
 
 ```
-mern-eccomerce-multi-vendor/
 mern-ecommerce-multi-vendor/
 ├── backend/                         # Node.js + Express backend
 │   ├── controllers/                # Auth, Token, Product, Category, Shop controllers

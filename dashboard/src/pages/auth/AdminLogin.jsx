@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { ButtonLoader } from "@mern/ui";
 
 import Logo from "../../assets/img/logo.png";
 
 import { useAdminLoginMutation } from "../../store/features/authApi";
 import FormInput from "../../components/shared/FormInput";
-import { ButtonLoader } from "@mern/ui";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
