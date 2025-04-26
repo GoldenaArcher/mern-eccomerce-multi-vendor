@@ -1,7 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
+import { PageLoader } from "@mern/ui";
 
 import "./index.css";
 import App from "./App";
@@ -12,10 +13,12 @@ import store from "./store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-      <Toaster toastOptions={defaultToastOptions} />
-    </Provider>
+    <Suspense fallback={<PageLoader />}>
+      <Provider store={store}>
+        <App />
+        <Toaster toastOptions={defaultToastOptions} />
+      </Provider>
+    </Suspense>
   </React.StrictMode>
 );
 
