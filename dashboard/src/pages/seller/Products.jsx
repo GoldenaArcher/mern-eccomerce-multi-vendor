@@ -2,12 +2,12 @@ import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { usePaginationSearch } from "@mern/hooks";
 import { Pagination } from "@mern/ui";
+import { CenteredLoader } from "@mern/ui";
 
 import Search from "../../components/shared/Search";
 import Table from "../../components/shared/Table";
 import { useGetProductsQuery } from "../../store/features/productApi";
 import { getBackendUrl } from "../../utils/envUtils";
-import { CenteredLoader } from "../../components/shared/loaders";
 import ActionIcon from "../../components/shared/ActionIcon";
 
 const productsColumnHeader = [

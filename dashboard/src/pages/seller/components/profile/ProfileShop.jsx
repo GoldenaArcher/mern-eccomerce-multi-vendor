@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import toast from "react-hot-toast";
+import { OverlayLoader } from "@mern/ui";
 
 import {
   useAddShopMutation,
   useGetShopForCurrentSellerQuery,
 } from "../../../../store/features/shopApi";
-import OverlayLoader from "../../../../components/shared/loaders/OverlayLoader";
 import FormInput from "../../../../components/shared/FormInput";
 import InfoCard from "../../../../components/shared/InfoCard";
 

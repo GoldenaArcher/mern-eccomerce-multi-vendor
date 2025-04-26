@@ -20,7 +20,7 @@ const Pagination = ({
   perPage,
   showItems,
   className,
-}: PaginationProps) => {
+}: PaginationProps) => {  
   const totalPage = Math.ceil(totalItems / perPage);
 
   let startPage = Math.max(1, currentPage - Math.floor(showItems / 2));

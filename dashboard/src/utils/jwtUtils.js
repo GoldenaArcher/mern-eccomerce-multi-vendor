@@ -1,14 +1,6 @@
-import { jwtDecode } from "jwt-decode";
+import { parseJwtUserInfo } from "@mern/utils";
 import { authInitialState } from "../store/features/authSlice";
 import { clearAuthToken } from "./authHandler";
-
-export const decodeJwtToken = (token) => {
-  try {
-    return jwtDecode(token);
-  } catch {
-    return null;
-  }
-};
 
 export const rehydrateJwtToken = () => {
   try {
@@ -16,19 +8,15 @@ export const rehydrateJwtToken = () => {
 
     if (!authToken) return authInitialState;
 
-    const decoded = decodeJwtToken(authToken);
+    const decoded = parseJwtUserInfo(authToken);
 
-    if (!decoded) {
-      console.warn("Invalid JWT detected. Removing token.");
-      clearAuthToken();
-      return authInitialState;
+    if (!decoded.role) {
+      throw new Error("Role missing in JWT payload");
     }
 
     return {
       accessToken: authToken,
-      userInfo: decoded,
-      isAdmin: decoded.role === "admin",
-      isSeller: decoded.role === "seller",
+      ...decoded,
     };
   } catch (e) {
     console.error(e);

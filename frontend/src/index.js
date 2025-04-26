@@ -1,13 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom/client";
+import { Toaster } from "react-hot-toast";
+import { Provider } from "react-redux";
+import { PageLoader } from "@mern/ui";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { defaultToastOptions } from "@mern/utils";
+import store from "./store";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Suspense fallback={<PageLoader />}>
+      <Provider store={store}>
+        <App />
+        <Toaster toastOptions={defaultToastOptions} />
+      </Provider>
+    </Suspense>
   </React.StrictMode>
 );
 
