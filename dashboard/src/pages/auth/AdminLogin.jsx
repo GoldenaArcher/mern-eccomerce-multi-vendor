@@ -6,7 +6,7 @@ import Logo from "../../assets/img/logo.png";
 
 import { useAdminLoginMutation } from "../../store/features/authApi";
 import FormInput from "../../components/shared/FormInput";
-import { ButtonLoader } from "../../components/shared/loaders";
+import { ButtonLoader } from "@mern/ui";
 
 const AdminLogin = () => {
   const navigate = useNavigate();

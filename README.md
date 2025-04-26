@@ -34,14 +34,17 @@ A full-stack, role-based multi-vendor e-commerce platform built with the MERN st
 
 ## 📂 Tech Stack
 
-| Layer        | Tech                               |
-| ------------ | ---------------------------------- |
-| Frontend     | React + RTK + RTK Query + Tailwind |
-| Backend      | Express + TypeScript + JWT         |
-| Database     | MongoDB (Docker-managed)           |
-| Auth         | AccessToken + RefreshToken flow    |
-| AI Assistant | DeepSeek LLM (planned via Ollama)  |
-| Container    | Docker + Docker Compose            |
+| Layer         | Tech Stack                                                   |
+|---------------|--------------------------------------------------------------|
+| 🧩 Frontend    | React 19 (CRA-based) + RTK + RTK Query + Tailwind CSS        |
+| 🖥 Admin Panel | `dashboard/` – React admin panel with modular layout         |
+| 🛒 Shopfront   | `frontend/` – completed customer-facing UI (React 19 + CRA) |
+| ⚙️ Backend     | Express + TypeScript + Custom Decorators + Yup Validators    |
+| 🧠 AI Assistant| DeepSeek LLM (via Ollama) – prompt-based RAG (planned)       |
+| 🗄 Database    | MongoDB + Mongoose (Dockerized)                              |
+| 🔐 Auth        | JWT (Access + Refresh Tokens) + Role-based Middleware        |
+| 📦 Packages    | hooks/, ui/, utils/ – shared via Yarn Workspaces             |
+| 🧱 Infra       | Yarn Workspaces + Turborepo + Docker Compose                 |
 
 ---
 
@@ -62,20 +65,39 @@ Licensed under [CC0 1.0 Universal (Public Domain Dedication)](https://creativeco
 
 ```
 mern-eccomerce-multi-vendor/
-├── backend/
-│   ├── controllers/
-│   ├── services/               # Token, Auth, Product, Category, Shop
-│   ├── middlewares/           # Auth, Role, Error
-│   ├── validators/            # Yup based validation
-│   ├── decorators/, types/, utils/
-│   └── server.ts
-├── dashboard/                 # React Frontend
+mern-ecommerce-multi-vendor/
+├── backend/                         # Node.js + Express backend
+│   ├── controllers/                # Auth, Token, Product, Category, Shop controllers
+│   ├── services/                   # Business logic layer
+│   ├── middlewares/               # Auth, Role, Error handling middlewares
+│   ├── validators/                # Yup/Zod-based schema validation
+│   ├── decorators/, types/, utils/ # Custom decorators, shared types and helpers
+│   ├── models/, routes/, errors/, uploads/
+│   ├── server.ts                  # Entry point
+│   └── package.json, tsconfig.json, .env
+├── dashboard/                      # React-based admin panel (app shell)
+│   ├── public/
 │   └── src/
-│       ├── pages/             # admin/, auth/, general/, seller/
-│       ├── components/        # layouts/, shared/
-│       ├── api/, store/, hooks/, router/
-│       └── App.jsx, index.js, etc.
-├── docker-compose.yml (planned)
+│       ├── pages/                 # admin/, auth/, general/, seller/ routes
+│       ├── components/           # Layout and shared components
+│       ├── api/, store/, hooks/, router/, utils/
+│       └── App.jsx, index.js, ...
+├── frontend/                       # Customer-facing frontend (shop app)
+│   ├── public/
+│   └── src/
+│       ├── pages/, components/, assets/, constants/
+│       ├── store/, router/, utils/
+│       └── App.jsx, index.js, ...
+├── packages/                       # Shared packages managed by Turborepo
+│   ├── hooks/                    # Common React hooks (e.g. useDebounce, useAuth)
+│   ├── ui/                       # Reusable UI components (built with Tailwind/MUI)
+│   └── utils/                    # Shared utility functions
+├── docs/                           # Project docs and references (optional)
+├── docker-compose.yml              # Docker orchestration for dev environments
+├── turbo.json                      # Turborepo task pipeline config
+├── tsconfig.base.json              # Base TS config for all packages/apps
+├── .gitignore, .env, LICENSE, README.md
+├── yarn.lock
 └── llm/ (planned)
 ```
 

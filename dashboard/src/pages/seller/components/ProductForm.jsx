@@ -1,11 +1,8 @@
 import React from "react";
 import { IoIosImage, IoIosCloseCircle } from "react-icons/io";
+import { CenteredLoader, ButtonLoader, ReactSpinner } from "@mern/ui";
+
 import FormInput from "../../../components/shared/FormInput";
-import { PuffLoader } from "react-spinners";
-import {
-  ButtonLoader,
-  CenteredLoader,
-} from "../../../components/shared/loaders";
 
 const ProductForm = ({
   state,
@@ -90,7 +87,7 @@ const ProductForm = ({
               {isGetCategoriesLoading ? (
                 <CenteredLoader
                   className="flex justify-center items-center h-[200px] w-full"
-                  loader={<PuffLoader color="#3498db" size={60} />}
+                  loader={<ReactSpinner color="#3498db" size={60} SpinnerType='puff' />}
                 />
               ) : (
                 allCategories?.data?.map((category) => (

@@ -1,1 +1,2 @@
-export * from "./components/Pagination";
+export * from "./components/pagination";
+export * from './components/loaders';

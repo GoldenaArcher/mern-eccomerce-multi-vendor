@@ -107,18 +107,21 @@ const Shops = () => {
                         {children}
                       </div>
                     )}
-                    renderThumb={({ props, isDragged, isActive }) => (
-                      <div
-                        {...props}
-                        className={cn(
-                          "size-[15px] bg-[#059473] rounded-full cursor-pointer",
-                          {
-                            "transform scale-110": isDragged,
-                            "transform scale-125": isActive,
-                          }
-                        )}
-                      />
-                    )}
+                    renderThumb={({ props, isDragged, isActive }) => {
+                      return (
+                        <div
+                          {...props}
+                          key={props.key}
+                          className={cn(
+                            "size-[15px] bg-[#059473] rounded-full cursor-pointer",
+                            {
+                              "transform scale-110": isDragged,
+                              "transform scale-125": isActive,
+                            }
+                          )}
+                        />
+                      );
+                    }}
                   />
                 </div>
                 <span className="text-slate-600 font-bold text-lg px-4">

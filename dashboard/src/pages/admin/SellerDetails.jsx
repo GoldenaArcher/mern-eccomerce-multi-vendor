@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { OverlayLoader } from "@mern/ui";
 
 import InfoCard from "../../components/shared/InfoCard";
 import StatusBadge from "../../components/shared/StatusBadge";
@@ -10,7 +11,6 @@ import {
   useUpdateSellerByIdMutation,
   useUpdateSellerStatusMutation,
 } from "../../store/features/sellerApi";
-import OverlayLoader from "../../components/shared/loaders/OverlayLoader";
 import { getBackendUrl } from "../../utils/envUtils";
 
 const SellerDetails = () => {

@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 import FormInput from "../../components/shared/FormInput";
 import { useSellerLoginMutation } from "../../store/features/authApi";
-import { ButtonLoader } from "../../components/shared/loaders";
+import { ButtonLoader } from "@mern/ui";
 
 const Login = () => {
   const navigate = useNavigate();

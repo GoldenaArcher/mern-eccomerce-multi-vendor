@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { FaFileImage } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { OverlayLoader } from "@mern/ui";
 
 import { getBackendUrl } from "../../../../utils/envUtils";
 import { useGetCurrentSellerQuery } from "../../../../store/features/authApi";
 import { useUpdateSellerAvatarMutation } from "../../../../store/features/userApi";
-import OverlayLoader from "../../../../components/shared/loaders/OverlayLoader";
 
 const Avatar = () => {
   const userInfo = useSelector((state) => state.auth.userInfo);
