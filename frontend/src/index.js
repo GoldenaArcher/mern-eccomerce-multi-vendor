@@ -9,16 +9,19 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { defaultToastOptions } from "@mern/utils";
 import store from "./store";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Suspense fallback={<PageLoader />}>
-      <Provider store={store}>
-        <App />
-        <Toaster toastOptions={defaultToastOptions} />
-      </Provider>
-    </Suspense>
+    <BrowserRouter>
+      <Suspense fallback={<PageLoader />}>
+        <Provider store={store}>
+          <App />
+          <Toaster toastOptions={defaultToastOptions} />
+        </Provider>
+      </Suspense>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

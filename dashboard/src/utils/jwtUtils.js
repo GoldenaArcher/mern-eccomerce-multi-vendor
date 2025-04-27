@@ -1,6 +1,5 @@
-import { parseJwtUserInfo } from "@mern/utils";
+import { parseJwtUserInfo, clearAuthToken } from "@mern/utils";
 import { authInitialState } from "../store/features/authSlice";
-import { clearAuthToken } from "./authHandler";
 
 export const rehydrateJwtToken = () => {
   try {

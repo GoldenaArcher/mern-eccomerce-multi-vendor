@@ -1,22 +1,15 @@
 import { isAxiosError } from "axios";
 import { getAuthToken, storeAuthToken } from "@mern/utils";
-import { Mutex } from "async-mutex";
 
 import { getAxiosInstance } from "./apiInstance";
+import { Mutex } from "async-mutex";
 import { navigate } from "../utils/navigation";
 
 const mutex = new Mutex();
 
-const axiosBaseQuery = async ({
-  url,
-  method,
-  data,
-  params,
-  isAdmin = false,
-  isSeller = false,
-}) => {
+const axiosBaseQuery = async ({ url, method, data, params }) => {
   try {
-    const axiosInstance = getAxiosInstance({ isAdmin, isSeller });
+    const axiosInstance = getAxiosInstance();
 
     const result = await axiosInstance({
       url,

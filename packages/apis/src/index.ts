@@ -1,2 +1,1 @@
-export * from './axiosBaseQuery';
-export * from './categoryEndpoints';
+export * from "./categoryEndpoints";

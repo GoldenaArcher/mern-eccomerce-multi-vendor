@@ -1,6 +1,6 @@
 export const categoryEndpoints = (builder: any) => ({
   getCategories: builder.query({
-    query: ({ page = 1, limit = 5, search = "", all = false }) => {
+    query: ({ page = 1, limit = 5, search = "", all = false } = {}) => {
       if (all) {
         return {
           url: "/categories",
