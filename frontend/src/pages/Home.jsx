@@ -3,17 +3,8 @@ import HeroCarousel from "../components/features/home/HeroCarousel";
 import Categories from "../components/features/home/Categories";
 import FeatureProduct from "../components/features/products/FeatureProduct";
 import ProductStack from "../components/features/products/ProductStack";
-import { useGetCategoriesQuery } from "../store/features/categoryApi";
 
 const Home = () => {
-  const {
-    data: categories,
-    isLoading: isGetLoading,
-    // isError: isGetError,
-    // isSuccess: isGetSuccess,
-    // error: getError,
-  } = useGetCategoriesQuery();
-
   return (
     <div className="w-full">
       <HeroCarousel />

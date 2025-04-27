@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mern/apis": "^0.1.0",
+    "@mern/hooks": "^0.1.0",
+    "@mern/ui": "^0.1.0",
+    "@mern/utils": "^0.1.0",
     "@reduxjs/toolkit": "^2.7.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
