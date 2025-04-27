@@ -22,19 +22,8 @@ import { useDebouncedSearch } from "@mern/hooks";
 import UsFlag from "../../assets/img/us.svg";
 import Logo from "../../assets/img/logo.png";
 import { navigation } from "./navigation";
-
-const dummyCategories = [
-  "All Categories",
-  "Accessories",
-  "Clothing",
-  "Shoes",
-  "Electronics",
-  "Furniture",
-  "Home & Garden",
-  "Beauty & Personal Care",
-  "Sports & Outdoors",
-  "Automotive",
-];
+import { useGetCategoriesQuery } from "../../store/features/categoryApi";
+import { getBackendUrl } from "../../utils/envUtils";
 
 const Header = () => {
   const { pathname } = useLocation();
@@ -44,6 +33,8 @@ const Header = () => {
   const wishlist = [1, 2, 3];
   const [selectedCategories, setSelectedCategories] = useState("");
   const { searchValue, setSearchValue, debouncedSearch } = useDebouncedSearch();
+
+  const { data: categories } = useGetCategoriesQuery();
 
   const getSupportInfo = (isMobile) => (
     <ul
@@ -327,7 +318,7 @@ const Header = () => {
 
               <div
                 className={cn(
-                  "overflow-y-auto overflow-x-hidden transition-all md-lg:relative duration-500 absolute z-10 w-full border-x bg-[#dbf3ed] text-white",
+                  "overflow-y-auto overflow-x-hidden transition-all md-lg:relative duration-500 absolute z-[1100] w-full border-x bg-[#dbf3ed] text-white",
                   {
                     "h-0": !showCategories,
                     "max-h-[400px]": showCategories,
@@ -335,17 +326,24 @@ const Header = () => {
                 )}
               >
                 <ul>
-                  {dummyCategories.map((category, index) => {
+                  {categories?.data?.map(({ name, id, image }, index) => {
                     return (
                       <li
-                        key={index}
+                        key={id}
                         className={cn(
-                          "flex justify-between items-center px-6 py-3 text-slate-800",
+                          "flex justify-between items-center px-6 py-3 text-slate-800 relative cursor-pointer",
                           index !== 0 && "border-t",
-                          index === dummyCategories.length - 1 && "border-b"
+                          index === categories?.data.length - 1 && "border-b"
                         )}
                       >
-                        <span>{category}</span>
+                        <p className="flex items-center gap-2">
+                          <img
+                            src={`${getBackendUrl()}${image}`}
+                            alt="category-img"
+                            className="size-[30px] rounded-full overflow-hidden"
+                          />
+                          <span>{name}</span>
+                        </p>
                         <span>
                           <FaAngleRight />
                         </span>
@@ -370,10 +368,10 @@ const Header = () => {
                       value={searchValue}
                     >
                       <option value="">Select Category</option>
-                      {dummyCategories.map((category, index) => {
+                      {categories?.data?.map(({ name, id }) => {
                         return (
-                          <option key={index} value={category}>
-                            {category}
+                          <option key={id} value={name} className="z-10">
+                            {name}
                           </option>
                         );
                       })}
