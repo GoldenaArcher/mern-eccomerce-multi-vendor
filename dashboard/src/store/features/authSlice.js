@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authApi } from "./authApi";
 import {
   clearAuthToken,
   handleGetUserInfoSuccess,
   handleLoginSuccess,
-} from "../../utils/authHandler";
+} from "@mern/utils";
+
+import { authApi } from "./authApi";
 
 export const authInitialState = {
   accessToken: null,

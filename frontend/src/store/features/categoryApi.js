@@ -1,7 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { categoryEndpoints } from "@mern/apis";
-
 import axiosBaseQueryWithReauth from "../../api/axiosBaseQuery";
+import { categoryEndpoints } from "@mern/apis";
 
 export const categoryApi = createApi({
   reducerPath: "categoryApi",
@@ -10,4 +9,4 @@ export const categoryApi = createApi({
   endpoints: categoryEndpoints,
 });
 
-export const { useAddCategoryMutation, useGetCategoriesQuery } = categoryApi;
+export const { useGetCategoriesQuery } = categoryApi;

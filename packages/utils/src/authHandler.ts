@@ -1,6 +1,8 @@
-let currentAccessToken = null;
+import { AuthState, GetUserInfoPayload, LoginSuccessPayload } from "./types";
 
-export const storeAuthToken = (token) => {
+let currentAccessToken: null | string = null;
+
+export const storeAuthToken = (token: string) => {
   currentAccessToken = token;
   localStorage.setItem("authToken", token);
 };
@@ -13,7 +15,10 @@ export const clearAuthToken = () => {
   localStorage.removeItem("authToken");
 };
 
-export const handleLoginSuccess = (state, payload) => {
+export const handleLoginSuccess = (
+  state: AuthState,
+  payload: LoginSuccessPayload
+) => {
   const { accessToken, user } = payload.data;
 
   state.accessToken = accessToken;
@@ -23,7 +28,10 @@ export const handleLoginSuccess = (state, payload) => {
   storeAuthToken(accessToken);
 };
 
-export const handleGetUserInfoSuccess = (state, payload) => {
+export const handleGetUserInfoSuccess = (
+  state: AuthState,
+  payload: GetUserInfoPayload
+) => {
   const { message, ...userInfo } = payload.data;
   state.userInfo = userInfo;
 };

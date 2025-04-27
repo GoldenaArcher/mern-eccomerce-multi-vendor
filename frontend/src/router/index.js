@@ -12,20 +12,18 @@ import Register from "../pages/Register";
 
 const index = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/shops" element={<ShopListPage />} />
-          <Route path="/shops/:shopId" element={<ShopsDetails />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/products/:productId" element={<ProductDetails />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/shops" element={<ShopListPage />} />
+        <Route path="/shops/:shopId" element={<ShopsDetails />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/products/:productId" element={<ProductDetails />} />
+      </Route>
+    </Routes>
   );
 };
 

@@ -14,12 +14,14 @@
     "paths": {
       "@mern/utils": ["packages/utils/src"],
       "@mern/hooks": ["packages/hooks/src"],
-      "@mern/ui": ["packages/ui/src"]
+      "@mern/ui": ["packages/ui/src"],
+      "@mern/apis": ["packages/apis/src"],
     }
   },
   "references": [
     { "path": "./packages/utils" },
     { "path": "./packages/hooks" },
-    { "path": "./packages/ui" }
+    { "path": "./packages/ui" },
+    { "path": "./packages/apis" }
   ]
 }

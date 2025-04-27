@@ -1,0 +1,22 @@
+{
+  "name": "@mern/apis",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "peerDependencies": {
+    "axios": "^1.8.0",
+    "@reduxjs/toolkit": "^2.6.0"
+  },
+  "devDependencies": {
+    "axios": "^1.8.2",
+    "@reduxjs/toolkit": "^2.6.1"
+  },
+  "dependencies": {
+    "async-mutex": "^0.5.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc --watch",
+    "start:debug": "tsc --watch"
+  }
+}
