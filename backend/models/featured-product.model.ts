@@ -15,7 +15,7 @@ const featuredProductSchema = new Schema(
     },
     featureType: {
       type: [String],
-      enum: ["latest", "topRated", "discount", "promotion"],
+      enum: ["latest", "topRated", "discount", "featured"],
       required: true,
     },
     displayOrder: {

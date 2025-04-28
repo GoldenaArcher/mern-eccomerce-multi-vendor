@@ -2,11 +2,16 @@ import React from "react";
 import _ from "lodash";
 import { FaEye, FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
-import Ratings from "../../shared/Ratings";
 import { cn } from "@mern/utils";
 
-const ProductCard = ({ animateMode = "translate", showIcons = true }) => {
+import Ratings from "../../shared/Ratings";
+import { getBackendUrl } from "../../../utils/envUtils";
+
+const ProductCard = ({
+  animateMode = "translate",
+  showIcons = true,
+  product,
+}) => {
   return (
     <div
       className={cn("border group transition-all duration-500", {
@@ -15,11 +20,14 @@ const ProductCard = ({ animateMode = "translate", showIcons = true }) => {
       })}
     >
       <div className="relative overflow-hidden">
-        <div className="flex justify-center items-center absolute text-white size-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2">
-          8%
+        <div className={cn({
+          "flex justify-center items-center absolute text-white size-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2": product.discount,
+          "hidden": !product.discount,
+        })}>
+          {product.discount}%
         </div>
         <img
-          src={`http://localhost:5000/uploads/toy_flash_sale_banner_compressed.jpg`}
+          src={`${getBackendUrl()}${product.thumbnailUrl}`}
           alt="product-image"
           className="w-full h-[240px] object-cover"
         />
@@ -41,9 +49,9 @@ const ProductCard = ({ animateMode = "translate", showIcons = true }) => {
       </div>
 
       <div className="py-3 text-slate-600 px-2">
-        <h2 className="font-bold">Product Name</h2>
+        <h2 className="font-bold">{product.name}</h2>
         <div className="flex justify-start items-center gap-3">
-          <span className="font-semibold">$123</span>
+          <span className="font-semibold">${product.price}</span>
           <div className="flex">
             <Ratings ratings={_.random(0, 5, true)} />
           </div>

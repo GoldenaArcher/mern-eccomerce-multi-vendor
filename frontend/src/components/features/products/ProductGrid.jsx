@@ -2,7 +2,9 @@ import React from "react";
 import ProductCard from "./ProductCard";
 import { cn } from "@mern/utils";
 
-const ProductGrid = ({ className }) => {
+const ProductGrid = ({ className, productList }) => {
+  console.log(productList);
+
   return (
     <div
       className={cn(
@@ -10,8 +12,8 @@ const ProductGrid = ({ className }) => {
         className
       )}
     >
-      {[1, 2, 3, 4, 5, 6].map((p, i) => (
-        <ProductCard key={i} />
+      {productList.map((product) => (
+        <ProductCard key={product.id} product={product} />
       ))}
     </div>
   );
