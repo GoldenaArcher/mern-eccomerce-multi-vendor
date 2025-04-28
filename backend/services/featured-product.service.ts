@@ -5,7 +5,14 @@ const sortMap: Record<string, any> = {
   latest: { createdAt: -1 },
   topRated: { ratings: -1 },
   discount: { discount: -1 },
-  promotion: { displayOrder: 1 },
+  featured: { displayOrder: 1 },
+};
+
+const limitMap: Record<string, number> = {
+  latest: 9,
+  topRated: 9,
+  discount: 9,
+  featured: 12,
 };
 
 export class FeaturedProductService {
@@ -77,12 +84,13 @@ export class FeaturedProductService {
 
     for (const type of types) {
       const sort = sortMap[type] || { createdAt: -1 };
+      const limit = limitMap[type] || 9;
 
       const featuredProducts = await FeaturedProductModel.find({
         featureType: { $in: [type] },
       })
         .sort(sort)
-        .limit(12)
+        .limit(limit)
         .populate("productId", "name price images slug");
 
       partitionedResult[type] = featuredProducts.map((item) => {
