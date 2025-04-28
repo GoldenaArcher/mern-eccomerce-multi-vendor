@@ -34,7 +34,7 @@ const Header = () => {
   const [selectedCategories, setSelectedCategories] = useState("");
   const { searchValue, setSearchValue, debouncedSearch } = useDebouncedSearch();
 
-  const { data: categories } = useGetCategoriesQuery();
+  const { data: categories } = useGetCategoriesQuery({ all: true });
 
   const getSupportInfo = (isMobile) => (
     <ul

@@ -9,7 +9,7 @@ export const rehydrateJwtToken = () => {
 
     const decoded = parseJwtUserInfo(authToken);
 
-    if (!decoded.role) {
+    if (!decoded.userInfo.role) {
       throw new Error("Role missing in JWT payload");
     }
 
