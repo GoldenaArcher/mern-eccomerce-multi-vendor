@@ -20,4 +20,11 @@ router.get(
   featuredProductController.getFeaturedProducts.bind(featuredProductController)
 );
 
+router.get(
+  "/featured/partitioned",
+  featuredProductController.getPartitionedFeaturedProducts.bind(
+    featuredProductController
+  )
+);
+
 export default router;
