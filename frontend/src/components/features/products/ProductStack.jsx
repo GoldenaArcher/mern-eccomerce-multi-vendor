@@ -7,14 +7,12 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 import { createResponsiveConfig } from "../../../utils/responsive";
 import SectionHeader from "../../shared/SectionHeader";
+import { getBackendUrl } from "../../../utils/envUtils";
 
-// dummy data
-const products = [1, 2, 3, 4, 5, 6];
-
-const ProductStack = ({ title, chunkNum = 3 }) => {
+const ProductStack = ({ title, chunkNum = 3, productList = [] }) => {
   const chunkedProducts = useMemo(
-    () => _.chunk(products, chunkNum),
-    [chunkNum]
+    () => _.chunk(productList, chunkNum),
+    [chunkNum, productList]
   );
 
   const ButtonGroup = ({ next, previous }) => (
@@ -52,20 +50,20 @@ const ProductStack = ({ title, chunkNum = 3 }) => {
       >
         {chunkedProducts.map((group, pageIndex) => (
           <div key={pageIndex} className="flex flex-col gap-2 px-2">
-            {group.map((_, i) => (
+            {group.map(({ product }, i) => (
               <Link
                 to={"/demo"}
                 key={i}
                 className="flex justify-start items-start"
               >
                 <img
-                  src={`http://localhost:5000/uploads/toy_flash_sale_banner_compressed.jpg`}
+                  src={`${getBackendUrl()}${product.thumbnailUrl}`}
                   alt="special-sell"
-                  className="size-[110px]"
+                  className="size-[110px] object-contain"
                 />
                 <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600">
-                  <h2 className="font-semibold">Product Name</h2>
-                  <span className="font-bold">$123</span>
+                  <h2 className="font-semibold">{product.name}</h2>
+                  <span className="font-bold">${product.price}</span>
                 </div>
               </Link>
             ))}

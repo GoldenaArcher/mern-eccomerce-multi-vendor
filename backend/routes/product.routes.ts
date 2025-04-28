@@ -4,7 +4,8 @@ import ProductController from "@/controllers/product.controller";
 import productService from "@/services/product.service";
 import { sellerAuthMiddleware } from "@/middlewares/auth-aggregate.middleware";
 import upload from "@/middlewares/upload.middleware";
-import authMiddleware from "@/middlewares/auth.middleware";
+
+import featuredProductRoutes from "./featured-product.routes";
 
 const productController = new ProductController(productService);
 
@@ -16,21 +17,20 @@ router.post(
   upload.array("images", 5),
   productController.addProduct.bind(productController)
 );
-router.get(
-  "/products",
-  authMiddleware,
-  productController.getAllProducts.bind(productController)
-)
-router.get(
-  "/products/:productId",
-  authMiddleware,
-  productController.getProductById.bind(productController)
-)
 router.put(
   "/seller/products/:productId",
   sellerAuthMiddleware,
   upload.array("images", 5),
   productController.updateProduct.bind(productController)
-)
+);
+router.get(
+  "/products",
+  productController.getAllProducts.bind(productController)
+);
+router.use("/products", featuredProductRoutes)
+router.get(
+  "/products/:productId",
+  productController.getProductById.bind(productController)
+);
 
 export default router;

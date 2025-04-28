@@ -15,7 +15,7 @@ const responsiveConfig = createResponsiveConfig({
 });
 
 const Categories = () => {
-  const { data: categories } = useGetCategoriesQuery();
+  const { data: categories } = useGetCategoriesQuery({ all: true });
 
   return (
     <div className="w-[87%] mx-auto relative">
@@ -28,7 +28,7 @@ const Categories = () => {
         responsive={responsiveConfig}
         itemClass="px-1"
       >
-        {categories?.data?.map(({ name, id, image }) => (
+        {(categories?.data ?? [])?.map(({ name, id, image }) => (
           <Link to={"/demo"} key={id} className="h-[185px]">
             <div className="size-full relative p-3">
               <img

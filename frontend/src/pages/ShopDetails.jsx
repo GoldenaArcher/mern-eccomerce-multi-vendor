@@ -4,12 +4,12 @@ import { Range } from "react-range";
 import { FaThList } from "react-icons/fa";
 import { cn } from "@mern/utils";
 import { Pagination } from "@mern/ui";
+import { usePagination } from "@mern/hooks";
 
 import Ratings from "../components/shared/Ratings";
 import ProductStack from "../components/features/products/ProductStack";
 import ProductGrid from "../components/features/products/ProductGrid";
 import ProductList from "../components/features/products/ProductList";
-import { usePagination } from "@mern/hooks";
 import PageBanner from "../components/shared/PageBanner";
 
 const dummyCategories = [
