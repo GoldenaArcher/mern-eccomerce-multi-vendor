@@ -11,6 +11,8 @@ import ProductStack from "../components/features/products/ProductStack";
 import ProductGrid from "../components/features/products/ProductGrid";
 import ProductList from "../components/features/products/ProductList";
 import PageBanner from "../components/shared/PageBanner";
+import { useGetShopCategoriesQuery } from "../store/features/shopApi";
+import { useParams } from "react-router-dom";
 
 const dummyCategories = [
   "All Categories",
@@ -28,11 +30,15 @@ const dummyCategories = [
 const viewModes = ["grid", "list"];
 
 const Shops = () => {
+  const { shopId } = useParams();
+
   const [filter, setFilter] = useState(true);
   const [state, setState] = useState({ values: [10, 2000] });
   const [selectedRating, setSelectedRating] = useState(0);
   const [viewMode, setViewMode] = useState("grid");
   const { currentPage, setCurrentPage, perPage } = usePagination();
+
+  const { data: categories } = useGetShopCategoriesQuery(shopId);
 
   return (
     <div>
@@ -71,19 +77,25 @@ const Shops = () => {
                 <h2 className="text-3xl font-bold text-slate-600 mb-3">
                   Category
                 </h2>
-                <div className="py-2">
-                  {dummyCategories.map((category, index) => (
-                    <div
-                      key={index}
+                <ul className="py-2">
+                  <li className="flex justify-start items-center gap-2 py-1">
+                    <input type="checkbox" className="ml-2 text-slate-600" />
+                    <label className="text-sm font-semibold text-slate-600">
+                      All Categories
+                    </label>
+                  </li>
+                  {categories?.data?.map(({ name, categoryId, count }) => (
+                    <li
+                      key={categoryId}
                       className="flex justify-start items-center gap-2 py-1"
                     >
                       <input type="checkbox" className="ml-2 text-slate-600" />
                       <label className="text-sm font-semibold text-slate-600">
-                        {category}
+                        {name} ({count})
                       </label>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
               <div className="py-2 flex flex-col gap-5">
