@@ -2,9 +2,7 @@ import React from "react";
 import ProductCard from "./ProductCard";
 import { cn } from "@mern/utils";
 
-const ProductGrid = ({ className, productList }) => {
-  console.log(productList);
-
+const ProductGrid = ({ className, productList = [] }) => {
   return (
     <div
       className={cn(

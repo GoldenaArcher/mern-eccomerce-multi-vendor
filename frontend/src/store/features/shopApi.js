@@ -6,12 +6,8 @@ import axiosBaseQueryWithReauth from "../../api/axiosBaseQuery";
 export const shopApi = createApi({
   reducerPath: "shopApi",
   baseQuery: axiosBaseQueryWithReauth,
-  tagTypes: ["Shop"],
+  tagTypes: ["Shop", "ShopCategories"],
   endpoints: shopEndpoints,
 });
 
-export const {
-  useGetShopForCurrentSellerQuery,
-  useAddShopMutation,
-  useUpdateShopMutation,
-} = shopApi;
+export const { useGetShopCategoriesQuery } = shopApi;

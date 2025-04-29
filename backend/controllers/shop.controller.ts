@@ -64,6 +64,21 @@ class ShopController {
       next(err);
     }
   }
+
+  async getShopCategories(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { shopId } = req.params;
+
+      const categories = await this.shopService.getCategoriesByShopId(shopId);
+
+      ResponseModel.ok(
+        "Shop categories fetched successfully.",
+        categories
+      ).send(res);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default ShopController;
