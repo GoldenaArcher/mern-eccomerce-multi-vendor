@@ -64,6 +64,34 @@ class ShopController {
       next(err);
     }
   }
+
+  async getShopCategories(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { shopId } = req.params;
+
+      const categories = await this.shopService.getCategoriesByShopId(shopId);
+
+      ResponseModel.ok(
+        "Shop categories fetched successfully.",
+        categories
+      ).send(res);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getShopPriceRange(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { shopId } = req.params;
+      const priceRange = await this.shopService.getPriceRangeByShopId(shopId);
+      ResponseModel.ok(
+        "Shop price range fetched successfully.",
+        priceRange
+      ).send(res);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default ShopController;
