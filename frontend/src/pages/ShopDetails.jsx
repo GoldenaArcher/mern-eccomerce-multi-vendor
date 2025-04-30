@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsFillGridFill } from "react-icons/bs";
 import { Range } from "react-range";
 import { FaThList } from "react-icons/fa";
@@ -11,21 +11,11 @@ import ProductStack from "../components/features/products/ProductStack";
 import ProductGrid from "../components/features/products/ProductGrid";
 import ProductList from "../components/features/products/ProductList";
 import PageBanner from "../components/shared/PageBanner";
-import { useGetShopCategoriesQuery } from "../store/features/shopApi";
+import {
+  useGetShopCategoriesQuery,
+  useGetShopPriceRangeQuery,
+} from "../store/features/shopApi";
 import { useParams } from "react-router-dom";
-
-const dummyCategories = [
-  "All Categories",
-  "Accessories",
-  "Clothing",
-  "Shoes",
-  "Electronics",
-  "Furniture",
-  "Home & Garden",
-  "Beauty & Personal Care",
-  "Sports & Outdoors",
-  "Automotive",
-];
 
 const viewModes = ["grid", "list"];
 
@@ -33,12 +23,21 @@ const Shops = () => {
   const { shopId } = useParams();
 
   const [filter, setFilter] = useState(true);
-  const [state, setState] = useState({ values: [10, 2000] });
+  const [uiPriceRange, setUiPriceRange] = useState({ values: [0, 100] });
   const [selectedRating, setSelectedRating] = useState(0);
   const [viewMode, setViewMode] = useState("grid");
   const { currentPage, setCurrentPage, perPage } = usePagination();
 
   const { data: categories } = useGetShopCategoriesQuery(shopId);
+  const { data: priceRange } = useGetShopPriceRangeQuery(shopId);
+
+  useEffect(() => {
+    if (priceRange?.data) {
+      setUiPriceRange({
+        values: [priceRange.data.min, priceRange.data.max],
+      });
+    }
+  }, [priceRange]);
 
   return (
     <div>
@@ -105,11 +104,11 @@ const Shops = () => {
                 <div className="px-4">
                   <Range
                     step={5}
-                    min={10}
-                    max={2000}
-                    values={state.values}
+                    min={priceRange?.data?.min ?? 0}
+                    max={priceRange?.data?.max ?? 100}
+                    values={uiPriceRange.values}
                     onChange={(values) => {
-                      setState((prev) => ({ ...prev, values }));
+                      setUiPriceRange((prev) => ({ ...prev, values }));
                     }}
                     renderTrack={({ props, children }) => (
                       <div
@@ -137,8 +136,8 @@ const Shops = () => {
                   />
                 </div>
                 <span className="text-slate-600 font-bold text-lg px-4">
-                  ${Math.floor(state.values[0])} - $
-                  {Math.floor(state.values[1])}
+                  ${Math.floor(uiPriceRange.values[0])} - $
+                  {Math.floor(uiPriceRange.values[1])}
                 </span>
               </div>
 

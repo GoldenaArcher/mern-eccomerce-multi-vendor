@@ -34,4 +34,13 @@ export const shopEndpoints = (builder: any) => ({
       { type: "ShopCategories", id: shopId },
     ],
   }),
+  getShopPriceRange: builder.query({
+    query: (shopId: string) => ({
+      url: `/shops/${shopId}/price-range`,
+      method: "GET",
+    }),
+    providesTags: (result: unknown, error: unknown, shopId: string) => [
+      { type: "ShopPriceRange", id: shopId },
+    ],
+  }),
 });

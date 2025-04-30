@@ -27,20 +27,14 @@ class ShopService {
   }
 
   async getCategoriesByShopId(shopId: string) {
-    // 1. find sellerId by shopId
     const shop = await ShopModel.findById(shopId);
     if (!shop) {
       throw new NotFoundError("Shop not found");
     }
 
-    // 2. find all unique categories by sellerId
-    const categoryIds = await ProductModel.distinct("category", {
-      seller: shop.seller,
-    });
-
     const results = await ProductModel.aggregate([
       {
-        $match: { seller: shop.seller }, 
+        $match: { seller: shop.seller },
       },
       {
         $group: {
@@ -50,14 +44,14 @@ class ShopService {
       },
       {
         $lookup: {
-          from: "categories", 
+          from: "categories",
           localField: "_id",
           foreignField: "_id",
           as: "categoryInfo",
         },
       },
       {
-        $unwind: "$categoryInfo", 
+        $unwind: "$categoryInfo",
       },
       {
         $project: {
@@ -70,6 +64,36 @@ class ShopService {
     ]);
 
     return results;
+  }
+
+  async getPriceRangeByShopId(shopId: string) {
+    const shop = await ShopModel.findById(shopId);
+    if (!shop) {
+      throw new NotFoundError("Shop not found");
+    }
+    const results = await ProductModel.aggregate([
+      {
+        $match: { seller: shop.seller },
+      },
+      {
+        $group: {
+          _id: null,
+          minPrice: { $min: "$price" },
+          maxPrice: { $max: "$price" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          min: { $floor: "$minPrice" },
+          max: { $ceil: "$maxPrice" },
+        },
+      },
+    ]);
+
+    const priceRange = results[0] ?? { min: 0, max: 100 };
+
+    return priceRange;
   }
 }
 
