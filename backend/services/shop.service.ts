@@ -5,6 +5,39 @@ import { sanitizeDocument } from "@/utils/mongoose.util";
 import { NotFoundError } from "@/errors";
 
 class ShopService {
+  async getAllShops(
+    options: {
+      page?: number;
+      limit?: number;
+      filter?: Record<string, any>;
+    } = {}
+  ) {
+    const { page, limit, filter = {} } = options;
+    if (!page || !limit) {
+      const shops = await ShopModel.find(filter).sort({
+        createdAt: -1,
+      });
+      return { shops: shops.map((shop) => sanitizeDocument(shop)) };
+    }
+
+    const totalItems = await ShopModel.countDocuments(filter);
+    const totalPages = Math.ceil(totalItems / limit);
+    const shops = await ShopModel.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    return {
+      shops: shops.map((shop) => sanitizeDocument(shop)),
+      pagination: {
+        page,
+        limit,
+        totalItems,
+        totalPages,
+      },
+    };
+  }
+
   async getShopBySellerId(sellerId: string) {
     const shop = await ShopModel.findOne({ seller: sellerId });
 

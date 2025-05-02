@@ -10,4 +10,8 @@ export const shopApi = createApi({
   endpoints: shopEndpoints,
 });
 
-export const { useGetShopCategoriesQuery, useGetShopPriceRangeQuery } = shopApi;
+export const {
+  useGetShopCategoriesQuery,
+  useGetShopPriceRangeQuery,
+  useLazyGetShopsQuery,
+} = shopApi;

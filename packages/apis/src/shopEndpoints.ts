@@ -1,4 +1,21 @@
 export const shopEndpoints = (builder: any) => ({
+  getShops: builder.query({
+    query: ({ page = 0, limit = 5, search = "", all = false } = {}) => {
+      if (all) {
+        return {
+          url: "/shops",
+          method: "GET",
+          params: { all: true, search },
+        };
+      }
+      return {
+        url: "/shops",
+        method: "GET",
+        params: { page, limit, search },
+      };
+    },
+    providesTags: ["Shop"],
+  }),
   getShopForCurrentSeller: builder.query({
     query: () => ({
       url: "/shop",
