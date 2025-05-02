@@ -11,6 +11,39 @@ class ShopController {
     this.shopService = shopService;
   }
 
+  async getAllShops(req: Request, res: Response, next: NextFunction) {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const search = (req.query.search as string) || "";
+      const isAll = req.query.all === "true";
+      const filter = search ? { name: { $regex: search, $options: "i" } } : {};
+
+      if (isAll) {
+        const results = await this.shopService.getAllShops();
+        ResponseModel.ok(
+          "Shops fetched successfully.",
+          results.shops
+        ).send(res);
+        return;
+      }
+
+      const result = await this.shopService.getAllShops({
+        page,
+        limit,
+        filter,
+      });
+
+      ResponseModel.ok(
+        "Shops fetched successfully.",
+        result.shops,
+        result.pagination
+      ).send(res);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async getShopBySellerId(req: Request, res: Response, next: NextFunction) {
     try {
       const shopId = req.params.shopId;

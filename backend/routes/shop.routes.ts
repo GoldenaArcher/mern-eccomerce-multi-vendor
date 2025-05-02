@@ -6,6 +6,8 @@ const shopController = new ShopController(shopService);
 
 const router = Router();
 
+router.get("/", shopController.getAllShops.bind(shopController));
+
 router.get(
   "/:shopId/categories",
   shopController.getShopCategories.bind(shopController)
