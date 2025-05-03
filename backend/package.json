@@ -31,6 +31,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.14.0",
+    "chokidar": "^4.0.3",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.2"
@@ -40,7 +41,9 @@
   },
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register server.ts",
-    "start:debug": "ts-node-dev --respawn --transpile-only --inspect=9229 -r tsconfig-paths/register server.ts",
+    "start:debug": "ts-node ./scripts/watch-and-start.ts --debug",
+    "watch": "ts-node ./scripts/watch-and-start.ts",
+    "watch:debug": "ts-node ./scripts/watch-and-start.ts --debug",
     "build": "tsc"
   }
 }
