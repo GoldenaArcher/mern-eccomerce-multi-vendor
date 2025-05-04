@@ -9,7 +9,13 @@ export const productEndpoints = (builder: any) => ({
     ],
   }),
   getProducts: builder.query({
-    query: ({ page = 1, limit = 5, search = "", all = false }) => {
+    query: ({
+      page = 1,
+      limit = 5,
+      search = "",
+      category = [],
+      all = false,
+    } = {}) => {
       if (all) {
         return {
           url: "/products",
@@ -18,10 +24,16 @@ export const productEndpoints = (builder: any) => ({
         };
       }
 
+      const params: Record<string, any> = { page, limit, search };
+
+      if (category.length > 0) {
+        params.category = category.join(",");
+      }
+
       return {
         url: "/products",
         method: "GET",
-        params: { page, limit, search },
+        params,
       };
     },
     providesTags: ["Product"],

@@ -16,6 +16,7 @@ import {
   useGetShopPriceRangeQuery,
 } from "../store/features/shopApi";
 import { useParams } from "react-router-dom";
+import { useGetProductsQuery } from "../store/features/productApi";
 
 const viewModes = ["grid", "list"];
 
@@ -23,13 +24,19 @@ const Shops = () => {
   const { shopId } = useParams();
 
   const [filter, setFilter] = useState(true);
-  const [uiPriceRange, setUiPriceRange] = useState({ values: [0, 100] });
+  const [uiPriceRange, setUiPriceRange] = useState({ values: [23, 100] });
   const [selectedRating, setSelectedRating] = useState(0);
   const [viewMode, setViewMode] = useState("grid");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   const { currentPage, setCurrentPage, perPage } = usePagination();
 
   const { data: categories } = useGetShopCategoriesQuery(shopId);
   const { data: priceRange } = useGetShopPriceRangeQuery(shopId);
+  const { data: productList } = useGetProductsQuery({
+    page: currentPage,
+    category: selectedCategories,
+  });
 
   useEffect(() => {
     if (priceRange?.data) {
@@ -38,6 +45,28 @@ const Shops = () => {
       });
     }
   }, [priceRange]);
+
+  const onCategoryChange = (e, categoryId) => {
+    if (categoryId === "all") {
+      setSelectedCategories((prev) => {
+        if (prev.length > 0 && prev.length === categories?.data?.length) {
+          return [];
+        }
+
+        return categories?.data?.map(({ categoryId }) => categoryId);
+      });
+
+      return;
+    }
+
+    if (e.target.checked) {
+      setSelectedCategories((prev) => [...prev, categoryId]);
+    } else {
+      setSelectedCategories((prev) =>
+        prev.filter((catId) => catId !== categoryId)
+      );
+    }
+  };
 
   return (
     <div>
@@ -78,7 +107,15 @@ const Shops = () => {
                 </h2>
                 <ul className="py-2">
                   <li className="flex justify-start items-center gap-2 py-1">
-                    <input type="checkbox" className="ml-2 text-slate-600" />
+                    <input
+                      type="checkbox"
+                      className="ml-2 text-slate-600"
+                      onChange={(e) => onCategoryChange(e, "all")}
+                      checked={
+                        categories?.data?.length > 0 &&
+                        selectedCategories.length === categories?.data?.length
+                      }
+                    />
                     <label className="text-sm font-semibold text-slate-600">
                       All Categories
                     </label>
@@ -88,7 +125,12 @@ const Shops = () => {
                       key={categoryId}
                       className="flex justify-start items-center gap-2 py-1"
                     >
-                      <input type="checkbox" className="ml-2 text-slate-600" />
+                      <input
+                        type="checkbox"
+                        className="ml-2 text-slate-600"
+                        onChange={(e) => onCategoryChange(e, categoryId)}
+                        checked={selectedCategories.includes(categoryId)}
+                      />
                       <label className="text-sm font-semibold text-slate-600">
                         {name} ({count})
                       </label>
@@ -170,7 +212,7 @@ const Shops = () => {
               <div className="pl-8 md:pl-0">
                 <div className="py-4 px-3 bg-white mb-10 rounded-md flex justify-between items-start border">
                   <h2 className="text-lg font-medium text-slate-600">
-                    14 Products
+                    {productList?.data?.length ?? 0} Products
                   </h2>
                   <div className="flex justify-center items-center gap-3">
                     <select
@@ -206,16 +248,19 @@ const Shops = () => {
                 </div>
 
                 <div className="pb-8">
-                  {viewMode === "grid" && <ProductGrid />}
-                  {viewMode === "list" && <ProductList />}
+                  {viewMode === "grid" && (
+                    <ProductGrid productList={productList?.data} />
+                  )}
+                  {viewMode === "list" && (
+                    <ProductList productList={productList?.data} />
+                  )}
                 </div>
 
                 <Pagination
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
-                  totalItems={50}
+                  totalItems={productList?.pagination?.totalItems || 0}
                   perPage={perPage}
-                  showItems={3}
                   className={"justify-center"}
                 />
               </div>

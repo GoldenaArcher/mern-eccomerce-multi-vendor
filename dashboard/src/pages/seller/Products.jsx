@@ -98,7 +98,6 @@ const Products = () => {
           setCurrentPage={setCurrentPage}
           totalItems={products?.pagination?.totalItems || 0}
           perPage={perPage}
-          showItems={3}
         />
       </div>
     </div>
