@@ -28,7 +28,6 @@ export const usePaginationSearch = (
     searchValue,
     debouncedSearch,
     setSearchValue,
-    cancelDebounce,
   } = useDebouncedSearch(options?.search);
 
   // when debounced search changes, reset current page to 1
@@ -40,7 +39,6 @@ export const usePaginationSearch = (
     searchValue,
     debouncedSearch,
     setSearchValue,
-    cancelDebounce,
     currentPage,
     setCurrentPage,
     perPage,

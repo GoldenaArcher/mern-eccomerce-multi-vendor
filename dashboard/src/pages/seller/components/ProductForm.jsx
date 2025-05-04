@@ -20,7 +20,6 @@ const ProductForm = ({
   isGetCategoriesLoading,
   searchValue,
   setSearchValue,
-  cancelDebounce,
   submitText = "Submit",
   isSubmitting = false,
 }) => {
@@ -100,7 +99,6 @@ const ProductForm = ({
                         category: category.id,
                       }));
                       setSearchValue("");
-                      cancelDebounce();
                       setCategoryName(category.name);
                     }}
                     className={`w-full cursor-pointer px-4 py-2 hover:bg-indigo-300 hover:text-[#475569] hover:shadow-lg ${

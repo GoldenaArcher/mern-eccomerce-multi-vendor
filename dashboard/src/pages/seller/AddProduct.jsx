@@ -18,7 +18,6 @@ const AddProduct = () => {
     setShowCategory,
     searchValue,
     setSearchValue,
-    cancelDebounce,
     displayedImg,
     onImageUpload,
     onImageReplace,
@@ -94,7 +93,6 @@ const AddProduct = () => {
           isSubmitting={isAddLoading}
           searchValue={searchValue}
           setSearchValue={setSearchValue}
-          cancelDebounce={cancelDebounce}
           submitText="Add Product"
         />
       </div>

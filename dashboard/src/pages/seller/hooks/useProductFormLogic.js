@@ -22,8 +22,7 @@ export default function useProductFormLogic(initialState = defaultProduct) {
   const [showCategory, setShowCategory] = useState(false);
   const [displayedImg, setDisplayedImg] = useState([]);
 
-  const { searchValue, setSearchValue, debouncedSearch, cancelDebounce } =
-    useDebouncedSearch();
+  const { searchValue, setSearchValue, debouncedSearch } = useDebouncedSearch();
 
   const categoryQueryArgs = useMemo(
     () => ({ search: debouncedSearch, all: true }),
@@ -121,7 +120,6 @@ export default function useProductFormLogic(initialState = defaultProduct) {
     setShowCategory,
     searchValue,
     setSearchValue,
-    cancelDebounce,
     displayedImg,
     onImageUpload,
     onImageReplace,
