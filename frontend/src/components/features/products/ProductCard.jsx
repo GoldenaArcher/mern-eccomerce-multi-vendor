@@ -12,6 +12,14 @@ const ProductCard = ({
   showIcons = true,
   product,
 }) => {
+  let productImg = getBackendUrl();
+
+  if (product.thumbnailUrl) {
+    productImg += product.thumbnailUrl;
+  } else if (product.images && product.images.length > 0) {
+    productImg += product.images[0];
+  }
+
   return (
     <div
       className={cn("border group transition-all duration-500", {
@@ -20,14 +28,17 @@ const ProductCard = ({
       })}
     >
       <div className="relative overflow-hidden">
-        <div className={cn({
-          "flex justify-center items-center absolute text-white size-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2": product.discount,
-          "hidden": !product.discount,
-        })}>
+        <div
+          className={cn({
+            "flex justify-center items-center absolute text-white size-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2":
+              product.discount,
+            hidden: !product.discount,
+          })}
+        >
           {product.discount}%
         </div>
         <img
-          src={`${getBackendUrl()}${product.thumbnailUrl}`}
+          src={productImg}
           alt="product-image"
           className="w-full h-[240px] object-cover"
         />

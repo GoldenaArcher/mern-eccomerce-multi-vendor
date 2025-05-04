@@ -5,6 +5,7 @@ import rootReducer from "./rootReducer";
 import { categoryApi } from "./features/categoryApi";
 import { featuredProductApi } from "./features/featuredProductApi";
 import { shopApi } from "./features/shopApi";
+import { productApi } from "./features/productApi";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -12,7 +13,8 @@ const store = configureStore({
     const middlewares = getDefaultMiddleware().concat(
       categoryApi.middleware,
       featuredProductApi.middleware,
-      shopApi.middleware
+      shopApi.middleware,
+      productApi.middleware
     );
 
     middlewares.concat(logger);
