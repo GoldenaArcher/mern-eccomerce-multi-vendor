@@ -22,7 +22,6 @@ const EditProduct = () => {
     setShowCategory,
     searchValue,
     setSearchValue,
-    cancelDebounce,
     displayedImg,
     onImageUpload,
     onImageReplace,
@@ -109,7 +108,6 @@ const EditProduct = () => {
           isSubmitting={isUpdateLoading}
           searchValue={searchValue}
           setSearchValue={setSearchValue}
-          cancelDebounce={cancelDebounce}
           submitText="Edit Product"
         />
       </div>
