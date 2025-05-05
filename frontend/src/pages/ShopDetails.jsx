@@ -4,7 +4,7 @@ import { Range } from "react-range";
 import { FaThList } from "react-icons/fa";
 import { cn } from "@mern/utils";
 import { Pagination } from "@mern/ui";
-import { usePagination } from "@mern/hooks";
+import { useDebouncedValue, usePagination } from "@mern/hooks";
 
 import Ratings from "../components/shared/Ratings";
 import ProductStack from "../components/features/products/ProductStack";
@@ -28,15 +28,19 @@ const Shops = () => {
   const [selectedRating, setSelectedRating] = useState(0);
   const [viewMode, setViewMode] = useState("grid");
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const debouncedCategories = useDebouncedValue(selectedCategories, 800);
 
   const { currentPage, setCurrentPage, perPage } = usePagination();
 
   const { data: categories } = useGetShopCategoriesQuery(shopId);
   const { data: priceRange } = useGetShopPriceRangeQuery(shopId);
-  const { data: productList } = useGetProductsQuery({
-    page: currentPage,
-    category: selectedCategories,
-  });
+  const { data: productList } = useGetProductsQuery(
+    {
+      page: currentPage,
+      category: debouncedCategories,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   useEffect(() => {
     if (priceRange?.data) {
