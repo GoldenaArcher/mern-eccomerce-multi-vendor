@@ -99,8 +99,15 @@ class ProductController {
       const limit = parseInt(req.query.limit as string) || 10;
       const search = (req.query.search as string) || "";
       const isAll = req.query.all === "true";
-      const filter = search ? { name: { $regex: search, $options: "i" } } : {};
+      const priceLow = req.query.priceLow ? parseFloat(req.query.priceLow as string) : null;
+      const priceHigh = req.query.priceHigh ? parseFloat(req.query.priceHigh as string) : null;
 
+      const filter: any = search ? { name: { $regex: search, $options: "i" } } : {};
+      if (priceLow || priceHigh) {
+        filter.price = {};
+        if (priceLow) filter.price.$gte = priceLow;
+        if (priceHigh) filter.price.$lte = priceHigh;
+      }
       if (isAll) {
         const results = await this.productService.getAllProducts();
         ResponseModel.ok(
