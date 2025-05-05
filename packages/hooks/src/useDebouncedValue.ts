@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { debounce } from "lodash";
+import { debounce, isEqual } from "lodash";
 
 export const useDebouncedValue = <T>(
   value: T,
@@ -14,7 +14,12 @@ export const useDebouncedValue = <T>(
 
   const debouncer = useMemo(() => {
     return debounce((val: T) => {
-      setDebouncedValue(val);
+      setDebouncedValue((prev) => {
+        const shouldUpdate =
+          !isEqual(prev, val) || (Array.isArray(val) && val.length === 0);
+
+        return shouldUpdate ? val : prev;
+      });
     }, delay);
   }, [delay]);
 
