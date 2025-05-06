@@ -37,10 +37,11 @@ const Shops = () => {
   const { data: productList } = useGetProductsQuery(
     {
       page: currentPage,
-      category: debouncedCategories,
+      categories: debouncedCategories
     },
     { refetchOnMountOrArgChange: true }
   );
+  
 
   useEffect(() => {
     if (priceRange?.data) {
