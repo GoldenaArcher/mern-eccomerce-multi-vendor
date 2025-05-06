@@ -50,10 +50,21 @@ export class ProductService {
     options: {
       page?: number;
       limit?: number;
-      filter?: Record<string, any>;
+      search?: string;
+      categories?: string[];
     } = {}
   ) {
-    const { page, limit, filter = {} } = options;
+    const { page, limit, search, categories = [] } = options;
+
+    const filter: Record<string, any> = {};
+
+    if (search) {
+      filter.name = { $regex: search, $options: "i" };
+    }
+
+    if (categories.length > 0) {
+      filter.category = { $in: categories };
+    }
 
     if (!page || !limit) {
       const products = await ProductModel.find(filter).sort({
@@ -106,7 +117,7 @@ export class ProductService {
     const product = await ProductModel.findById(productId);
 
     Object.assign(product!, updateData);
-    
+
     await product!.save();
     return sanitizeDocument(product!);
   }

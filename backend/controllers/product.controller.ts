@@ -98,8 +98,11 @@ class ProductController {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const search = (req.query.search as string) || "";
+      const categories = (req.query.categories as string)
+        ? (req.query.categories as string).split(",")
+        : [];
+
       const isAll = req.query.all === "true";
-      const filter = search ? { name: { $regex: search, $options: "i" } } : {};
 
       if (isAll) {
         const results = await this.productService.getAllProducts();
@@ -113,7 +116,8 @@ class ProductController {
       const result = await this.productService.getAllProducts({
         page,
         limit,
-        filter,
+        search,
+        categories,
       });
 
       ResponseModel.ok(
