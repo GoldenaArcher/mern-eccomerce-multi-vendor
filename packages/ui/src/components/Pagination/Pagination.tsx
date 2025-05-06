@@ -18,7 +18,7 @@ const Pagination = ({
   setCurrentPage,
   totalItems,
   perPage,
-  showItems,
+  showItems = 3,
   className,
 }: PaginationProps) => {  
   const totalPage = Math.ceil(totalItems / perPage);

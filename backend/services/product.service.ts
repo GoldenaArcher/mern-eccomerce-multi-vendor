@@ -3,6 +3,7 @@ import ProductModel from "@/models/product.model";
 import { sanitizeDocument } from "@/utils/mongoose.util";
 import { UploadedFileWithPath } from "@/types/upload";
 import { BadRequestError, NotFoundError } from "@/errors";
+import { GetAllProductsOptions } from "@/types/product";
 
 export class ProductService {
   async createProduct({
@@ -46,14 +47,18 @@ export class ProductService {
     return sanitizeDocument(product);
   }
 
-  async getAllProducts(
-    options: {
-      page?: number;
-      limit?: number;
-      filter?: Record<string, any>;
-    } = {}
-  ) {
-    const { page, limit, filter = {} } = options;
+  async getAllProducts(options: GetAllProductsOptions = {}) {
+    const { page, limit, search, categories = [] } = options;
+
+    const filter: Record<string, any> = {};
+
+    if (search) {
+      filter.name = { $regex: search, $options: "i" };
+    }
+
+    if (categories.length > 0) {
+      filter.category = { $in: categories };
+    }
 
     if (!page || !limit) {
       const products = await ProductModel.find(filter).sort({
@@ -106,7 +111,7 @@ export class ProductService {
     const product = await ProductModel.findById(productId);
 
     Object.assign(product!, updateData);
-    
+
     await product!.save();
     return sanitizeDocument(product!);
   }
