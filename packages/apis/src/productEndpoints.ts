@@ -11,7 +11,7 @@ export const productEndpoints = (builder: any) => ({
   getProducts: builder.query({
     query: ({
       page = 1,
-      limit = 5,
+      limit = 12,
       search = "",
       categories = [],
       all = false,

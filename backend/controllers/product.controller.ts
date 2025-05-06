@@ -96,7 +96,7 @@ class ProductController {
   async getAllProducts(req: Request, res: Response, next: NextFunction) {
     try {
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
+      const limit = parseInt(req.query.limit as string) || 12;
       const search = (req.query.search as string) || "";
       const categories = (req.query.categories as string)
         ? (req.query.categories as string).split(",")
