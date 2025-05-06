@@ -3,6 +3,7 @@ import ProductModel from "@/models/product.model";
 import { sanitizeDocument } from "@/utils/mongoose.util";
 import { UploadedFileWithPath } from "@/types/upload";
 import { BadRequestError, NotFoundError } from "@/errors";
+import { GetAllProductsOptions } from "@/types/product";
 
 export class ProductService {
   async createProduct({
@@ -46,14 +47,7 @@ export class ProductService {
     return sanitizeDocument(product);
   }
 
-  async getAllProducts(
-    options: {
-      page?: number;
-      limit?: number;
-      search?: string;
-      categories?: string[];
-    } = {}
-  ) {
+  async getAllProducts(options: GetAllProductsOptions = {}) {
     const { page, limit, search, categories = [] } = options;
 
     const filter: Record<string, any> = {};
