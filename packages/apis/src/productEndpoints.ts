@@ -11,9 +11,9 @@ export const productEndpoints = (builder: any) => ({
   getProducts: builder.query({
     query: ({
       page = 1,
-      limit = 5,
+      limit = 12,
       search = "",
-      category = [],
+      categories = [],
       all = false,
     } = {}) => {
       if (all) {
@@ -26,8 +26,8 @@ export const productEndpoints = (builder: any) => ({
 
       const params: Record<string, any> = { page, limit, search };
 
-      if (category.length > 0) {
-        params.category = category.join(",");
+      if (categories.length > 0) {
+        params.categories = categories.join(",");
       }
 
       return {

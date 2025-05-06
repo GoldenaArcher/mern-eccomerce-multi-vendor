@@ -6,7 +6,7 @@ const ProductGrid = ({ className, productList = [] }) => {
   return (
     <div
       className={cn(
-        "w-full grid grid-cols-3 md-lg:grid-cols-2 md:grid-cols-2 gap-3",
+        "w-full grid grid-cols-4 md-lg:grid-cols-3 md:grid-cols-2 gap-3",
         className
       )}
     >

@@ -27,15 +27,15 @@ const Shops = () => {
   const [selectedRating, setSelectedRating] = useState(0);
   const [viewMode, setViewMode] = useState("grid");
 
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const debouncedCategories = useDebouncedValue(selectedCategories, 800);
-
   const [uiPriceRange, setUiPriceRange] = useState({ values: [23, 100] });
   const rawPriceRange = useMemo(
     () => ({ min: uiPriceRange.values[0], max: uiPriceRange.values[1] }),
     [uiPriceRange.values]
   );
   const debouncedPriceRange = useDebouncedValue(rawPriceRange, 800);
+
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const debouncedCategories = useDebouncedValue(selectedCategories, 800);
 
   const { currentPage, setCurrentPage, perPage } = usePagination();
 
@@ -44,8 +44,8 @@ const Shops = () => {
   const { data: productList } = useGetProductsQuery(
     {
       page: currentPage,
-      category: debouncedCategories,
       priceRange: debouncedPriceRange,
+      categories: debouncedCategories,
     },
     { refetchOnMountOrArgChange: true }
   );
