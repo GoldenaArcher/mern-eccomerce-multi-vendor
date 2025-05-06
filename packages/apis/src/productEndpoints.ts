@@ -1,3 +1,10 @@
+import _ from "lodash";
+
+type PriceRange = {
+  minPrice?: number;
+  maxPrice?: number;
+};
+
 export const productEndpoints = (builder: any) => ({
   getProductById: builder.query({
     query: (id: string) => ({
@@ -14,6 +21,7 @@ export const productEndpoints = (builder: any) => ({
       limit = 12,
       search = "",
       categories = [],
+      priceRange = {} as PriceRange,
       all = false,
     } = {}) => {
       if (all) {
@@ -28,6 +36,14 @@ export const productEndpoints = (builder: any) => ({
 
       if (categories.length > 0) {
         params.categories = categories.join(",");
+      }
+
+      if (_.isNumber(priceRange.minPrice)) {
+        params.priceLow = priceRange.minPrice;
+      }
+
+      if (_.isNumber(priceRange.maxPrice)) {
+        params.priceHigh = priceRange.maxPrice;
       }
 
       return {

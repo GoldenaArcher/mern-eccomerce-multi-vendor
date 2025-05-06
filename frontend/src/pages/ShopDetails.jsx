@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { BsFillGridFill } from "react-icons/bs";
 import { Range } from "react-range";
 import { FaThList } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 import { cn } from "@mern/utils";
 import { Pagination } from "@mern/ui";
 import { useDebouncedValue, usePagination } from "@mern/hooks";
@@ -15,7 +16,6 @@ import {
   useGetShopCategoriesQuery,
   useGetShopPriceRangeQuery,
 } from "../store/features/shopApi";
-import { useParams } from "react-router-dom";
 import { useGetProductsQuery } from "../store/features/productApi";
 
 const viewModes = ["grid", "list"];
@@ -29,7 +29,10 @@ const Shops = () => {
 
   const [uiPriceRange, setUiPriceRange] = useState({ values: [23, 100] });
   const rawPriceRange = useMemo(
-    () => ({ min: uiPriceRange.values[0], max: uiPriceRange.values[1] }),
+    () => ({
+      minPrice: uiPriceRange.values[0],
+      maxPrice: uiPriceRange.values[1],
+    }),
     [uiPriceRange.values]
   );
   const debouncedPriceRange = useDebouncedValue(rawPriceRange, 800);
@@ -44,8 +47,8 @@ const Shops = () => {
   const { data: productList } = useGetProductsQuery(
     {
       page: currentPage,
-      priceRange: debouncedPriceRange,
       categories: debouncedCategories,
+      priceRange: debouncedPriceRange,
     },
     { refetchOnMountOrArgChange: true }
   );
@@ -106,7 +109,7 @@ const Shops = () => {
           <div className="w-full flex flex-wrap">
             <div
               className={cn(
-                "w-3/12 md-lg:w-4/12 md:w-full pr-8 transition-all duration-300",
+                "w-3/12 md:w-full pr-8 transition-all duration-300",
                 {
                   "md:max-h-[980px] mb-0 md:opacity-100 md:pb-6": filter,
                   "md:max-h-0 mb-6 md:opacity-0 md:pb-0": !filter,
@@ -220,7 +223,7 @@ const Shops = () => {
               </div>
             </div>
 
-            <div className="w-9/12 md-lg:w-8/12 md:w-full">
+            <div className="w-9/12 md:w-full">
               <div className="pl-8 md:pl-0">
                 <div className="py-4 px-3 bg-white mb-10 rounded-md flex justify-between items-start border">
                   <h2 className="text-lg font-medium text-slate-600">
