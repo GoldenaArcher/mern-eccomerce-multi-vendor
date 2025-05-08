@@ -48,7 +48,14 @@ export class ProductService {
   }
 
   async getAllProducts(options: GetAllProductsOptions = {}) {
-    const { page, limit, search, categories = [] } = options;
+    const {
+      page,
+      limit,
+      search,
+      categories = [],
+      priceLow,
+      priceHigh,
+    } = options;
 
     const filter: Record<string, any> = {};
 
@@ -58,6 +65,14 @@ export class ProductService {
 
     if (categories.length > 0) {
       filter.category = { $in: categories };
+    }
+
+    if (priceLow) {
+      filter.price = { $gte: priceLow };
+    }
+
+    if (priceHigh) {
+      filter.price = { $lte: priceHigh };
     }
 
     if (!page || !limit) {
