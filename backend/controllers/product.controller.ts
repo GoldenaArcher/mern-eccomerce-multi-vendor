@@ -101,6 +101,8 @@ class ProductController {
       const categories = (req.query.categories as string)
         ? (req.query.categories as string).split(",")
         : [];
+      const priceLow = req.query.priceLow ? parseInt(req.query.priceLow as string) : undefined;
+      const priceHigh = req.query.priceHigh? parseInt(req.query.priceHigh as string) : undefined;
 
       const isAll = req.query.all === "true";
 
@@ -118,6 +120,8 @@ class ProductController {
         limit,
         search,
         categories,
+        priceLow,
+        priceHigh,
       });
 
       ResponseModel.ok(

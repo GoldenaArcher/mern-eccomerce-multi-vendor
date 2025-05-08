@@ -18,4 +18,6 @@ export interface IProduct extends Document {
 
 export interface GetAllProductsOptions extends SearchPaginationProps {
   categories?: string[];
+  priceLow?: number;
+  priceHigh?: number;
 }

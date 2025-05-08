@@ -235,7 +235,9 @@ const Shops = () => {
                       id=""
                       className="p-1 border outline-none text-slate-600 font-semibold"
                     >
-                      <option value="">Sort</option>
+                      <option value="" disabled>
+                        Sort By
+                      </option>
                       <option value="price-asc">Lowest Price</option>
                       <option value="price-desc">Hightest Price</option>
                     </select>
