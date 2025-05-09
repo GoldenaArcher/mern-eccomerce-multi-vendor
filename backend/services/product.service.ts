@@ -55,6 +55,7 @@ export class ProductService {
       categories = [],
       priceLow,
       priceHigh,
+      sortBy,
     } = options;
 
     const filter: Record<string, any> = {};
@@ -67,18 +68,36 @@ export class ProductService {
       filter.category = { $in: categories };
     }
 
-    if (priceLow) {
-      filter.price = { $gte: priceLow };
+    if (priceLow || priceHigh) {
+      filter.price = {};
+      if (priceLow) {
+        filter.price.$gte = priceLow;
+      }
+      if (priceHigh) {
+        filter.price.$lte = priceHigh;
+      }
     }
+    
+    let sort: Record<string, any> = {};
 
-    if (priceHigh) {
-      filter.price = { $lte: priceHigh };
+    switch (sortBy) {
+      case "price-asc":
+        sort = { price: 1 };
+        break;
+      case "price-desc":
+        sort = { price: -1 };
+        break;
+      case "created-asc":
+        sort = { createdAt: 1 };
+        break;
+      case "created-desc":
+      default:
+        sort = { createdAt: -1 };
+        break;
     }
 
     if (!page || !limit) {
-      const products = await ProductModel.find(filter).sort({
-        createdAt: -1,
-      });
+      const products = await ProductModel.find(filter).sort(sort);
       return { products: products.map((product) => sanitizeDocument(product)) };
     }
 
@@ -87,7 +106,7 @@ export class ProductService {
     const products = await ProductModel.find(filter)
       .skip((page - 1) * limit)
       .limit(limit)
-      .sort({ createdAt: -1 });
+      .sort(sort);
 
     return {
       products: products.map((product) => sanitizeDocument(product)),
