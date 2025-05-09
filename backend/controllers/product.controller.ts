@@ -103,6 +103,7 @@ class ProductController {
         : [];
       const priceLow = req.query.priceLow ? parseInt(req.query.priceLow as string) : undefined;
       const priceHigh = req.query.priceHigh? parseInt(req.query.priceHigh as string) : undefined;
+      const sortBy = req.query.sortBy as string ?? undefined;
 
       const isAll = req.query.all === "true";
 
@@ -122,6 +123,7 @@ class ProductController {
         categories,
         priceLow,
         priceHigh,
+        sortBy
       });
 
       ResponseModel.ok(
