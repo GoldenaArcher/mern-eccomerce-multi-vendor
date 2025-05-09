@@ -22,13 +22,14 @@ export const productEndpoints = (builder: any) => ({
       search = "",
       categories = [],
       priceRange = {} as PriceRange,
+      sortBy = "",
       all = false,
     } = {}) => {
       if (all) {
         return {
           url: "/products",
           method: "GET",
-          params: { all: true },
+          params: { all: true, sortBy },
         };
       }
 
@@ -44,6 +45,10 @@ export const productEndpoints = (builder: any) => ({
 
       if (_.isNumber(priceRange.maxPrice)) {
         params.priceHigh = priceRange.maxPrice;
+      }
+
+      if (sortBy) {
+        params.sortBy = sortBy;
       }
 
       return {
