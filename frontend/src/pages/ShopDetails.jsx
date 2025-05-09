@@ -23,6 +23,7 @@ const viewModes = ["grid", "list"];
 const Shops = () => {
   const { shopId } = useParams();
 
+  const [sortBy, setSortBy] = useState("");
   const [filter, setFilter] = useState(true);
   const [selectedRating, setSelectedRating] = useState(0);
   const [viewMode, setViewMode] = useState("grid");
@@ -49,6 +50,7 @@ const Shops = () => {
       page: currentPage,
       categories: debouncedCategories,
       priceRange: debouncedPriceRange,
+      sortBy,
     },
     { refetchOnMountOrArgChange: true }
   );
@@ -231,15 +233,17 @@ const Shops = () => {
                   </h2>
                   <div className="flex justify-center items-center gap-3">
                     <select
-                      name=""
-                      id=""
+                      name="sort"
+                      id="sort"
+                      value={sortBy}
+                      onChange={(e) => {
+                        setSortBy(e.target.value);
+                      }}
                       className="p-1 border outline-none text-slate-600 font-semibold"
                     >
-                      <option value="" disabled>
-                        Sort By
-                      </option>
-                      <option value="price-asc">Lowest Price</option>
-                      <option value="price-desc">Hightest Price</option>
+                      <option value="">Default</option>
+                      <option value="price-asc">Price: Low to High</option>
+                      <option value="price-desc">Price: High to Low</option>
                     </select>
 
                     <div className="flex justify-center items-center gap-4 md-lg:hidden">
