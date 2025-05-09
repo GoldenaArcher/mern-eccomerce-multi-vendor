@@ -20,4 +20,5 @@ export interface GetAllProductsOptions extends SearchPaginationProps {
   categories?: string[];
   priceLow?: number;
   priceHigh?: number;
+  sortBy?: string;
 }
