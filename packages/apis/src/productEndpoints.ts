@@ -23,6 +23,7 @@ export const productEndpoints = (builder: any) => ({
       categories = [],
       priceRange = {} as PriceRange,
       sortBy = "",
+      rating = 0,
       all = false,
     } = {}) => {
       if (all) {
@@ -49,6 +50,10 @@ export const productEndpoints = (builder: any) => ({
 
       if (sortBy) {
         params.sortBy = sortBy;
+      }
+
+      if (rating > 0) {
+        params.rating = rating;
       }
 
       return {

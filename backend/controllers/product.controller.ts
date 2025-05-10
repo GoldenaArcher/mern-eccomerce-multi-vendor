@@ -84,7 +84,7 @@ class ProductController {
 
       const removedImages = _.difference(existingProduct.images, mergedImages);
 
-      await deleteImagePaths(removedImages); // 忽略失败
+      await deleteImagePaths(removedImages);
 
       ResponseModel.ok("Product updated successfully.", product).send(res);
     } catch (err) {

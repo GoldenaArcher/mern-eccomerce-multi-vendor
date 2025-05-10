@@ -7,16 +7,28 @@
     },
     "check-types": {
       "dependsOn": ["^check-types"]
-    },  
+    },
     "start": {
       "dependsOn": ["^start"],
-      "inputs": ["src/**", "!dist/**", "package.json", "tsconfig.json"],
+      "inputs": [
+        "src/**",
+        "../../packages/**/src/**",
+        "!dist/**",
+        "package.json",
+        "tsconfig.json"
+      ],
       "persistent": true,
       "cache": false
     },
     "start:debug": {
       "dependsOn": ["^start:debug"],
-      "inputs": ["src/**", "!dist/**", "package.json", "tsconfig.json"],
+      "inputs": [
+        "src/**",
+        "../../packages/**/src/**",
+        "!dist/**",
+        "package.json",
+        "tsconfig.json"
+      ],
       "persistent": true,
       "cache": false
     }

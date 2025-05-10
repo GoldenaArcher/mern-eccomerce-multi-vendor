@@ -51,6 +51,7 @@ const Shops = () => {
       categories: debouncedCategories,
       priceRange: debouncedPriceRange,
       sortBy,
+      rating: selectedRating,
     },
     { refetchOnMountOrArgChange: true }
   );
@@ -204,17 +205,20 @@ const Shops = () => {
                 <h2 className="text-3xl font-bold text-slate-600 mt-1 mb-3">
                   Rating
                 </h2>
-                <ul className="px-3 flex flex-col gap-4">
+                <ul className="px-3 flex flex-col">
                   {[5, 4, 3, 2, 1].map((num) => (
-                    <li key={num}>
-                      <Ratings
-                        ratings={num}
-                        className="gap-3"
-                        onClick={() => {
-                          setSelectedRating(num);
-                        }}
-                        size="lg"
-                      />
+                    <li
+                      key={num}
+                      className={cn(
+                        "cursor-pointer py-2 px-3 relative rounded-md hover:bg-slate-100 transition-colors duration-150",
+                        selectedRating === num &&
+                          "bg-yellow-100 ring-1 ring-yellow-300/50 rounded-md"
+                      )}
+                      onClick={() => {
+                        setSelectedRating(prev => prev === num ? 0 : num);
+                      }}
+                    >
+                      <Ratings ratings={num} className="gap-3" size="lg" />
                     </li>
                   ))}
                 </ul>
