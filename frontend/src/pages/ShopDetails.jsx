@@ -16,7 +16,7 @@ import {
   useGetShopCategoriesQuery,
   useGetShopPriceRangeQuery,
 } from "../store/features/shopApi";
-import { useGetProductsQuery } from "../store/features/productApi";
+import { useGetProductsByShopIdQuery } from "../store/features/productApi";
 
 const viewModes = ["grid", "list"];
 
@@ -45,13 +45,14 @@ const Shops = () => {
 
   const { data: categories } = useGetShopCategoriesQuery(shopId);
   const { data: priceRange } = useGetShopPriceRangeQuery(shopId);
-  const { data: productList } = useGetProductsQuery(
+  const { data: productList } = useGetProductsByShopIdQuery(
     {
       page: currentPage,
       categories: debouncedCategories,
       priceRange: debouncedPriceRange,
       sortBy,
       rating: selectedRating,
+      shopId,
     },
     { refetchOnMountOrArgChange: true }
   );
