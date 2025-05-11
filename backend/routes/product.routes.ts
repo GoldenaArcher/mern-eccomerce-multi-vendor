@@ -29,6 +29,10 @@ router.get(
 );
 router.use("/products", featuredProductRoutes)
 router.get(
+  "/products/shop/:shopId",
+  productController.getProductsByShopId.bind(productController)
+)
+router.get(
   "/products/:productId",
   productController.getProductById.bind(productController)
 );

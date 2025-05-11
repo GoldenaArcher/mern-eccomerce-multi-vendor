@@ -136,6 +136,51 @@ class ProductController {
     }
   }
 
+  async getProductsByShopId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { shopId } = req.params;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 12;
+      const search = (req.query.search as string) || "";
+      const categories = (req.query.categories as string)
+        ? (req.query.categories as string).split(",")
+        : [];
+      const priceLow = req.query.priceLow ? parseInt(req.query.priceLow as string) : undefined;
+      const priceHigh = req.query.priceHigh? parseInt(req.query.priceHigh as string) : undefined;
+      const sortBy = req.query.sortBy as string ?? undefined;
+
+      const isAll = req.query.all === "true";
+
+      if (isAll) {
+        const results = await this.productService.getAllProducts();
+        ResponseModel.ok(
+          "Products fetched successfully.",
+          results.products
+        ).send(res);
+        return;
+      }
+
+      const result = await this.productService.getProductsByShopId({
+        page,
+        limit,
+        search,
+        categories,
+        priceLow,
+        priceHigh,
+        sortBy,
+        shopId
+      });
+
+      ResponseModel.ok(
+        "Products fetched successfully.",
+        result.products,
+        result.pagination
+      ).send(res);
+    } catch (err) {
+      return next(err);
+    }
+  }
+
   async getProductById(req: Request, res: Response, next: NextFunction) {
     try {
       const { productId } = req.params;
