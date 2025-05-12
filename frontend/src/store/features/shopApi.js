@@ -14,4 +14,5 @@ export const {
   useGetShopCategoriesQuery,
   useGetShopPriceRangeQuery,
   useLazyGetShopsQuery,
+  useGetShopProductsQuery,
 } = shopApi;

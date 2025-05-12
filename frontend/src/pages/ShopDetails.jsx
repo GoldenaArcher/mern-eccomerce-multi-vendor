@@ -15,6 +15,7 @@ import PageBanner from "../components/shared/PageBanner";
 import {
   useGetShopCategoriesQuery,
   useGetShopPriceRangeQuery,
+  useGetShopProductsQuery,
 } from "../store/features/shopApi";
 import { useGetProductsByShopIdQuery } from "../store/features/productApi";
 
@@ -45,7 +46,19 @@ const Shops = () => {
 
   const { data: categories } = useGetShopCategoriesQuery(shopId);
   const { data: priceRange } = useGetShopPriceRangeQuery(shopId);
-  const { data: productList } = useGetProductsByShopIdQuery(
+  const { data: productList } = useGetShopProductsQuery(
+    {
+      page: currentPage,
+      categories: debouncedCategories,
+      priceRange: debouncedPriceRange,
+      sortBy,
+      rating: selectedRating,
+      shopId,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
+  const { data: latestProductList } = useGetShopProductsQuery(
     {
       page: currentPage,
       categories: debouncedCategories,
@@ -216,7 +229,7 @@ const Shops = () => {
                           "bg-yellow-100 ring-1 ring-yellow-300/50 rounded-md"
                       )}
                       onClick={() => {
-                        setSelectedRating(prev => prev === num ? 0 : num);
+                        setSelectedRating((prev) => (prev === num ? 0 : num));
                       }}
                     >
                       <Ratings ratings={num} className="gap-3" size="lg" />
