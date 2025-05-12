@@ -29,7 +29,11 @@ const Categories = () => {
         itemClass="px-1"
       >
         {(categories?.data ?? [])?.map(({ name, id, image }) => (
-          <Link to={"/demo"} key={id} className="h-[185px]">
+          <Link
+            to={`/category/${id}`}
+            key={id}
+            className="h-[185px]"
+          >
             <div className="size-full relative p-3">
               <img
                 src={`${getBackendUrl()}${image}`}

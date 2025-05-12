@@ -9,6 +9,7 @@ import Checkout from "../pages/Checkout";
 import ProductDetails from "../pages/ProductDetails";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Category from "../pages/Category";
 
 const index = () => {
   return (
@@ -22,6 +23,7 @@ const index = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/products/:productId" element={<ProductDetails />} />
+        <Route path='/category/:categoryId' element={<Category />}/>
       </Route>
     </Routes>
   );
