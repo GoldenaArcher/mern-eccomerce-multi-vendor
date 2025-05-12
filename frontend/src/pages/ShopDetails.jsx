@@ -17,7 +17,6 @@ import {
   useGetShopPriceRangeQuery,
   useGetShopProductsQuery,
 } from "../store/features/shopApi";
-import { useGetProductsByShopIdQuery } from "../store/features/productApi";
 
 const viewModes = ["grid", "list"];
 
@@ -60,11 +59,7 @@ const Shops = () => {
 
   const { data: latestProductList } = useGetShopProductsQuery(
     {
-      page: currentPage,
-      categories: debouncedCategories,
-      priceRange: debouncedPriceRange,
-      sortBy,
-      rating: selectedRating,
+      limit: 6,
       shopId,
     },
     { refetchOnMountOrArgChange: true }
@@ -239,7 +234,10 @@ const Shops = () => {
               </div>
 
               <div className="py-5 flex flex-col gap-4 md:hidden">
-                <ProductStack title="Latest Product" />
+                <ProductStack
+                  title="Latest Product"
+                  productList={latestProductList?.data}
+                />
               </div>
             </div>
 
