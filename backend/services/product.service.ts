@@ -120,7 +120,7 @@ export class ProductService {
     };
   }
 
-  async getProductsByShopId(
+  async getAllProductsByShopId(
     options: GetAllProductsOptions & { shopId: string }
   ) {
     const {
