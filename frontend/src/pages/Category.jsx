@@ -12,7 +12,6 @@ import ProductStack from "../components/features/products/ProductStack";
 import ProductGrid from "../components/features/products/ProductGrid";
 import ProductList from "../components/features/products/ProductList";
 import PageBanner from "../components/shared/PageBanner";
-import { useGetShopPriceRangeQuery } from "../store/features/shopApi";
 import { useGetProductsQuery } from "../store/features/productApi";
 import {
   useGetCategoriesQuery,
@@ -49,7 +48,15 @@ const Category = () => {
   const { data: productList } = useGetProductsQuery(
     {
       page: currentPage,
+      priceRange: debouncedPriceRange,
       sortBy,
+      categories: [categoryId],
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+  const { data: latestProductList } = useGetProductsQuery(
+    {
+      limit: 6,
       categories: [categoryId],
     },
     { refetchOnMountOrArgChange: true }
@@ -168,7 +175,10 @@ const Category = () => {
               </div>
 
               <div className="py-5 flex flex-col gap-4 md:hidden">
-                <ProductStack title="Latest Product" />
+                <ProductStack
+                  title="Latest Product"
+                  productList={latestProductList?.data}
+                />
               </div>
             </div>
 
