@@ -106,29 +106,8 @@ class ShopService {
     if (!shop) {
       throw new NotFoundError("Shop not found");
     }
-    const results = await ProductModel.aggregate([
-      {
-        $match: { seller: shop.seller },
-      },
-      {
-        $group: {
-          _id: null,
-          minPrice: { $min: "$price" },
-          maxPrice: { $max: "$price" },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          min: { $floor: "$minPrice" },
-          max: { $ceil: "$maxPrice" },
-        },
-      },
-    ]);
 
-    const priceRange = results[0] ?? { min: 0, max: 100 };
-
-    return priceRange;
+    return productService.getPriceRangeByMatcher({ seller: shop.seller });
   }
 
   async getAllProductsByShopId(options: GetAllProductsOptions & { shopId: string }) {

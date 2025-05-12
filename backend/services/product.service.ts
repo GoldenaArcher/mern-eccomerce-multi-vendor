@@ -241,6 +241,35 @@ export class ProductService {
     if (!product) throw new BadRequestError("Product not found.");
     return product;
   }
+
+  async getPriceRangeByMatcher(matcher: Record<string, any>) {
+    const results = await ProductModel.aggregate([
+      {
+        $match: matcher,
+      },
+      {
+        $group: {
+          _id: null,
+          minPrice: { $min: "$price" },
+          maxPrice: { $max: "$price" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          min: { $floor: "$minPrice" },
+          max: { $ceil: "$maxPrice" },
+        },
+      },
+    ]);
+
+    console.log(results);
+    
+
+    const priceRange = results[0] ?? { min: 0, max: 100 };
+
+    return priceRange;
+  }
 }
 
 export default new ProductService();
