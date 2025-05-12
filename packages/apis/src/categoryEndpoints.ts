@@ -16,6 +16,15 @@ export const categoryEndpoints = (builder: any) => ({
     },
     providesTags: ["Category"],
   }),
+  getCategoryPriceRange: builder.query({
+    query: (categoryId: string) => ({
+      url: `/categories/${categoryId}/price-range`,
+      method: "GET",
+    }),
+    providesTags: (result: unknown, error: unknown, categoryId: string) => [
+      { type: "CategoryPriceRange", id: categoryId },
+    ],
+  }),
   addCategory: builder.mutation({
     query: (data: any) => ({
       url: "/categories",

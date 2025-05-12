@@ -9,4 +9,5 @@ export const categoryApi = createApi({
   endpoints: categoryEndpoints,
 });
 
-export const { useGetCategoriesQuery } = categoryApi;
+export const { useGetCategoriesQuery, useGetCategoryPriceRangeQuery } =
+  categoryApi;

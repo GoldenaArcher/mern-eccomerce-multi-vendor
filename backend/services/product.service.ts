@@ -120,7 +120,7 @@ export class ProductService {
     };
   }
 
-  async getProductsByShopId(
+  async getAllProductsByShopId(
     options: GetAllProductsOptions & { shopId: string }
   ) {
     const {
@@ -240,6 +240,35 @@ export class ProductService {
     const product = await this.getProductByIdAndSellerId(productId, sellerId);
     if (!product) throw new BadRequestError("Product not found.");
     return product;
+  }
+
+  async getPriceRangeByMatcher(matcher: Record<string, any>) {
+    const results = await ProductModel.aggregate([
+      {
+        $match: matcher,
+      },
+      {
+        $group: {
+          _id: null,
+          minPrice: { $min: "$price" },
+          maxPrice: { $max: "$price" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          min: { $floor: "$minPrice" },
+          max: { $ceil: "$maxPrice" },
+        },
+      },
+    ]);
+
+    console.log(results);
+    
+
+    const priceRange = results[0] ?? { min: 0, max: 100 };
+
+    return priceRange;
   }
 }
 

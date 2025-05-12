@@ -160,7 +160,7 @@ class ProductController {
         return;
       }
 
-      const result = await this.productService.getProductsByShopId({
+      const result = await this.productService.getAllProductsByShopId({
         page,
         limit,
         search,

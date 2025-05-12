@@ -2,6 +2,8 @@ import slugify from "slugify";
 import CategoryModel from "@/models/category.model";
 import { sanitizeDocument } from "@/utils/mongoose.util";
 import { UploadedFileWithPath } from "@/types/upload";
+import { NotFoundError } from "@/errors";
+import productService from "./product.service";
 
 export class CategoryService {
   async createCategory(name: string, image: Express.Multer.File) {
@@ -49,6 +51,15 @@ export class CategoryService {
         totalPages: Math.ceil(totalCategories / limit),
       },
     };
+  }
+
+  async getPriceRangeByCategoryId(categoryId: string) {
+    const category = await CategoryModel.findById(categoryId);
+    if (!category) {
+      throw new NotFoundError("Category not found");
+    }
+
+    return productService.getPriceRangeByMatcher({ category: category._id });
   }
 }
 

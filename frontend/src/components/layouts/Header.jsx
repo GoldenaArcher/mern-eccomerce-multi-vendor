@@ -328,26 +328,30 @@ const Header = () => {
                 <ul>
                   {categories?.data?.map(({ name, id, image }, index) => {
                     return (
-                      <li
+                      <Link
+                        to={`/category/${id}`}
                         key={id}
-                        className={cn(
-                          "flex justify-between items-center px-6 py-3 text-slate-800 relative cursor-pointer",
-                          index !== 0 && "border-t",
-                          index === categories?.data.length - 1 && "border-b"
-                        )}
                       >
-                        <p className="flex items-center gap-2">
-                          <img
-                            src={`${getBackendUrl()}${image}`}
-                            alt="category-img"
-                            className="size-[30px] rounded-full overflow-hidden"
-                          />
-                          <span>{name}</span>
-                        </p>
-                        <span>
-                          <FaAngleRight />
-                        </span>
-                      </li>
+                        <li
+                          className={cn(
+                            "flex justify-between items-center px-6 py-3 text-slate-800 relative cursor-pointer",
+                            index !== 0 && "border-t",
+                            index === categories?.data.length - 1 && "border-b"
+                          )}
+                        >
+                          <p className="flex items-center gap-2">
+                            <img
+                              src={`${getBackendUrl()}${image}`}
+                              alt="category-img"
+                              className="size-[30px] rounded-full overflow-hidden"
+                            />
+                            <span>{name}</span>
+                          </p>
+                          <span>
+                            <FaAngleRight />
+                          </span>
+                        </li>
+                      </Link>
                     );
                   })}
                 </ul>

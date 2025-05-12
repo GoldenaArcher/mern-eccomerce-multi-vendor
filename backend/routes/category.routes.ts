@@ -19,4 +19,9 @@ router.get(
   categoryController.getAllCategories.bind(categoryController)
 );
 
+router.get(
+  "/categories/:categoryId/price-range",
+  categoryController.getCategoryPriceRange.bind(categoryController)
+);
+
 export default router;

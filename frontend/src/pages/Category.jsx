@@ -12,25 +12,26 @@ import ProductStack from "../components/features/products/ProductStack";
 import ProductGrid from "../components/features/products/ProductGrid";
 import ProductList from "../components/features/products/ProductList";
 import PageBanner from "../components/shared/PageBanner";
+import { useGetProductsQuery } from "../store/features/productApi";
 import {
-  useGetShopCategoriesQuery,
-  useGetShopPriceRangeQuery,
-  useGetShopProductsQuery,
-} from "../store/features/shopApi";
+  useGetCategoriesQuery,
+  useGetCategoryPriceRangeQuery,
+} from "../store/features/categoryApi";
 
 const viewModes = ["grid", "list"];
 
-const Shops = () => {
-  const { shopId } = useParams();
+const Category = () => {
+  const { data: categories } = useGetCategoriesQuery({ all: true });
+  const { categoryId } = useParams();
+  const categoryName = categories?.data?.find(
+    (cat) => cat.id === categoryId
+  )?.name;
 
   const [sortBy, setSortBy] = useState("");
   const [filter, setFilter] = useState(true);
   const [selectedRating, setSelectedRating] = useState(0);
   const [viewMode, setViewMode] = useState("grid");
 
-  // FIXME - need to fix this price range bouncing issue, it'll take default value and fetch the data,
-  //         but at this point, the initial price range is incorrect.
-  //         once the real price range is fetched, it'll set the ui price range, and fetch the data again
   const [uiPriceRange, setUiPriceRange] = useState({ values: [23, 100] });
   const rawPriceRange = useMemo(
     () => ({
@@ -41,29 +42,22 @@ const Shops = () => {
   );
   const debouncedPriceRange = useDebouncedValue(rawPriceRange, 800);
 
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const debouncedCategories = useDebouncedValue(selectedCategories, 800);
-
   const { currentPage, setCurrentPage, perPage } = usePagination();
 
-  const { data: categories } = useGetShopCategoriesQuery(shopId);
-  const { data: priceRange } = useGetShopPriceRangeQuery(shopId);
-  const { data: productList } = useGetShopProductsQuery(
+  const { data: priceRange } = useGetCategoryPriceRangeQuery(categoryId);
+  const { data: productList } = useGetProductsQuery(
     {
       page: currentPage,
-      categories: debouncedCategories,
       priceRange: debouncedPriceRange,
       sortBy,
-      rating: selectedRating,
-      shopId,
+      categories: [categoryId],
     },
     { refetchOnMountOrArgChange: true }
   );
-
-  const { data: latestProductList } = useGetShopProductsQuery(
+  const { data: latestProductList } = useGetProductsQuery(
     {
       limit: 6,
-      shopId,
+      categories: [categoryId],
     },
     { refetchOnMountOrArgChange: true }
   );
@@ -76,33 +70,15 @@ const Shops = () => {
     }
   }, [priceRange]);
 
-  const onCategoryChange = (e, categoryId) => {
-    if (categoryId === "all") {
-      setSelectedCategories((prev) => {
-        if (prev.length > 0 && prev.length === categories?.data?.length) {
-          return [];
-        }
-
-        return categories?.data?.map(({ categoryId }) => categoryId);
-      });
-
-      return;
-    }
-
-    if (e.target.checked) {
-      setSelectedCategories((prev) => [...prev, categoryId]);
-    } else {
-      setSelectedCategories((prev) =>
-        prev.filter((catId) => catId !== categoryId)
-      );
-    }
-  };
-
   return (
     <div>
       <PageBanner
         title={"Shop Page"}
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Shop" }]}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Categories" },
+          { label: categoryName },
+        ]}
       />
 
       <section className="py-16">
@@ -131,44 +107,6 @@ const Shops = () => {
                 }
               )}
             >
-              <div className="">
-                <h2 className="text-3xl font-bold text-slate-600 mb-3">
-                  Category
-                </h2>
-                <ul className="py-2">
-                  <li className="flex justify-start items-center gap-2 py-1">
-                    <input
-                      type="checkbox"
-                      className="ml-2 text-slate-600"
-                      onChange={(e) => onCategoryChange(e, "all")}
-                      checked={
-                        categories?.data?.length > 0 &&
-                        selectedCategories.length === categories?.data?.length
-                      }
-                    />
-                    <label className="text-sm font-semibold text-slate-600">
-                      All Categories
-                    </label>
-                  </li>
-                  {categories?.data?.map(({ name, categoryId, count }) => (
-                    <li
-                      key={categoryId}
-                      className="flex justify-start items-center gap-2 py-1"
-                    >
-                      <input
-                        type="checkbox"
-                        className="ml-2 text-slate-600"
-                        onChange={(e) => onCategoryChange(e, categoryId)}
-                        checked={selectedCategories.includes(categoryId)}
-                      />
-                      <label className="text-sm font-semibold text-slate-600">
-                        {name} ({count})
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
               <div className="py-2 flex flex-col gap-5">
                 <h2 className="text-3xl font-bold text-slate-600 mb-3">
                   Price
@@ -312,4 +250,4 @@ const Shops = () => {
   );
 };
 
-export default Shops;
+export default Category;
