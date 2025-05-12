@@ -25,19 +25,25 @@ const Home = () => {
           <div className="overflow-hidden">
             <ProductStack
               title="Latest Product"
-              productList={partitionedFeaturedProducts?.data?.latest}
+              productList={partitionedFeaturedProducts?.data?.latest?.map(
+                (item) => item.product
+              )}
             />
           </div>
           <div className="overflow-hidden">
             <ProductStack
               title="Top Rated Product"
-              productList={partitionedFeaturedProducts?.data?.topRated}
+              productList={partitionedFeaturedProducts?.data?.topRated?.map(
+                (item) => item.product
+              )}
             />
           </div>
           <div className="overflow-hidden">
             <ProductStack
               title="Discount Product"
-              productList={partitionedFeaturedProducts?.data?.discount}
+              productList={partitionedFeaturedProducts?.data?.discount?.map(
+                (item) => item.product
+              )}
             />
           </div>
         </div>

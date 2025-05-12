@@ -15,8 +15,8 @@ import PageBanner from "../components/shared/PageBanner";
 import {
   useGetShopCategoriesQuery,
   useGetShopPriceRangeQuery,
+  useGetShopProductsQuery,
 } from "../store/features/shopApi";
-import { useGetProductsByShopIdQuery } from "../store/features/productApi";
 
 const viewModes = ["grid", "list"];
 
@@ -45,13 +45,21 @@ const Shops = () => {
 
   const { data: categories } = useGetShopCategoriesQuery(shopId);
   const { data: priceRange } = useGetShopPriceRangeQuery(shopId);
-  const { data: productList } = useGetProductsByShopIdQuery(
+  const { data: productList } = useGetShopProductsQuery(
     {
       page: currentPage,
       categories: debouncedCategories,
       priceRange: debouncedPriceRange,
       sortBy,
       rating: selectedRating,
+      shopId,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
+  const { data: latestProductList } = useGetShopProductsQuery(
+    {
+      limit: 6,
       shopId,
     },
     { refetchOnMountOrArgChange: true }
@@ -216,7 +224,7 @@ const Shops = () => {
                           "bg-yellow-100 ring-1 ring-yellow-300/50 rounded-md"
                       )}
                       onClick={() => {
-                        setSelectedRating(prev => prev === num ? 0 : num);
+                        setSelectedRating((prev) => (prev === num ? 0 : num));
                       }}
                     >
                       <Ratings ratings={num} className="gap-3" size="lg" />
@@ -226,7 +234,10 @@ const Shops = () => {
               </div>
 
               <div className="py-5 flex flex-col gap-4 md:hidden">
-                <ProductStack title="Latest Product" />
+                <ProductStack
+                  title="Latest Product"
+                  productList={latestProductList?.data}
+                />
               </div>
             </div>
 

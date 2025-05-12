@@ -18,4 +18,9 @@ router.get(
   shopController.getShopPriceRange.bind(shopController)
 );
 
+router.get(
+  "/:shopId/products",
+  shopController.getShopProducts.bind(shopController)
+)
+
 export default router;

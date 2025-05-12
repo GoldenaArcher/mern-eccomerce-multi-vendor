@@ -50,23 +50,33 @@ const ProductStack = ({ title, chunkNum = 3, productList = [] }) => {
       >
         {chunkedProducts.map((group, pageIndex) => (
           <div key={pageIndex} className="flex flex-col gap-2 px-2">
-            {group.map(({ product }, i) => (
-              <Link
-                to={"/demo"}
-                key={i}
-                className="flex justify-start items-start"
-              >
-                <img
-                  src={`${getBackendUrl()}${product.thumbnailUrl}`}
-                  alt="special-sell"
-                  className="size-[110px] object-contain"
-                />
-                <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600">
-                  <h2 className="font-semibold">{product.name}</h2>
-                  <span className="font-bold">${product.price}</span>
-                </div>
-              </Link>
-            ))}
+            {group.map((product, i) => {
+              let productImg = getBackendUrl();
+
+              if (product.thumbnailUrl) {
+                productImg += product.thumbnailUrl;
+              } else if (product.images && product.images.length > 0) {
+                productImg += product.images[0];
+              }
+
+              return (
+                <Link
+                  to={"/demo"}
+                  key={i}
+                  className="flex justify-start items-start"
+                >
+                  <img
+                    src={`${productImg}`}
+                    alt="special-sell"
+                    className="size-[110px] min-w-[110px] object-cover"
+                  />
+                  <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600">
+                    <h2 className="font-semibold">{product.name}</h2>
+                    <span className="font-bold">${product.price}</span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         ))}
       </Carousel>
