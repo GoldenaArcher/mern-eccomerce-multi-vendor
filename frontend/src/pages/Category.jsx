@@ -14,14 +14,19 @@ import ProductList from "../components/features/products/ProductList";
 import PageBanner from "../components/shared/PageBanner";
 import { useGetShopPriceRangeQuery } from "../store/features/shopApi";
 import { useGetProductsQuery } from "../store/features/productApi";
-import { useGetCategoriesQuery } from "../store/features/categoryApi";
+import {
+  useGetCategoriesQuery,
+  useGetCategoryPriceRangeQuery,
+} from "../store/features/categoryApi";
 
 const viewModes = ["grid", "list"];
 
 const Category = () => {
   const { data: categories } = useGetCategoriesQuery({ all: true });
-  const { shopId, categoryId } = useParams();
-  const categoryName = categories?.data?.find((cat) => cat.id === categoryId)?.name;
+  const { categoryId } = useParams();
+  const categoryName = categories?.data?.find(
+    (cat) => cat.id === categoryId
+  )?.name;
 
   const [sortBy, setSortBy] = useState("");
   const [filter, setFilter] = useState(true);
@@ -40,7 +45,7 @@ const Category = () => {
 
   const { currentPage, setCurrentPage, perPage } = usePagination();
 
-  const { data: priceRange } = useGetShopPriceRangeQuery(shopId);
+  const { data: priceRange } = useGetCategoryPriceRangeQuery(categoryId);
   const { data: productList } = useGetProductsQuery(
     {
       page: currentPage,

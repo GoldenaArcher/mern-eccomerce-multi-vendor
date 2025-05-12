@@ -72,6 +72,21 @@ class CategoryController {
       next(err);
     }
   }
+
+  async getCategoryPriceRange(req: Request, res: Response, next: NextFunction) {
+    try {
+      const categoryId = req.params.categoryId;
+      const priceRange = await this.categoryService.getPriceRangeByCategoryId(
+        categoryId
+      );
+      ResponseModel.ok(
+        "Category price range retrieved successfully.",
+        priceRange
+      ).send(res);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default CategoryController;

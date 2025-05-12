@@ -19,9 +19,9 @@ router.get(
   categoryController.getAllCategories.bind(categoryController)
 );
 
-// TODO - add routes for price range
-/**
- * router.get("/categories/:id/price-range");
- */
+router.get(
+  "/categories/:categoryId/price-range",
+  categoryController.getCategoryPriceRange.bind(categoryController)
+);
 
 export default router;
