@@ -21,10 +21,9 @@ class ShopController {
 
       if (isAll) {
         const results = await this.shopService.getAllShops();
-        ResponseModel.ok(
-          "Shops fetched successfully.",
-          results.shops
-        ).send(res);
+        ResponseModel.ok("Shops fetched successfully.", results.shops).send(
+          res
+        );
         return;
       }
 
@@ -120,6 +119,56 @@ class ShopController {
       ResponseModel.ok(
         "Shop price range fetched successfully.",
         priceRange
+      ).send(res);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getShopProducts(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { shopId } = req.params;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 12;
+      const search = (req.query.search as string) || "";
+      const categories = (req.query.categories as string)
+        ? (req.query.categories as string).split(",")
+        : [];
+      const priceLow = req.query.priceLow
+        ? parseInt(req.query.priceLow as string)
+        : undefined;
+      const priceHigh = req.query.priceHigh
+        ? parseInt(req.query.priceHigh as string)
+        : undefined;
+      const sortBy = (req.query.sortBy as string) ?? undefined;
+
+      const isAll = req.query.all === "true";
+
+      if (isAll) {
+        const results = await this.shopService.getAllProductsByShopId({
+          shopId,
+        });
+        ResponseModel.ok(
+          "Products fetched successfully.",
+          results.products
+        ).send(res);
+        return;
+      }
+      const result = await this.shopService.getAllProductsByShopId({
+        shopId,
+        page,
+        limit,
+        search,
+        categories,
+        priceLow,
+        priceHigh,
+        sortBy,
+      });
+
+      ResponseModel.ok(
+        "Products fetched successfully.",
+        result.products,
+        result.pagination
       ).send(res);
     } catch (error) {
       next(error);
