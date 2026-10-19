@@ -13,7 +13,7 @@
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.3",
     "lodash": "^4.17.21",
     "mongoose": "^8.12.1",
     "multer": "^1.4.5-lts.2",
@@ -44,6 +44,7 @@
     "start:debug": "ts-node ./scripts/watch-and-start.ts --debug",
     "watch": "ts-node ./scripts/watch-and-start.ts",
     "watch:debug": "ts-node ./scripts/watch-and-start.ts --debug",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "node --test tests/*.test.cjs"
   }
 }

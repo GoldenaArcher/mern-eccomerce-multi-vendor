@@ -11,7 +11,10 @@ const databaseConnect = () => {
       console.log("Mongodb Connected!");
     })
     .catch((e) => {
-      console.error(e);
+      console.error(
+        "MongoDB connection failed. Check DATABASE_URL and ensure MongoDB is running.",
+        e
+      );
     });
 };
 

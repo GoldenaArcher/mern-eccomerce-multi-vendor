@@ -1,62 +1,34 @@
-import chokidar from "chokidar";
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
 
-const mode = process.argv.includes("--debug") ? "start:debug" : "start";
+// ts-node-dev handles watching and restarting the backend itself.
+const isDebug = process.argv.includes("--debug");
+const server = spawn(
+  process.execPath,
+  [
+    require.resolve("ts-node-dev/lib/bin"),
+    "--respawn",
+    "--transpile-only",
+    ...(isDebug ? ["--inspect=9229"] : []),
+    "-r",
+    "tsconfig-paths/register",
+    "server.ts",
+  ],
+  { stdio: "inherit", cwd: process.cwd() }
+);
 
-let server: ReturnType<typeof spawn> | null = null;
+server.on("error", (error) => {
+  console.error("Failed to start backend:", error);
+  process.exitCode = 1;
+});
 
-const start = () => {
-  const isDebug = process.argv.includes("--debug");
-  const args = isDebug
-    ? [
-        "ts-node-dev",
-        "--respawn",
-        "--transpile-only",
-        "--inspect=9229",
-        "-r",
-        "tsconfig-paths/register",
-        "server.ts",
-      ]
-    : [
-        "ts-node-dev",
-        "--respawn",
-        "--transpile-only",
-        "-r",
-        "tsconfig-paths/register",
-        "server.ts",
-      ];
-
-  console.info(
-    `%c[watcher]: 🟢 Starting backend dev server (${mode})...\n`,
-    "color: green"
-  );
-  server = spawn("yarn", args, {
-    stdio: "inherit",
-    shell: true,
-    cwd: process.cwd(),
-  });
-};
-
-const restart = () => {
-  if (server) {
-    console.info(
-      `%c[watcher]: 🔴 Restarting backend dev server (${mode})...\n`,
-      "color: red"
-    );
-    server?.kill();
+server.on("exit", (code, signal) => {
+  if (signal) {
+    process.kill(process.pid, signal);
+  } else {
+    process.exitCode = code ?? 1;
   }
-  start();
-};
-
-const watcher = chokidar.watch("./**/*.ts", {
-  ignored: ["./node_modules/**", "**/dist/**"],
-  persistent: true,
-  ignoreInitial: true,
 });
 
-watcher.on("all", (event, path) => {
-  console.info(`%c[watcher]: ${event} ${path}\n`, "color: blue");
-  restart();
-});
-
-start();
+for (const signal of ["SIGINT", "SIGTERM"] as const) {
+  process.once(signal, () => server.kill(signal));
+}
