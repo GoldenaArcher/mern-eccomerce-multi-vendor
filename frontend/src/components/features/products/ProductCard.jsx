@@ -39,7 +39,7 @@ const ProductCard = ({
         </div>
         <img
           src={productImg}
-          alt="product-image"
+          alt={product.name}
           className="w-full h-[240px] object-cover"
         />
         {showIcons && (
@@ -48,7 +48,7 @@ const ProductCard = ({
               <FaRegHeart />
             </li>
             <li className="size-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
-              <Link to={"/products/a"}>
+              <Link to={`/products/${product.id || product.productId}`}>
                 <FaEye />
               </Link>
             </li>
@@ -60,7 +60,7 @@ const ProductCard = ({
       </div>
 
       <div className="py-3 text-slate-600 px-2">
-        <h2 className="font-bold">{product.name}</h2>
+        <h2 className="font-bold">{product.id ? <Link to={`/products/${product.id}`} className="hover:text-[#059473] hover:underline">{product.name}</Link> : product.name}</h2>
         <div className="flex justify-start items-center gap-3">
           <span className="font-semibold">${product.price}</span>
           <div className="flex">

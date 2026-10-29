@@ -2,7 +2,7 @@ import React from "react";
 import ProductCard from "./ProductCard";
 import { cn } from "@mern/utils";
 
-const ProductGrid = ({ className, productList = [] }) => {
+const ProductGrid = ({ className, productList = [], showIcons = true }) => {
   return (
     <div
       className={cn(
@@ -11,7 +11,7 @@ const ProductGrid = ({ className, productList = [] }) => {
       )}
     >
       {productList.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard key={product.id} product={product} showIcons={showIcons} />
       ))}
     </div>
   );
