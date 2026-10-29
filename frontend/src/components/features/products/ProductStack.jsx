@@ -11,7 +11,7 @@ import { getBackendUrl } from "../../../utils/envUtils";
 
 const ProductStack = ({ title, chunkNum = 3, productList = [] }) => {
   const chunkedProducts = useMemo(
-    () => _.chunk(productList, chunkNum),
+    () => _.chunk(productList.filter(Boolean), chunkNum),
     [chunkNum, productList]
   );
 
@@ -51,6 +51,8 @@ const ProductStack = ({ title, chunkNum = 3, productList = [] }) => {
         {chunkedProducts.map((group, pageIndex) => (
           <div key={pageIndex} className="flex flex-col gap-2 px-2">
             {group.map((product, i) => {
+              const productId = product.productId || product.id;
+              const ProductLink = productId ? Link : "div";
               let productImg = getBackendUrl();
 
               if (product.thumbnailUrl) {
@@ -60,21 +62,21 @@ const ProductStack = ({ title, chunkNum = 3, productList = [] }) => {
               }
 
               return (
-                <Link
-                  to={"/demo"}
-                  key={i}
+                <ProductLink
+                  {...(productId ? { to: `/products/${productId}` } : {})}
+                  key={productId || i}
                   className="flex justify-start items-start"
                 >
                   <img
                     src={`${productImg}`}
-                    alt="special-sell"
+                    alt={product.name}
                     className="size-[110px] min-w-[110px] object-cover"
                   />
                   <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600">
                     <h2 className="font-semibold">{product.name}</h2>
                     <span className="font-bold">${product.price}</span>
                   </div>
-                </Link>
+                </ProductLink>
               );
             })}
           </div>

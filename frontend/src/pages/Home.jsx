@@ -26,7 +26,7 @@ const Home = () => {
             <ProductStack
               title="Latest Product"
               productList={partitionedFeaturedProducts?.data?.latest?.map(
-                (item) => item.product
+                (item) => ({ ...item.product, id: item.productId })
               )}
             />
           </div>
@@ -34,7 +34,7 @@ const Home = () => {
             <ProductStack
               title="Top Rated Product"
               productList={partitionedFeaturedProducts?.data?.topRated?.map(
-                (item) => item.product
+                (item) => ({ ...item.product, id: item.productId })
               )}
             />
           </div>
@@ -42,7 +42,7 @@ const Home = () => {
             <ProductStack
               title="Discount Product"
               productList={partitionedFeaturedProducts?.data?.discount?.map(
-                (item) => item.product
+                (item) => ({ ...item.product, id: item.productId })
               )}
             />
           </div>
