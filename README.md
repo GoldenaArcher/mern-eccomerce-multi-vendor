@@ -146,6 +146,11 @@ cd llm && ./run-llm.sh
 
 ---
 
+Unknown URLs display a 404 page. The storefront also links admin URLs to the
+dashboard login at `http://localhost:3000/admin/login`. For other environments,
+set `REACT_APP_DASHBOARD_URL` in `frontend/.env` to the dashboard's base URL and
+restart or rebuild the storefront.
+
 ## 📋 Progress
 
 - ✅ Auth system with refresh token + role-based access (user, seller, admin)
