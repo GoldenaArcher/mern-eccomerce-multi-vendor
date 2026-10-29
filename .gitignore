@@ -4,9 +4,11 @@ npm-debug.log
 yarn-error.log
 pnpm-debug.log
 *.lock
+!/yarn.lock
 
 # 🔹 Build and Output Files
 /build
+**/build/
 **/dist
 /dist
 /public

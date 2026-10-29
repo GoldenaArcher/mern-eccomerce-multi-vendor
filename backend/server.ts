@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import path from "path";
 
 import errorMiddleware from "@/middlewares/error.middleware";
+import databaseMiddleware from "@/middlewares/database.middleware";
 
 import authRoutes from "@/routes/auth.routes";
 import adminRoutes from "@/routes/admin.routes";
@@ -28,6 +29,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use("/uploads", express.static(path.resolve(__dirname, "uploads")));
+
+app.use("/api", databaseMiddleware);
 
 app.use("/api", authRoutes);
 app.use("/api/admin", adminRoutes);

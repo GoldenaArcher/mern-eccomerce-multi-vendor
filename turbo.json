@@ -3,13 +3,13 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", "build/**", "tsconfig.tsbuildinfo"]
     },
     "check-types": {
       "dependsOn": ["^check-types"]
     },
     "start": {
-      "dependsOn": ["^start"],
+      "dependsOn": ["^build"],
       "inputs": [
         "src/**",
         "../../packages/**/src/**",
@@ -21,7 +21,7 @@
       "cache": false
     },
     "start:debug": {
-      "dependsOn": ["^start:debug"],
+      "dependsOn": ["^build"],
       "inputs": [
         "src/**",
         "../../packages/**/src/**",

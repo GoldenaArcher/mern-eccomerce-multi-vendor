@@ -34,6 +34,12 @@ class InternalServerError extends ApiError {
   }
 }
 
+class DatabaseUnavailableError extends ApiError {
+  constructor() {
+    super(503, "Database is temporarily unavailable. Please try again later.");
+  }
+}
+
 class BadRequestError extends ApiError {
   constructor(message = "Bad Request", details = null) {
     super(400, message, details);
@@ -46,6 +52,7 @@ export {
   NotFoundError,
   ValidationError,
   InternalServerError,
+  DatabaseUnavailableError,
   RefreshTokenAuthError,
   BadRequestError,
 };

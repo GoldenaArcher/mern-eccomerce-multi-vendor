@@ -9,7 +9,7 @@
     "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",
-  "private": "true",
+  "private": true,
   "workspaces": [
     "backend",
     "dashboard",
@@ -21,8 +21,10 @@
     "react-dom": "19.1.0"
   },
   "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run start",
     "start": "turbo run start",
-    "start:dev": "turbo run start:debug --parallel",
+    "start:dev": "turbo run start:debug",
     "start:utils": "turbo run start:debug --filter=@mern/utils --concurrency=2",
     "start:ui": "turbo run start:debug --filter=@mern/ui --concurrency=2",
     "start:hooks": "turbo run start:debug --filter=@mern/hooks --concurrency=2",

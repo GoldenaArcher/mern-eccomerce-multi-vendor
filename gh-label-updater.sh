@@ -3,9 +3,10 @@
 set +o histexpand
 
 issue_labels=(
-  119 "backend,frontend,storefront,feature"
+  123 "epic,frontend,backend,feature,storefront"
+  124 "frontend,storefront,feature,ui"
 )
-        
+          
 for ((i = 1; i <= ${#issue_labels[@]}; i += 2)); do
   issue_id="${issue_labels[i]}"
   labels="${issue_labels[i+1]}"

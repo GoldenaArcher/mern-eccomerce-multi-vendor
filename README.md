@@ -125,20 +125,31 @@ mern-ecommerce-multi-vendor/
 ## 🧪 Local Development Setup
 
 ```bash
-# Install all workspace dependencies
-npm install
+# After changing Node versions, install this project's package manager
+npm install --global yarn@1.22.22
 
-# Start backend + frontend using Turborepo
+# Install all workspace dependencies
+yarn install --frozen-lockfile
+
+# Build all seven workspaces
+npm run build
+
+# Start backend, storefront, dashboard, and shared-package watchers
 npm run dev
 
 # Start MongoDB via Docker Compose (if not already running)
-docker compose up -d mongo
+docker compose up -d mongodb
 
 # [Planned] Start LLM container
 cd llm && ./run-llm.sh
 ```
 
 ---
+
+Unknown URLs display a 404 page. The storefront also links admin URLs to the
+dashboard login at `http://localhost:3000/admin/login`. For other environments,
+set `REACT_APP_DASHBOARD_URL` in `frontend/.env` to the dashboard's base URL and
+restart or rebuild the storefront.
 
 ## 📋 Progress
 
