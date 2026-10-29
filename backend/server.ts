@@ -21,7 +21,10 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: (process.env.CORS_ORIGINS || "http://localhost:3000,http://localhost:3001")
+      .split(",")
+      .map((origin) => origin.trim())
+      .filter(Boolean),
     credentials: true,
   })
 );

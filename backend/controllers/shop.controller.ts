@@ -4,6 +4,8 @@ import { ExtendedRequest } from "@/types/auth";
 import ResponseModel from "@/models/response.model";
 import { NotFoundError } from "@/errors";
 
+import { parseProductQuery } from "@/utils/product-query";
+
 class ShopController {
   private shopService: ShopService;
 
@@ -127,42 +129,11 @@ class ShopController {
 
   async getShopProducts(req: Request, res: Response, next: NextFunction) {
     try {
-      const { shopId } = req.params;
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 12;
-      const search = (req.query.search as string) || "";
-      const categories = (req.query.categories as string)
-        ? (req.query.categories as string).split(",")
-        : [];
-      const priceLow = req.query.priceLow
-        ? parseInt(req.query.priceLow as string)
-        : undefined;
-      const priceHigh = req.query.priceHigh
-        ? parseInt(req.query.priceHigh as string)
-        : undefined;
-      const sortBy = (req.query.sortBy as string) ?? undefined;
-
-      const isAll = req.query.all === "true";
-
-      if (isAll) {
-        const results = await this.shopService.getAllProductsByShopId({
-          shopId,
-        });
-        ResponseModel.ok(
-          "Products fetched successfully.",
-          results.products
-        ).send(res);
-        return;
-      }
+      const options = parseProductQuery(req.query);
       const result = await this.shopService.getAllProductsByShopId({
-        shopId,
-        page,
-        limit,
-        search,
-        categories,
-        priceLow,
-        priceHigh,
-        sortBy,
+        ...options,
+        ...(req.query.all === "true" ? { page: undefined, limit: undefined } : {}),
+        shopId: req.params.shopId,
       });
 
       ResponseModel.ok(
