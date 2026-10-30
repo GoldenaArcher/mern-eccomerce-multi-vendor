@@ -11,6 +11,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Category from "../pages/Category";
 import NotFound from "../pages/NotFound";
+import SearchProduct from "../pages/SearchProduct";
 
 const index = () => {
   return (
@@ -23,6 +24,7 @@ const index = () => {
         <Route path="/shops/:shopId" element={<ShopsDetails />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/products/search" element={<SearchProduct />} />
         <Route path="/products/:productId" element={<ProductDetails />} />
         <Route path='/category/:categoryId' element={<Category />}/>
         <Route path="*" element={<NotFound />} />

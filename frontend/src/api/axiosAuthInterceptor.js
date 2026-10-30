@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:5000/api";
+export const BASE_URL = `${(process.env.REACT_APP_BACKEND_URL || "http://localhost:5000").replace(/\/$/, "")}/api`;
 
 const handleApiResponse = (res) => {
   const { success, message, data, pagination } = res.data || {};

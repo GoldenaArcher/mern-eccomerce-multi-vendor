@@ -5,6 +5,7 @@ import { UploadedFileWithPath } from "@/types/upload";
 import { BadRequestError, NotFoundError } from "@/errors";
 import { GetAllProductsOptions } from "@/types/product";
 import shopModel from "@/models/shop.model";
+import { escapeProductSearch } from "@/utils/product-query";
 
 export class ProductService {
   async createProduct({
@@ -62,19 +63,19 @@ export class ProductService {
     const filter: Record<string, any> = {};
 
     if (search) {
-      filter.name = { $regex: search, $options: "i" };
+      filter.name = { $regex: escapeProductSearch(search), $options: "i" };
     }
 
     if (categories.length > 0) {
       filter.category = { $in: categories };
     }
 
-    if (priceLow || priceHigh) {
+    if (priceLow !== undefined || priceHigh !== undefined) {
       filter.price = {};
-      if (priceLow) {
+      if (priceLow !== undefined) {
         filter.price.$gte = priceLow;
       }
-      if (priceHigh) {
+      if (priceHigh !== undefined) {
         filter.price.$lte = priceHigh;
       }
     }
@@ -96,6 +97,9 @@ export class ProductService {
         sort = { createdAt: -1 };
         break;
     }
+
+    // Keep page boundaries stable when products share a price or creation time.
+    sort._id = sortBy === "price-asc" || sortBy === "created-asc" ? 1 : -1;
 
     if (!page || !limit) {
       const products = await ProductModel.find(filter).sort(sort);
@@ -147,19 +151,19 @@ export class ProductService {
     };
 
     if (search) {
-      filter.name = { $regex: search, $options: "i" };
+      filter.name = { $regex: escapeProductSearch(search), $options: "i" };
     }
 
     if (categories.length > 0) {
       filter.category = { $in: categories };
     }
 
-    if (priceLow || priceHigh) {
+    if (priceLow !== undefined || priceHigh !== undefined) {
       filter.price = {};
-      if (priceLow) {
+      if (priceLow !== undefined) {
         filter.price.$gte = priceLow;
       }
-      if (priceHigh) {
+      if (priceHigh !== undefined) {
         filter.price.$lte = priceHigh;
       }
     }
@@ -181,6 +185,8 @@ export class ProductService {
         sort = { createdAt: -1 };
         break;
     }
+
+    sort._id = sortBy === "price-asc" || sortBy === "created-asc" ? 1 : -1;
 
     if (!page || !limit) {
       const products = await ProductModel.find(filter).sort(sort);

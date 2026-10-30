@@ -12,12 +12,14 @@ const ProductCard = ({
   showIcons = true,
   product,
 }) => {
+  const productId = product?.productId || product?.id;
+  const productPath = productId ? `/products/${productId}` : null;
   let productImg = getBackendUrl();
 
-  if (product.thumbnailUrl) {
-    productImg += product.thumbnailUrl;
-  } else if (product.images && product.images.length > 0) {
-    productImg += product.images[0];
+  if (product?.thumbnailUrl) {
+    productImg += product?.thumbnailUrl;
+  } else if (product?.images && product?.images.length > 0) {
+    productImg += product?.images[0];
   }
 
   return (
@@ -31,27 +33,29 @@ const ProductCard = ({
         <div
           className={cn({
             "flex justify-center items-center absolute text-white size-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2":
-              product.discount,
-            hidden: !product.discount,
+              product?.discount,
+            hidden: !product?.discount,
           })}
         >
-          {product.discount}%
+          {product?.discount}%
         </div>
-        <img
-          src={productImg}
-          alt="product-image"
-          className="w-full h-[240px] object-cover"
-        />
+        {productPath ? (
+          <Link to={productPath} className="block">
+            <img src={productImg} alt={product?.name} className="w-full h-[240px] object-cover" />
+          </Link>
+        ) : (
+          <img src={productImg} alt={product?.name} className="w-full h-[240px] object-cover" />
+        )}
         {showIcons && (
           <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
             <li className="size-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
               <FaRegHeart />
             </li>
-            <li className="size-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
-              <Link to={"/products/a"}>
+            {productPath && <li className="size-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
+              <Link to={productPath} aria-label={`View ${product?.name}`}>
                 <FaEye />
               </Link>
-            </li>
+            </li>}
             <li className="size-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
               <FaShoppingCart />
             </li>
@@ -60,9 +64,9 @@ const ProductCard = ({
       </div>
 
       <div className="py-3 text-slate-600 px-2">
-        <h2 className="font-bold">{product.name}</h2>
+        <h2 className="font-bold">{productPath ? <Link to={productPath} className="hover:text-[#059473] hover:underline">{product?.name}</Link> : product?.name}</h2>
         <div className="flex justify-start items-center gap-3">
-          <span className="font-semibold">${product.price}</span>
+          <span className="font-semibold">${product?.price}</span>
           <div className="flex">
             <Ratings ratings={_.random(0, 5, true)} />
           </div>

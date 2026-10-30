@@ -17,7 +17,7 @@ import {
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@mern/utils";
-import { useDebouncedSearch } from "@mern/hooks";
+import ProductSearchForm from "../shared/ProductSearchForm";
 
 import UsFlag from "../../assets/img/us.svg";
 import Logo from "../../assets/img/logo.png";
@@ -31,10 +31,8 @@ const Header = () => {
   const [showSideBar, setShowSideBar] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
   const wishlist = [1, 2, 3];
-  const [selectedCategories, setSelectedCategories] = useState("");
-  const { searchValue, setSearchValue, debouncedSearch } = useDebouncedSearch();
 
-  const { data: categories } = useGetCategoriesQuery({ all: true });
+  const { data: categories, isLoading: categoriesLoading, isError: categoriesError } = useGetCategoriesQuery({ all: true });
 
   const getSupportInfo = (isMobile) => (
     <ul
@@ -362,37 +360,7 @@ const Header = () => {
           <div className="w-9/12 pl-8 md-lg:pl-0 md-lg:w-full">
             <div className="flex flex-wrap justify-between items-center md-lg:gap-6">
               <div className="w-8/12 md-lg:w-full">
-                <div className="flex border border-gray-300 h-[50px] items-center relative gap-6">
-                  <div className="relative after:absolute after:h-[25px] after:w-px after:bg-[#afafaf] after:right-[-15px] md-lg:hidden">
-                    <select
-                      name=""
-                      id=""
-                      className="outline-none w-[150px] text-slate-600 font-semibold bg-transparent px-2 h-full border-none"
-                      onChange={(e) => setSearchValue(e.target.value)}
-                      value={searchValue}
-                    >
-                      <option value="">Select Category</option>
-                      {categories?.data?.map(({ name, id }) => {
-                        return (
-                          <option key={id} value={name} className="z-10">
-                            {name}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    className="relative size-full bg-transparent text-slate-500 outline-none px-3"
-                    placeholder="Search Products"
-                  />
-                  <button className="bg-[#059473] right-0 absolute px-8 h-full font-semibold uppercase text-white">
-                    Search
-                  </button>
-                </div>
+                <ProductSearchForm categories={categories?.data} categoriesLoading={categoriesLoading} categoriesError={categoriesError} />
               </div>
 
               <div className="w-4/12 block md-lg:hidden pl-2 md-lg:w-full md-lg:pl-0">
