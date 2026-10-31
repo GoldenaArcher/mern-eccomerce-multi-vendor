@@ -21,6 +21,7 @@
     "react-dom": "19.1.0"
   },
   "scripts": {
+    "env:pull": "bash ./export-env.sh",
     "build": "turbo run build",
     "dev": "turbo run start",
     "start": "turbo run start",

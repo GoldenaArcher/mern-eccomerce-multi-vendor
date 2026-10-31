@@ -33,7 +33,10 @@ pnpm-debug.log
 Thumbs.db
 
 # 🔹 Environment Variables & Secrets
+.infisical.yaml
+.infisical.json
 .env
+.env-export.*/
 .env.local
 .env.development
 .env.test
