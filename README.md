@@ -124,6 +124,26 @@ mern-ecommerce-multi-vendor/
 
 ## 🧪 Local Development Setup
 
+After logging in with `infisical login`, link this repository to your Infisical
+project with `infisical init` (an existing link in `backend/` also works). Create
+`/backend`, `/dashboard`, and `/frontend` folders in the Development environment,
+then generate each app's local `.env` file:
+
+```bash
+yarn env:pull
+```
+
+Infisical project configuration (`.infisical.yaml` or legacy `.infisical.json`)
+is ignored by Git to keep project IDs local. On each new machine or checkout,
+run `infisical login` and `infisical init` before exporting variables.
+
+This replaces `backend/.env`, `dashboard/.env`, and `frontend/.env` only after all
+three exports succeed. Empty or failed exports leave existing files intact.
+Generated files are ignored by Git and readable/writable only by their owner.
+Run `yarn env:pull` again after updating Infisical values, then restart your apps
+with the usual `yarn dev` command. To select another environment, use
+`yarn env:pull staging`; it still writes the same local `.env` files.
+
 ```bash
 # After changing Node versions, install this project's package manager
 npm install --global yarn@1.22.22
